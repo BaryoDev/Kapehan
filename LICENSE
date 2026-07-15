@@ -1,0 +1,32 @@
+MIT License
+
+Copyright (c) 2026 BaryoDev
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated icon assets (the "Icons"), to deal in the
+Icons without restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Icons, and to permit persons to whom the Icons are furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Icons.
+
+THE ICONS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE ICONS OR THE USE OR OTHER DEALINGS IN THE
+ICONS.
+
+---
+
+TRADEMARK / LOGO EXCLUSION
+
+This MIT license covers the general-purpose ICON assets in the `icons/`
+directory only. It does NOT cover BaryoDev brand assets — including the
+BaryoDev, Kapehan, Barako, barakoCMS, Talaan, and BaryoClub names, wordmarks,
+and logos (any files under `brand/` or `logos/`). Those brand assets are
+© BaryoDev, all rights reserved, and are not licensed for reuse. You may not
+use them to imply endorsement by or affiliation with BaryoDev.

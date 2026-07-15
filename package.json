@@ -1,0 +1,10 @@
+{
+  "name": "kapehan",
+  "version": "0.1.0",
+  "description": "Free, hand-drawn coffee SVG icons (espresso, americano, latte, macchiato, and friends).",
+  "keywords": ["icons", "svg", "coffee", "espresso", "latte", "lucide", "ui"],
+  "author": "BaryoDev",
+  "license": "MIT",
+  "files": ["icons", "LICENSE", "README.md"],
+  "homepage": "https://github.com/BaryoDev/Kapehan"
+}
