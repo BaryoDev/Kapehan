@@ -1,0 +1,35 @@
+name: Publish to npm
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (e.g., 0.1.0)"
+        required: true
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+          registry-url: "https://registry.npmjs.org/"
+
+      - name: Check for npm token
+        run: |
+          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+            echo "::error::NPM_TOKEN secret is not set (org or repo)."
+            exit 1
+          fi
+
+      - name: Set version
+        run: npm version ${{ github.event.inputs.version }} --no-git-tag-version --allow-same-version
+
+      - name: Publish
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
