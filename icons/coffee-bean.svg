@@ -1,4 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="coffee bean">
-  <ellipse cx="12" cy="12" rx="6.5" ry="9" transform="rotate(38 12 12)" />
-  <path d="M8.2 8.2c2 1.3 2 4.9 0 6.2m7.6-6.2c-2 1.3-2 4.9 0 6.2" />
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" aria-label="coffee bean">
+  <ellipse cx="24" cy="24" rx="10.5" ry="15" transform="rotate(38 24 24)" fill="#6F4A2E"/>
+  <ellipse cx="24" cy="24" rx="10.5" ry="15" transform="rotate(38 24 24)" fill="#7A5334" opacity="0.0"/>
+  <path d="M16.8 16.8c3.2 2 3.2 12.4 0 14.4" stroke="#EAD8C2" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+  <path d="M24 12.2c-3 3-3 20.6 0 23.6" stroke="#43291A" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+  <path d="M31.2 16.8c-3.2 2-3.2 12.4 0 14.4" stroke="#8A5E3A" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.5"/>
 </svg>

@@ -1,7 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="french press">
-  <rect x="7" y="7" width="8" height="13" rx="1.6" />
-  <path d="M12 4v3" />
-  <path d="M10 3.4h4" />
-  <path d="M7 11h8" />
-  <path d="M15 10h2.4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H15" />
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" aria-label="french press">
+  <rect x="15" y="14" width="15" height="26" rx="3" fill="#DCE6EE"/>
+  <path d="M15 27h15v10a3 3 0 0 1-3 3H18a3 3 0 0 1-3-3z" fill="#6B4326"/>
+  <path d="M15 27h15v3H15z" fill="#8A5E3A"/>
+  <rect x="14" y="10.5" width="17" height="4" rx="2" fill="#AEB9C4"/>
+  <rect x="22" y="4" width="3" height="7" rx="1.5" fill="#AEB9C4"/>
+  <rect x="19.5" y="2.5" width="8" height="3" rx="1.5" fill="#8B98A6"/>
+  <rect x="15" y="20" width="15" height="2.6" fill="#AEB9C4"/>
+  <path d="M30 18h3a3.5 3.5 0 0 1 0 9h-3" stroke="#AEB9C4" stroke-width="3" fill="none"/>
 </svg>
