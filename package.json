@@ -56,8 +56,7 @@
     "url": "git+https://github.com/BaryoDev/Kapehan.git"
   },
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1"

@@ -10,6 +10,8 @@ on:
         required: true
         type: string
 
+# id-token: write is what npm exchanges for a registry credential. There is no
+# NPM_TOKEN: this package publishes through npm trusted publishing (OIDC).
 permissions:
   contents: read
   id-token: write
@@ -20,17 +22,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # No registry-url on purpose. setup-node would write an .npmrc line pinning
+      # _authToken to an empty NODE_AUTH_TOKEN, and registry.npmjs.org is the default
+      # anyway. Trusted publishing wants no token in the file.
       - uses: actions/setup-node@v4
         with:
           node-version: "22.x"
-          registry-url: "https://registry.npmjs.org/"
 
-      - name: Check for npm token
+      # Trusted publishing needs npm 11.5.1 or later, and Node 22.x still ships npm 10.
+      - name: Use an npm that can do trusted publishing
         run: |
-          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
-            echo "::error::NPM_TOKEN secret is not set (org or repo)."
-            exit 1
-          fi
+          npm install -g npm@latest
+          npm --version
 
       - name: Set version
         if: github.event_name == 'workflow_dispatch'
@@ -53,7 +56,7 @@ jobs:
       - name: Check generated files are in sync
         run: npm test
 
+      # Provenance is generated automatically under trusted publishing, so there is
+      # no --provenance flag and no publishConfig.provenance.
       - name: Publish
         run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
