@@ -32,6 +32,17 @@ for (const icon of icons) {
   if (stray) fail.push(`${icon.name}: mono build keeps a literal colour ${stray[0]}`);
 }
 
+// The package entry point is a browser web component, but anything server-rendering
+// it (Next, Nuxt, Astro, Remix) evaluates the import on the server first. Shipped 0.2.0
+// threw ReferenceError: HTMLElement is not defined on that path, and nothing caught it
+// because the file is only ever loaded in a browser by the tests.
+try {
+  const mod = await import(join(root, 'kape-icon.js'));
+  if (!Array.isArray(mod.ICONS) || !mod.ICONS.length) fail.push('kape-icon.js exports no ICONS when imported in node');
+} catch (e) {
+  fail.push(`kape-icon.js cannot be imported outside a browser: ${e.message}`);
+}
+
 if (fail.length) {
   for (const f of fail) console.error('x', f);
   process.exit(1);
