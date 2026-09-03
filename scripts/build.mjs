@@ -36,19 +36,35 @@ for (const i of ICONS) {
   for (const a of i.aliases) if (!INDEX.has(a)) INDEX.set(a, i);
 }
 
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
 class KapeIcon extends HTMLElement {
   static get observedAttributes() { return ['name', 'size', 'mono']; }
   connectedCallback() { this.render(); }
   attributeChangedCallback() { this.render(); }
   render() {
     const icon = INDEX.get((this.getAttribute('name') || '').trim());
-    const size = this.getAttribute('size') || 24;
-    if (!icon) { this.innerHTML = ''; return; }
+    if (!icon) { this.replaceChildren(); return; }
+
+    // size comes from the host page and may be hostile. Concatenating it into an
+    // attribute string lets size='24" onload="..."' break out of the tag, so it is
+    // coerced to a number and every attribute is set on the node instead. Only
+    // build-time icon data reaches innerHTML.
+    const n = Number(this.getAttribute('size'));
+    const size = Number.isFinite(n) && n > 0 ? n : 24;
     const body = this.hasAttribute('mono') ? icon.mono : icon.body;
+
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('width', size);
+    svg.setAttribute('height', size);
+    svg.setAttribute('viewBox', '0 0 48 48');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', icon.name.replace(/-/g, ' '));
+    svg.innerHTML = body;
+
     this.style.display = this.style.display || 'inline-flex';
-    this.innerHTML =
-      '<svg xmlns="http://www.w3.org/2000/svg" width="' + size + '" height="' + size +
-      '" viewBox="0 0 48 48" fill="none" role="img" aria-label="' + icon.name.replace(/-/g, ' ') + '">' + body + '</svg>';
+    this.replaceChildren(svg);
   }
 }
 if (!customElements.get('kape-icon')) customElements.define('kape-icon', KapeIcon);

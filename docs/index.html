@@ -67,6 +67,7 @@ const ACCENTS = [
 ];
 const GLOBAL_TOKENS = ['ink', 'roast', 'brown', 'crema', 'milk', 'ceramic', 'ceramicDeep', 'barako', 'clay', 'slate', 'glass', 'matcha', 'ube', 'amber', 'melon', 'pandan'];
 const SIZES = [16, 24, 32, 48];
+const HEX = /^#[0-9a-fA-F]{6}$/;
 
 let savedTheme = null;
 try { savedTheme = localStorage.getItem('kapehan.theme'); } catch (e) {}
@@ -190,7 +191,11 @@ const App = {
       this.s.theme = this.s.theme === 'dark' ? 'light' : 'dark';
       try { localStorage.setItem('kapehan.theme', this.s.theme); } catch (e) {}
     },
-    setOverride(hex, value) { this.s.overrides[hex] = value; },
+    // A colour input always yields #rrggbb, but these values are substituted straight
+    // into the SVG source that the page renders and exports, so the shape is enforced
+    // rather than assumed.
+    setOverride(hex, value) { if (HEX.test(value)) this.s.overrides[hex] = value; },
+    setMonoColor(value) { if (HEX.test(value)) this.s.monoColor = value; },
     resetAll() { this.s.overrides = {}; this.flash('Palette reset'); },
     resetOpen() {
       for (const t of this.openTokens) delete this.s.overrides[t.hex];
@@ -642,7 +647,7 @@ const App = {
           <div v-else>
             <p class="mono" :style="{ color: accent }" style="margin:0 0 12px;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Preview colour</p>
             <label class="hov-accent" style="display:flex;align-items:center;gap:11px;background:var(--k-card);border:1px solid var(--k-line);border-radius:10px;padding:9px 12px;cursor:pointer">
-              <input type="color" :value="monoInk" @input="s.monoColor = $event.target.value" style="width:28px;height:28px;padding:0;border:1px solid var(--k-line2);border-radius:6px;background:none;cursor:pointer" />
+              <input type="color" :value="monoInk" @input="setMonoColor($event.target.value)" style="width:28px;height:28px;padding:0;border:1px solid var(--k-line2);border-radius:6px;background:none;cursor:pointer" />
               <span class="mono" style="flex:1;font-size:12.5px;color:var(--k-ink)">currentColor</span>
               <span class="mono" style="font-size:11px;color:var(--k-muted2)">{{ monoInk }}</span>
             </label>
