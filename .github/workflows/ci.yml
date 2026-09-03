@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    name: Generated files in sync
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+
+      # icons/, icons/mono/, kape-icon.js and docs/ are generated and committed.
+      # This fails the PR if any of them drifted from kapehan-icons.js. It runs
+      # without installing anything, which is why prepublishOnly can use it too.
+      - name: Check generated files are in sync
+        run: npm test
+
+      - name: Check the package contents
+        run: npm pack --dry-run
+
+  browser:
+    name: Browser tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      # Drives the real component and the real site in a real browser. The sync
+      # check proves the files match the source; only this proves they behave,
+      # including that a hostile size= attribute cannot inject into the SVG.
+      - name: Run browser tests
+        run: npm run test:browser
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48" fill="none" role="img" aria-label="tea">
+  <ellipse cx="24" cy="39.4" rx="13.5" ry="3" fill="currentColor"/>
+  <path d="M32.5 24c5.2 0 5.2 7 0 7" stroke="currentColor" stroke-width="3.3" stroke-linecap="round" fill="none"/>
+  <path d="M15 21.5h18v7a9 7.5 0 0 1-18 0z" fill="currentColor"/>
+  <ellipse cx="24" cy="21.5" rx="9" ry="2.6" fill="currentColor"/>
+  <rect x="27.4" y="8.4" width="5.6" height="4.4" rx="1.2" fill="currentColor"/>
+  <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <path d="M18.6 12.5c-1.4 1.8 1.4 2.8 0 4.6"/>
+    <path d="M23 12.5c-1.4 1.8 1.4 2.8 0 4.6"/>
+  </g>
+</svg>

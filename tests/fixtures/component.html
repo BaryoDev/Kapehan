@@ -1,0 +1,16 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>kape-icon fixture</title>
+<body>
+  <!-- The hostile values are in the markup, not set from script, so the test exercises
+       the same path a real page would: the HTML parser hands the attribute to the
+       element, which then has to render it without letting it escape the tag. -->
+  <kape-icon id="plain" name="barako" size="48"></kape-icon>
+  <kape-icon id="alias" name="cup-cold" size="32"></kape-icon>
+  <kape-icon id="mono" name="barako" mono size="32"></kape-icon>
+  <kape-icon id="unknown" name="not-a-real-icon"></kape-icon>
+  <kape-icon id="attr-break" name="barako" size='24" onload="window.__pwned = 1'></kape-icon>
+  <kape-icon id="tag-break" name="barako" size="&quot;&gt;&lt;img src=x onerror=window.__pwned2=1&gt;"></kape-icon>
+  <kape-icon id="junk-size" name="barako" size="not-a-number"></kape-icon>
+  <script type="module" src="/kape-icon.js"></script>
+</body>

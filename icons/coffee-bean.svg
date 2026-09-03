@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" aria-label="coffee bean">
-  <ellipse cx="24" cy="24" rx="10.5" ry="15" transform="rotate(38 24 24)" fill="#6F4A2E"/>
-  <ellipse cx="24" cy="24" rx="10.5" ry="15" transform="rotate(38 24 24)" fill="#7A5334" opacity="0.0"/>
-  <path d="M16.8 16.8c3.2 2 3.2 12.4 0 14.4" stroke="#EAD8C2" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-  <path d="M24 12.2c-3 3-3 20.6 0 23.6" stroke="#43291A" stroke-width="2.6" stroke-linecap="round" fill="none"/>
-  <path d="M31.2 16.8c-3.2 2-3.2 12.4 0 14.4" stroke="#8A5E3A" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.5"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" role="img" aria-label="coffee bean">
+  <g transform="rotate(-32 24 24)">
+    <ellipse cx="24" cy="24" rx="10" ry="14" fill="#5A3520"/>
+    <path d="M24 11.6c-3.2 3.4-3.2 21.4 0 24.8" stroke="#241A13" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+    <path d="M17.8 16.6c2.6 2.2 2.6 12.6 0 14.8" stroke="#8C5A32" stroke-width="2" stroke-linecap="round" fill="none"/>
+  </g>
 </svg>

@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kapehan: free coffee icons</title>
+<meta name="description" content="37 hand-drawn coffee, tea and tropical drink SVG icons on one 48px grid. Full colour and one-colour currentColor. MIT." />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<meta property="og:title" content="Kapehan: free coffee icons" />
+<meta property="og:description" content="37 hand-drawn coffee, tea and tropical drink SVG icons. Full colour for merch, one colour for UI. MIT." />
+<meta property="og:url" content="https://baryodev.github.io/Kapehan/" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root { --k-bg:#FBF6EE; --k-card:#FFFDF9; --k-line:#EFE4D3; --k-line2:#E2D3BC; --k-track:#F1E8DA; --k-ink:#241A13; --k-muted:#6E5F52; --k-muted2:#7A6A5C; --k-deep:#241A13; --k-code:#EFE6D8; }
+  [data-theme="dark"] { --k-bg:#17100B; --k-card:#1F1611; --k-line:#33271E; --k-line2:#403126; --k-track:#2A1F18; --k-ink:#FBF6EE; --k-muted:#C9B9A6; --k-muted2:#A08F7D; --k-deep:#0F0A07; --k-code:#EFE6D8; color-scheme: dark; }
+  body { margin: 0; background: var(--k-bg); color: var(--k-ink); font-family: "Instrument Sans", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #BE7008; text-decoration: none; border-bottom: 1px solid rgba(190,112,8,.35); }
+  a:hover { color: var(--k-ink); border-bottom-color: var(--k-ink); }
+  ::selection { background: #E5901A; color: #241A13; }
+  [data-theme="dark"] input[type="text"] { color: #FBF6EE; }
+  input { font-family: inherit; }
+  @keyframes k-pop { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  /* The design set these two families inline on nearly every node. As classes they stay
+     out of the way of the :style bindings that carry the live accent colour. */
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .display { font-family: 'Bricolage Grotesque', sans-serif; }
+  pre { font-variant-ligatures: none; }
+
+  /* The design's style-hover and style-focus attributes, as real CSS. */
+  .swatch { transition: transform .12s ease-out; }
+  .swatch:hover { transform: scale(1.18) !important; }
+  .hov-accent:hover { border-color: var(--k-accent) !important; }
+  .hov-accent-ink:hover { border-color: var(--k-accent) !important; color: var(--k-ink) !important; }
+  .hov-tile:hover { background: rgba(251,246,238,.09) !important; border-color: var(--k-accent-edge) !important; }
+  .hov-card:hover { border-color: var(--k-accent); box-shadow: 0 6px 20px -12px rgba(36,26,19,.4); }
+  .hov-outline:hover { outline: 2px solid var(--k-accent); }
+  .hov-ink:hover { color: var(--k-ink) !important; }
+  .search:focus { border-color: var(--k-accent); box-shadow: 0 0 0 3px var(--k-accent-edge); }
+  .nav { color: inherit; border: 0; }
+  .nav:hover { color: #FBF6EE; }
+  .ghost { color: #FBF6EE; border: 1px solid rgba(251,246,238,.3); }
+  .ghost:hover { color: #FBF6EE; }
+  .solid-cta { color: #FBF6EE; border: 0; }
+  .solid-cta:hover { color: #FBF6EE; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@3.5.13/dist/vue.global.prod.js"></script>
+<script type="module">
+import { icons, categories, palette, monoOf, stripHints, wrap } from './kapehan-icons.js';
+
+const { createApp, reactive } = Vue;
+
+const ACCENTS = [
+  { hex: '#E5901A', name: 'barako' },
+  { hex: '#C2593A', name: 'clay' },
+  { hex: '#8C5A32', name: 'roast' },
+  { hex: '#6E8B5E', name: 'pandan' },
+  { hex: '#8E6BA8', name: 'ube' },
+  { hex: '#DE7286', name: 'melon' },
+];
+const GLOBAL_TOKENS = ['ink', 'roast', 'brown', 'crema', 'milk', 'ceramic', 'ceramicDeep', 'barako', 'clay', 'slate', 'glass', 'matcha', 'ube', 'amber', 'melon', 'pandan'];
+const SIZES = [16, 24, 32, 48];
+const HEX = /^#[0-9a-fA-F]{6}$/;
+
+let savedTheme = null;
+try { savedTheme = localStorage.getItem('kapehan.theme'); } catch (e) {}
+
+/** One shared store. KIcon reads it directly, so a recolour reaches every icon at once. */
+const s = reactive({
+  q: '', cat: 'All', size: 32, mono: false, copied: null, toast: '',
+  overrides: {}, paletteOpen: false, open: null, sheetDark: false, exportPx: 512,
+  monoColor: null, accent: '#C2593A', theme: savedTheme || 'light',
+});
+
+const byName = (name) => icons.find((i) => i.name === name) || icons[0];
+
+/** Apply the visitor's recolouring to a raw icon body. */
+function applyOv(body) {
+  let out = body;
+  for (const from in s.overrides) {
+    if (s.overrides[from] && s.overrides[from].toLowerCase() !== from.toLowerCase()) {
+      out = out.split(from).join(s.overrides[from]);
+      out = out.split(from.toUpperCase()).join(s.overrides[from]);
+    }
+  }
+  return out;
+}
+
+const iconBody = (icon, mono) => applyOv(mono ? monoOf(icon) : icon.body);
+const exportSvg = (icon, size, mono) => wrap(icon.name, iconBody(icon, mono), size);
+
+/** Every distinct hex in an icon, in paint order, with its palette token name. */
+function hexesIn(icon) {
+  const names = {};
+  for (const k in palette) names[palette[k].toLowerCase()] = k;
+  const seen = [];
+  const re = /(?:fill|stroke)="(#[0-9A-Fa-f]{3,8})"/g;
+  let m;
+  while ((m = re.exec(icon.body))) {
+    const hex = m[1].toLowerCase();
+    if (!seen.includes(hex)) seen.push(hex);
+  }
+  return seen.map((hex) => ({ hex, token: names[hex] || 'one-off' }));
+}
+
+const KIcon = {
+  props: { name: { type: String, required: true }, size: { type: Number, default: 32 }, mono: { type: Boolean, default: false } },
+  computed: {
+    html() { return exportSvg(byName(this.name), this.size, this.mono); },
+  },
+  template: '<span style="display:grid;place-items:center;line-height:0" v-html="html"></span>',
+};
+
+const App = {
+  components: { KIcon },
+  data: () => ({ s, ACCENTS, SIZES, icons, categories, exportSizes: [256, 512, 1024] }),
+
+  computed: {
+    accent() { return this.s.accent; },
+    /** Translucent version of the accent, for hairline borders on the dark header. */
+    accentEdge() {
+      const hex = this.accent.replace('#', '');
+      const n = parseInt(hex.length === 3 ? hex.replace(/./g, (c) => c + c) : hex, 16);
+      return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',.45)';
+    },
+    rootVars() { return { '--k-accent': this.accent, '--k-accent-edge': this.accentEdge }; },
+    catChips() { return ['All'].concat(this.categories); },
+    filtered() {
+      const q = this.s.q.trim().toLowerCase();
+      const hit = (i) => !q || i.name.includes(q) || i.aliases.some((x) => x.includes(q)) || i.tags.some((t) => t.includes(q)) || i.category.toLowerCase().includes(q);
+      return this.icons.filter((i) => (this.s.cat === 'All' || i.category === this.s.cat) && hit(i));
+    },
+    countLabel() {
+      return this.s.q.trim() || this.s.cat !== 'All'
+        ? this.filtered.length + ' of ' + this.icons.length + ' icons'
+        : this.icons.length + ' icons · ' + this.categories.length + ' groups';
+    },
+    tokenControls() {
+      return GLOBAL_TOKENS.map((t) => {
+        const hex = palette[t].toLowerCase();
+        return { token: t, hex, value: this.s.overrides[hex] || palette[t] };
+      });
+    },
+    tokenDots() { return this.tokenControls.slice(0, 11); },
+    hasOverrides() { return Object.keys(this.s.overrides).length > 0; },
+    spriteStatus() {
+      const n = Object.keys(this.s.overrides).filter((h) => this.s.overrides[h]).length;
+      return (n ? n + ' token' + (n > 1 ? 's' : '') + ' recoloured' : 'default palette') + ' · ' + this.icons.length + ' symbols';
+    },
+    monoInk() { return this.s.monoColor || (this.s.theme === 'dark' ? '#D6A164' : '#5A3520'); },
+    openIcon() { return this.s.open ? byName(this.s.open) : null; },
+    openTokens() { return this.openIcon ? hexesIn(this.openIcon) : []; },
+    heroTiles() {
+      return ['barako', 'pour-over', 'matcha', 'cold-brew', 'espresso-machine', 'milk-tea', 'drip-bag', 'ube-latte', 'grinder']
+        .map((name, k) => ({ name, mono: k >= 6 }));
+    },
+    menuRows() {
+      return [
+        { name: 'barako', label: 'Kapeng barako', price: '65' },
+        { name: 'cold-brew', label: 'Cold brew', price: '120' },
+        { name: 'ube-latte', label: 'Ube latte', price: '135' },
+        { name: 'halo-halo', label: 'Halo-halo', price: '150' },
+      ];
+    },
+    offPalette: () => ['#E37A5C', '#5B8DBE', '#E6A94E', '#94B49F', '#B07C97'],
+    onPalette: () => ['#241A13', '#5A3520', '#8C5A32', '#D6A164', '#F5E9D6', '#E5901A', '#C2593A', '#A7B3BA'],
+    baselineIcons: () => ['espresso', 'americano', 'barako', 'kettle', 'tablea'],
+    stickerIcons: () => ['barako', 'coffee-bean', 'milk-tea', 'matcha'],
+    beanTile: () => Array.from({ length: 9 }, (_, k) => k),
+  },
+
+  watch: {
+    's.theme': { immediate: true, handler(v) { document.body.dataset.theme = v; } },
+  },
+
+  mounted() { window.addEventListener('keydown', this.onKey); },
+  unmounted() { window.removeEventListener('keydown', this.onKey); clearTimeout(this._t); },
+
+  methods: {
+    onKey(e) { if (e.key === 'Escape' && this.s.open) this.s.open = null; },
+    pill(on) { return on ? { background: 'var(--k-ink)', color: 'var(--k-bg)' } : { background: 'transparent', color: 'var(--k-muted)' }; },
+
+    toggleTheme() {
+      this.s.theme = this.s.theme === 'dark' ? 'light' : 'dark';
+      try { localStorage.setItem('kapehan.theme', this.s.theme); } catch (e) {}
+    },
+    // A colour input always yields #rrggbb, but these values are substituted straight
+    // into the SVG source that the page renders and exports, so the shape is enforced
+    // rather than assumed.
+    setOverride(hex, value) { if (HEX.test(value)) this.s.overrides[hex] = value; },
+    setMonoColor(value) { if (HEX.test(value)) this.s.monoColor = value; },
+    resetAll() { this.s.overrides = {}; this.flash('Palette reset'); },
+    resetOpen() {
+      for (const t of this.openTokens) delete this.s.overrides[t.hex];
+      this.flash("Icon colours reset");
+    },
+
+    flash(label, key) {
+      this.s.copied = key || null;
+      this.s.toast = label;
+      clearTimeout(this._t);
+      this._t = setTimeout(() => { this.s.copied = null; this.s.toast = ''; }, 1600);
+    },
+    copy(text, label, key) {
+      const done = () => this.flash(label, key);
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, done);
+      else done();
+    },
+    copyNpm() { this.copy('npm i kapehan', 'Install command copied', 'npm'); },
+    copyCdn() { this.copy('https://unpkg.com/kapehan/kape-icon.js', 'CDN URL copied', 'cdn'); },
+    copyCredit() {
+      this.copy('Coffee icons by <a href="https://github.com/BaryoDev/Kapehan">Kapehan</a> · MIT', 'Credit line copied', 'credit');
+    },
+    copySvg(icon) { this.copy(exportSvg(icon, 48, this.s.mono), icon.name + '.svg copied', icon.name + ':svg'); },
+    copyJsx(icon) { this.copy(this.jsxSource(icon), icon.name + ' JSX copied', icon.name + ':jsx'); },
+
+    jsxSource(icon) {
+      const pascal = icon.name.replace(/(^|-)([a-z])/g, (_, __, c) => c.toUpperCase());
+      const src = wrap(icon.name, monoOf(icon), 24)
+        .replace(/(stroke|fill|clip)-(width|linecap|linejoin|dasharray|rule)="/g, (m, a, b) => a + b[0].toUpperCase() + b.slice(1) + '="')
+        .replace(/ xmlns="[^"]*"/, '')
+        .replace(/<svg /, '<svg {...props} ')
+        .trim()
+        .split('\n')
+        .join('\n  ');
+      return 'export const ' + pascal + 'Icon = (props) => (\n  ' + src + '\n);\n';
+    },
+
+    download(filename, data, type) {
+      const url = URL.createObjectURL(data instanceof Blob ? data : new Blob([data], { type: type || 'image/svg+xml;charset=utf-8' }));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    },
+    downloadSprite(mono) {
+      const syms = this.icons
+        .map((i) => '  <symbol id="kape-' + i.name + '" viewBox="0 0 48 48">' + stripHints(iconBody(i, mono)).trim() + '</symbol>')
+        .join('\n');
+      this.download('kapehan-sprite' + (mono ? '-mono' : '') + '.svg', '<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">\n' + syms + '\n</svg>\n');
+      this.flash((mono ? 'Mono' : 'Colour') + ' sprite downloaded');
+    },
+    downloadOpenSvg() {
+      const i = this.openIcon;
+      this.download(i.name + (this.s.mono ? '-mono' : '') + '.svg', exportSvg(i, 48, this.s.mono));
+      this.flash(i.name + '.svg downloaded');
+    },
+    downloadOpenPng() {
+      const icon = this.openIcon;
+      const mono = this.s.mono;
+      const px = this.s.exportPx;
+      const url = URL.createObjectURL(new Blob([exportSvg(icon, 48, mono)], { type: 'image/svg+xml;charset=utf-8' }));
+      const img = new Image();
+      img.onload = () => {
+        const c = document.createElement('canvas');
+        c.width = px;
+        c.height = px;
+        c.getContext('2d').drawImage(img, 0, 0, px, px);
+        URL.revokeObjectURL(url);
+        c.toBlob((blob) => {
+          this.download(icon.name + '-' + px + (mono ? '-mono' : '') + '.png', blob);
+          this.flash(icon.name + '-' + px + '.png downloaded');
+        }, 'image/png');
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); this.flash('PNG export failed'); };
+      img.src = url;
+    },
+    copyOpenSvg() { const i = this.openIcon; this.copy(exportSvg(i, 48, this.s.mono), i.name + '.svg copied', 'open:svg'); },
+    copyOpenJsx() { const i = this.openIcon; this.copy(this.jsxSource(i), i.name + ' JSX copied', 'open:jsx'); },
+  },
+
+  template: `
+<div :data-theme="s.theme" :style="rootVars" style="min-height:100vh;background:var(--k-bg);color:var(--k-ink)">
+
+  <header style="background:#241A13;color:#FBF6EE;padding:0 32px">
+    <div style="max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;border-bottom:1px solid rgba(251,246,238,.12);gap:16px;flex-wrap:wrap">
+      <div class="display" style="display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:.02em">
+        <span style="display:grid;place-items:center;width:26px;height:26px"><k-icon name="coffee-bean" :size="24" mono /></span>
+        <span>Kapehan</span>
+        <span class="mono" :style="{ color: accent, borderColor: accentEdge }" style="font-weight:400;font-size:11px;border:1px solid;border-radius:999px;padding:2px 7px;letter-spacing:0">v0.2</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:22px;font-size:14px;color:rgba(251,246,238,.7);flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:7px" title="Accent colour">
+          <button v-for="a in ACCENTS" :key="a.hex" type="button" class="swatch" @click="s.accent = a.hex" :title="a.name" :aria-label="'Accent ' + a.name"
+            :style="{ background: a.hex, border: accent.toLowerCase() === a.hex.toLowerCase() ? '2px solid #FBF6EE' : '2px solid rgba(251,246,238,.18)', transform: accent.toLowerCase() === a.hex.toLowerCase() ? 'scale(1.18)' : 'none' }"
+            style="width:22px;height:22px;border-radius:999px;padding:0;cursor:pointer"></button>
+        </div>
+        <a href="#browse" class="nav">Icons</a>
+        <a href="#use" class="nav">Use</a>
+        <a href="#merch" class="nav">Print</a>
+        <button type="button" class="hov-accent" @click="toggleTheme" style="border:1px solid rgba(251,246,238,.3);border-radius:8px;padding:7px 13px;background:none;color:#FBF6EE;font:inherit;font-size:14px;cursor:pointer">{{ s.theme === 'dark' ? 'Light' : 'Dark' }}</button>
+        <a href="https://github.com/BaryoDev/Kapehan" class="ghost" style="border-radius:8px;padding:7px 13px">GitHub</a>
+      </div>
+    </div>
+
+    <div style="max-width:1120px;margin:0 auto;padding:72px 0 84px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:56px;align-items:center">
+      <div>
+        <p class="mono" :style="{ color: accent }" style="margin:0 0 18px;font-size:12px;letter-spacing:.16em;text-transform:uppercase">Filipino for coffee house</p>
+        <h1 class="display" style="margin:0;font-weight:800;font-size:68px;line-height:1.02;letter-spacing:-.025em;text-wrap:balance">Coffee icons,<br />drawn with a<br /><span :style="{ color: accent }">roaster's</span> palette.</h1>
+        <p style="margin:24px 0 0;max-width:46ch;font-size:17px;line-height:1.6;color:rgba(251,246,238,.72);text-wrap:pretty">Thirty-seven hand-drawn SVGs on one 48px grid, one shared palette, one baseline. Coffee from a barako demitasse to a palayok, plus the rest of the menu: matcha, milk tea, ube, salabat, halo-halo, sago-gulaman, pakwan. Full colour for marketing and merch, one-colour <span class="mono" :style="{ color: accent }" style="font-size:14px">currentColor</span> for UI. I just love coffee, that&rsquo;s all.</p>
+        <div style="display:flex;gap:12px;margin-top:32px;flex-wrap:wrap">
+          <a href="#browse" class="solid-cta" :style="{ background: accent }" style="border-radius:10px;padding:14px 22px;font-weight:600;font-size:15px">Browse the set</a>
+          <span class="mono" style="display:flex;align-items:center;gap:10px;background:rgba(251,246,238,.06);border:1px solid rgba(251,246,238,.14);border-radius:10px;padding:14px 18px;font-size:13px;color:rgba(251,246,238,.85)">npm i kapehan</span>
+        </div>
+        <p style="margin:22px 0 0;font-size:13.5px;color:rgba(251,246,238,.5)">MIT &middot; free for tees, stickers, apps, anything. A &#9749; link back is appreciated, never required.</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:14px;width:100%;max-width:440px;justify-self:end">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+          <div v-for="t in heroTiles" :key="t.name" class="hov-tile" :style="{ color: t.mono ? accent : 'inherit' }"
+            style="aspect-ratio:1;display:grid;place-items:center;background:rgba(251,246,238,.05);border:1px solid rgba(251,246,238,.1);border-radius:14px">
+            <k-icon :name="t.name" :size="48" :mono="t.mono" />
+          </div>
+        </div>
+        <p class="mono" style="margin:0;font-size:11px;letter-spacing:.08em;color:rgba(251,246,238,.5);text-align:right">top two rows: colour &middot; bottom row: the same drawings, one colour</p>
+      </div>
+    </div>
+  </header>
+
+  <section style="max-width:1120px;margin:0 auto;padding:84px 32px 0">
+    <p class="mono" :style="{ color: accent }" style="margin:0 0 10px;font-size:12px;letter-spacing:.16em;text-transform:uppercase">How the set is built</p>
+    <h2 class="display" style="margin:0 0 12px;font-weight:800;font-size:38px;letter-spacing:-.02em">One grid, one palette, two tracks</h2>
+    <p style="margin:0 0 40px;max-width:62ch;font-size:16.5px;line-height:1.65;color:var(--k-muted);text-wrap:pretty">Thirty-seven drinks, brewers and beans drawn to the same three rules, so a row of them reads as a family instead of a pile.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px">
+      <div style="background:var(--k-card);border:1px solid var(--k-line);border-radius:16px;padding:26px">
+        <h3 class="display" style="margin:0 0 10px;font-weight:600;font-size:19px">One palette, not ten</h3>
+        <p style="margin:0 0 20px;font-size:14.5px;line-height:1.6;color:var(--k-muted)">Vessels pick from four ceramics. Liquid always runs ink to crema, foam is always milk. Below: five hues that would break the rule, and the ramp every icon draws from instead.</p>
+        <p class="mono" style="margin:0 0 8px;font-size:11px;color:var(--k-muted2)">off-palette &middot; 5 unrelated hues</p>
+        <div style="display:flex;gap:6px;margin-bottom:18px">
+          <span v-for="h in offPalette" :key="h" :style="{ background: h }" style="width:34px;height:20px;border-radius:5px"></span>
+        </div>
+        <p class="mono" style="margin:0 0 8px;font-size:11px;color:var(--k-muted2)">on-palette &middot; one roasted ramp + 3 accents</p>
+        <div style="display:flex;gap:6px">
+          <span v-for="h in onPalette" :key="h" :style="{ background: h }" style="width:22px;height:20px;border-radius:5px"></span>
+        </div>
+      </div>
+
+      <div style="background:var(--k-card);border:1px solid var(--k-line);border-radius:16px;padding:26px">
+        <h3 class="display" style="margin:0 0 10px;font-weight:600;font-size:19px">One baseline</h3>
+        <p style="margin:0 0 20px;font-size:14.5px;line-height:1.6;color:var(--k-muted)">Everything rests on y=42 with matched optical padding, so a row of icons sits level instead of bobbing. Saucer lips, glass feet and pot bases all land on the same line.</p>
+        <div style="position:relative;height:96px;background:var(--k-bg);border-radius:11px;overflow:hidden">
+          <span :style="{ background: accent }" style="position:absolute;left:0;right:0;bottom:22px;height:1px"></span>
+          <span class="mono" :style="{ color: accent }" style="position:absolute;right:10px;bottom:26px;font-size:10px">y=42</span>
+          <div style="position:absolute;left:0;right:0;bottom:22px;display:flex;justify-content:center;gap:2px">
+            <span v-for="n in baselineIcons" :key="n" style="display:block"><k-icon :name="n" :size="44" /></span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--k-deep);color:#FBF6EE;border:1px solid var(--k-deep);border-radius:16px;padding:26px">
+        <h3 class="display" style="margin:0 0 10px;font-weight:600;font-size:19px">A real one-colour track</h3>
+        <p style="margin:0 0 20px;font-size:14.5px;line-height:1.6;color:rgba(251,246,238,.68)">Every icon also builds to a solid one-colour pictogram: same geometry, highlight layers dropped, every fill flattened to <span class="mono" :style="{ color: accent }" style="font-size:13px">currentColor</span>. It inherits your text colour and size, so it sits next to Lucide or Feather without a style break.</p>
+        <div style="display:flex;gap:14px;align-items:flex-end">
+          <div :style="{ color: accent }" style="display:grid;place-items:center;flex:1;aspect-ratio:1.5;border-radius:11px;background:rgba(251,246,238,.06)"><k-icon name="pour-over" :size="40" mono /></div>
+          <div style="display:grid;place-items:center;flex:1;aspect-ratio:1.5;border-radius:11px;background:#FBF6EE;color:#241A13"><k-icon name="french-press" :size="40" mono /></div>
+          <div style="display:grid;place-items:center;flex:1;aspect-ratio:1.5;border-radius:11px;background:rgba(251,246,238,.06);color:#C2593A"><k-icon name="moka-pot" :size="40" mono /></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="browse" style="max-width:1120px;margin:0 auto;padding:84px 32px 0">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:26px">
+      <div>
+        <h2 class="display" style="margin:0 0 8px;font-weight:800;font-size:38px;letter-spacing:-.02em">The set</h2>
+        <p style="margin:0;font-size:16px;color:var(--k-muted)">Click any icon to recolour and export it. Every name has aliases, so <span class="mono" style="font-size:14px">cup-cold</span> finds <span class="mono" style="font-size:14px">cold-brew</span>.</p>
+      </div>
+      <span class="mono" style="font-size:13px;color:var(--k-muted2)">{{ countLabel }}</span>
+    </div>
+
+    <div style="position:sticky;top:0;z-index:5;background:var(--k-bg);padding:14px 0;border-bottom:1px solid var(--k-line);display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+      <input class="search" type="text" placeholder="Search espresso, iced, palayok, tropical&hellip;" v-model="s.q"
+        style="flex:1;min-width:220px;background:var(--k-card);border:1px solid var(--k-line2);border-radius:10px;padding:11px 15px;font-size:15px;color:var(--k-ink);outline:none" />
+
+      <div style="display:flex;gap:4px;background:var(--k-track);border-radius:10px;padding:4px;flex-wrap:wrap">
+        <button v-for="c in catChips" :key="c" type="button" @click="s.cat = c" :style="pill(s.cat === c)"
+          style="border:0;border-radius:7px;padding:8px 13px;font-size:13.5px;font-weight:500;cursor:pointer">{{ c }}</button>
+      </div>
+
+      <div style="display:flex;gap:4px;background:var(--k-track);border-radius:10px;padding:4px">
+        <button v-for="z in SIZES" :key="z" type="button" class="mono" @click="s.size = z" :style="pill(s.size === z)"
+          style="border:0;border-radius:7px;padding:8px 11px;font-size:12.5px;cursor:pointer">{{ z }}px</button>
+      </div>
+
+      <button type="button" @click="s.mono = !s.mono" :style="{ background: s.mono ? 'var(--k-ink)' : 'var(--k-card)', color: s.mono ? 'var(--k-bg)' : 'var(--k-muted)' }"
+        style="border:1px solid var(--k-line2);border-radius:10px;padding:10px 15px;font-size:13.5px;font-weight:500;cursor:pointer">{{ s.mono ? '●' : '○' }} one colour</button>
+    </div>
+
+    <button type="button" class="hov-accent" @click="s.paletteOpen = !s.paletteOpen" :style="{ borderRadius: s.paletteOpen ? '14px 14px 0 0' : '14px' }"
+      style="margin-top:16px;width:100%;text-align:left;background:var(--k-card);border:1px solid var(--k-line);padding:16px 22px;cursor:pointer;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+      <span style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:220px">
+        <span class="display" style="font-weight:600;font-size:17px;color:var(--k-ink)">Make it yours</span>
+        <span style="font-size:14px;color:var(--k-muted)">Recolour any palette token and the whole set follows, downloads included.</span>
+      </span>
+      <span style="display:flex;gap:5px">
+        <span v-for="d in tokenDots" :key="d.token" :style="{ background: d.value }" style="width:18px;height:18px;border-radius:5px;box-shadow:inset 0 0 0 1px var(--k-line2)"></span>
+      </span>
+      <span :style="{ background: s.paletteOpen ? 'var(--k-ink)' : 'var(--k-card)', color: s.paletteOpen ? 'var(--k-bg)' : 'var(--k-muted)' }"
+        style="border:1px solid var(--k-line2);border-radius:10px;padding:10px 16px;font-size:13.5px;font-weight:500">{{ s.paletteOpen ? 'Close' : 'Recolour set' }}</span>
+    </button>
+
+    <div v-if="s.paletteOpen" style="background:var(--k-card);border:1px solid var(--k-line);border-top:0;border-radius:0 0 14px 14px;padding:20px 22px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:16px;flex-wrap:wrap">
+        <p style="margin:0;font-size:14.5px;color:var(--k-muted);max-width:66ch;text-wrap:pretty">Retune a token and every icon that uses it updates, including anything you copy or download. Fit the set to your own brand instead of ours.<span v-if="s.mono" style="display:block;margin-top:6px;color:var(--k-muted2)">Turn off <em>one colour</em> to see these take effect. Mono icons inherit a single colour from CSS.</span></p>
+        <button v-if="hasOverrides" type="button" class="mono hov-accent" @click="resetAll"
+          style="border:1px solid var(--k-line2);background:var(--k-bg);border-radius:8px;padding:7px 13px;font-size:11.5px;color:var(--k-muted);cursor:pointer">reset all</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(126px,1fr));gap:10px">
+        <label v-for="t in tokenControls" :key="t.token" class="hov-accent" style="display:flex;align-items:center;gap:9px;background:var(--k-bg);border:1px solid var(--k-line);border-radius:10px;padding:8px 10px;cursor:pointer">
+          <input type="color" :value="t.value" @input="setOverride(t.hex, $event.target.value)" style="width:26px;height:26px;padding:0;border:1px solid var(--k-line2);border-radius:6px;background:none;cursor:pointer" />
+          <span style="display:flex;flex-direction:column;gap:1px;min-width:0">
+            <span class="mono" style="font-size:11.5px;color:var(--k-ink);overflow:hidden;text-overflow:ellipsis">{{ t.token }}</span>
+            <span class="mono" style="font-size:10px;color:var(--k-muted2)">{{ t.value }}</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <div :style="{ color: monoInk }" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:14px;padding:24px 0 0">
+      <div v-for="ic in filtered" :key="ic.name" class="hov-card"
+        style="background:var(--k-card);border:1px solid var(--k-line);border-radius:14px;padding:16px 14px 12px;display:flex;flex-direction:column;gap:10px;align-items:center;transition:border-color .15s,box-shadow .15s">
+        <button type="button" @click="s.open = ic.name" title="Customize and export" style="height:74px;width:100%;display:grid;place-items:center;color:inherit;border:0;background:none;padding:0;cursor:pointer">
+          <k-icon :name="ic.name" :size="s.size" :mono="s.mono" />
+        </button>
+        <div style="text-align:center;width:100%">
+          <p class="mono" style="margin:0;font-size:12.5px;color:var(--k-ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ ic.name }}</p>
+          <p style="margin:3px 0 0;font-size:11px;color:var(--k-muted2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ ic.aliases.join(' · ') }}</p>
+        </div>
+        <div style="display:flex;gap:6px;width:100%">
+          <button type="button" class="mono hov-accent-ink" @click="copySvg(ic)" style="flex:1;border:1px solid var(--k-line2);background:var(--k-bg);border-radius:8px;padding:7px 0;font-size:11px;color:var(--k-muted);cursor:pointer">{{ s.copied === ic.name + ':svg' ? 'copied ✓' : 'SVG' }}</button>
+          <button type="button" class="mono hov-accent-ink" @click="copyJsx(ic)" style="flex:1;border:1px solid var(--k-line2);background:var(--k-bg);border-radius:8px;padding:7px 0;font-size:11px;color:var(--k-muted);cursor:pointer">{{ s.copied === ic.name + ':jsx' ? 'copied ✓' : 'JSX' }}</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;background:var(--k-card);border:1px solid var(--k-line);border-radius:16px;padding:22px 26px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div>
+        <h3 class="display" style="margin:0 0 4px;font-weight:600;font-size:18px">Take the whole set</h3>
+        <p style="margin:0;font-size:14.5px;color:var(--k-muted)">One sprite sheet of <span class="mono" style="font-size:13.5px">&lt;symbol&gt;</span> definitions. Reference any icon with <span class="mono" style="font-size:13.5px">&lt;use href="#kape-latte"&gt;</span>. Your recolouring is baked in.</p>
+        <p class="mono" :style="{ color: accent }" style="margin:8px 0 0;font-size:11.5px">{{ spriteStatus }}</p>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button type="button" @click="downloadSprite(false)" :style="{ background: accent }" style="border:0;border-radius:10px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;color:#FBF6EE">Colour sprite</button>
+        <button type="button" class="hov-accent" @click="downloadSprite(true)" style="border:1px solid var(--k-line2);border-radius:10px;padding:12px 18px;font-size:14px;font-weight:500;cursor:pointer;background:var(--k-bg);color:var(--k-ink)">Mono sprite</button>
+      </div>
+    </div>
+
+    <div v-if="!filtered.length" style="padding:56px 0;text-align:center;color:var(--k-muted2)">
+      <p style="margin:0;font-size:16px">Nothing brewing under that name.</p>
+      <p class="mono" style="margin:6px 0 0;font-size:13px">try: bean &middot; iced &middot; v60 &middot; palayok &middot; pakwan &middot; gulaman</p>
+    </div>
+  </section>
+
+  <section id="use" style="max-width:1120px;margin:0 auto;padding:84px 32px 0">
+    <h2 class="display" style="margin:0 0 12px;font-weight:800;font-size:38px;letter-spacing:-.02em">Use it</h2>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px">
+      <button type="button" class="mono hov-outline" @click="copyNpm" style="display:flex;align-items:center;gap:12px;background:var(--k-deep);color:#EFE6D8;border:0;border-radius:10px;padding:12px 16px;font-size:13px;cursor:pointer;text-align:left"><span :style="{ color: accent }">$</span><span>npm i kapehan</span><span style="font-size:11px;color:rgba(239,230,216,.55)">{{ s.copied === 'npm' ? 'copied ✓' : 'copy' }}</span></button>
+      <button type="button" class="mono hov-outline" @click="copyCdn" style="display:flex;align-items:center;gap:12px;background:var(--k-deep);color:#EFE6D8;border:0;border-radius:10px;padding:12px 16px;font-size:13px;cursor:pointer;text-align:left"><span :style="{ color: accent }">cdn</span><span>unpkg.com/kapehan/kape-icon.js</span><span style="font-size:11px;color:rgba(239,230,216,.55)">{{ s.copied === 'cdn' ? 'copied ✓' : 'copy' }}</span></button>
+    </div>
+    <p style="margin:0 0 40px;max-width:62ch;font-size:16.5px;line-height:1.65;color:var(--k-muted)">Two folders ship: <span class="mono" style="font-size:15px">icons/</span> for the full-colour artwork and <span class="mono" style="font-size:15px">icons/mono/</span> for one-colour UI. Same names, same grid.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:20px">
+      <div style="background:var(--k-deep);border-radius:16px;padding:24px 26px;color:#FBF6EE">
+        <p class="mono" :style="{ color: accent }" style="margin:0 0 14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Plain img &middot; full colour</p>
+        <pre class="mono" style="margin:0;font-size:13px;line-height:1.75;color:#EFE6D8;white-space:pre-wrap">&lt;img src="kapehan/icons/latte.svg"
+     width="48" height="48" alt="latte" /&gt;</pre>
+      </div>
+      <div style="background:var(--k-deep);border-radius:16px;padding:24px 26px;color:#FBF6EE">
+        <p class="mono" :style="{ color: accent }" style="margin:0 0 14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Inline &middot; inherits colour</p>
+        <pre class="mono" style="margin:0;font-size:13px;line-height:1.75;color:#EFE6D8;white-space:pre-wrap">&lt;span style="color:#6F4E37"&gt;
+  &lt;!-- paste icons/mono/espresso.svg --&gt;
+&lt;/span&gt;</pre>
+      </div>
+      <div style="background:var(--k-deep);border-radius:16px;padding:24px 26px;color:#FBF6EE">
+        <p class="mono" :style="{ color: accent }" style="margin:0 0 14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Web component &middot; no build</p>
+        <pre class="mono" style="margin:0;font-size:13px;line-height:1.75;color:#EFE6D8;white-space:pre-wrap">&lt;script type="module"
+  src="https://unpkg.com/kapehan/kape-icon.js"&gt;&lt;/script&gt;
+
+&lt;kape-icon name="barako" size="32"&gt;&lt;/kape-icon&gt;
+&lt;kape-icon name="cup-cold" mono&gt;&lt;/kape-icon&gt;</pre>
+      </div>
+      <div style="background:var(--k-deep);border-radius:16px;padding:24px 26px;color:#FBF6EE">
+        <p class="mono" :style="{ color: accent }" style="margin:0 0 14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase">React &middot; SVGR or paste</p>
+        <pre class="mono" style="margin:0;font-size:13px;line-height:1.75;color:#EFE6D8;white-space:pre-wrap">import Latte from "kapehan/icons/mono/latte.svg";
+
+&lt;Latte cl&#97;ssName="size-5 text-[#6F4E37]" /&gt;</pre>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;background:var(--k-card);border:1px solid var(--k-line);border-radius:16px;padding:26px 28px;display:flex;flex-wrap:wrap;gap:26px;align-items:center">
+      <div style="display:flex;gap:10px">
+        <div v-for="z in SIZES" :key="z" style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <div style="height:52px;display:grid;place-items:end;color:#5A3520"><k-icon name="barako" :size="z" /></div>
+          <span class="mono" style="font-size:10.5px;color:var(--k-muted2)">{{ z }}px</span>
+        </div>
+      </div>
+      <p style="margin:0;flex:1;min-width:280px;font-size:15.5px;line-height:1.65;color:var(--k-muted);text-wrap:pretty">Flat fills and no hairline strokes mean the colour set still reads at 16px, where outline-heavy illustration turns to mush. Below 20px, or anywhere you only get one colour (favicons, embroidery, a stamp), switch to the mono track: same silhouette, no interior detail to lose.</p>
+    </div>
+  </section>
+
+  <section id="merch" style="max-width:1120px;margin:0 auto;padding:84px 32px 0">
+    <h2 class="display" style="margin:0 0 12px;font-weight:800;font-size:38px;letter-spacing:-.02em">Print it on things</h2>
+    <p style="margin:0 0 40px;max-width:62ch;font-size:16.5px;line-height:1.65;color:var(--k-muted)">MIT covers the artwork, so tees and stickers are fair game. Sell them if you like. Six ready compositions, with the specs a printer will ask for.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px">
+      <div>
+        <div style="aspect-ratio:4/5;background:#241A13;border-radius:16px;display:grid;place-items:center;padding:32px">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:14px;color:#F5E9D6">
+            <div style="display:grid;place-items:center"><k-icon name="barako" :size="88" /></div>
+            <p class="display" :style="{ color: accent }" style="margin:0;font-weight:800;font-size:26px;letter-spacing:.22em">KAPEHAN</p>
+            <p class="mono" style="margin:-6px 0 0;font-size:10.5px;letter-spacing:.2em;color:rgba(245,233,214,.6)">KAPE PARA SA LAHAT</p>
+          </div>
+        </div>
+        <p class="mono" style="margin:14px 0 0;font-size:11.5px;line-height:1.7;color:var(--k-muted2)">Tee &middot; chest print<br />120mm wide &middot; 2 colours on dark</p>
+      </div>
+
+      <div>
+        <div style="aspect-ratio:4/5;background:#F1E8DA;border-radius:16px;display:grid;place-items:center;padding:26px">
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+            <div v-for="n in stickerIcons" :key="n" style="aspect-ratio:1;background:#FFFDF9;border-radius:16px;display:grid;place-items:center;box-shadow:0 4px 14px -8px rgba(36,26,19,.45)"><k-icon :name="n" :size="48" /></div>
+          </div>
+        </div>
+        <p class="mono" style="margin:14px 0 0;font-size:11.5px;line-height:1.7;color:var(--k-muted2)">Sticker sheet &middot; die-cut<br />55mm square &middot; full colour, 3mm bleed</p>
+      </div>
+
+      <div>
+        <div style="aspect-ratio:4/5;background:#D6A164;border-radius:16px;display:grid;place-items:center;padding:30px">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;color:#5A3520">
+            <div v-for="k in beanTile" :key="k" style="display:grid;place-items:center"><k-icon name="coffee-bean" :size="34" mono /></div>
+          </div>
+        </div>
+        <p class="mono" style="margin:14px 0 0;font-size:11.5px;line-height:1.7;color:var(--k-muted2)">Tote &middot; canvas<br />Repeat pattern &middot; 1-colour screen print</p>
+      </div>
+
+      <div>
+        <div style="aspect-ratio:4/5;background:#E7DCCC;border-radius:16px;display:grid;place-items:center;padding:26px">
+          <div style="width:100%;aspect-ratio:1.75;background:#FBF6EE;border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 6px 18px -10px rgba(36,26,19,.5)">
+            <div style="display:flex;align-items:center;gap:9px">
+              <div style="display:grid;place-items:center"><k-icon name="barako" :size="30" /></div>
+              <span class="display" style="font-weight:800;font-size:15px;letter-spacing:.14em;color:#241A13">KAPEHAN</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <span class="display" style="font-weight:600;font-size:14px;color:#241A13">Arnel Robles</span>
+              <span class="mono" style="font-size:9.5px;color:#7A6A5C">Roaster &amp; developer</span>
+              <span class="mono" :style="{ color: accent }" style="font-size:9.5px">baryo.dev</span>
+            </div>
+          </div>
+        </div>
+        <p class="mono" style="margin:14px 0 0;font-size:11.5px;line-height:1.7;color:var(--k-muted2)">Calling card &middot; 90 &times; 50mm<br />2 colours on uncoated stock</p>
+      </div>
+
+      <div>
+        <div style="aspect-ratio:4/5;background:#F1E8DA;border-radius:16px;display:grid;place-items:center;padding:26px">
+          <div style="height:100%;aspect-ratio:.52;background:#241A13;border-radius:10px;padding:16px 12px 20px;display:flex;flex-direction:column;align-items:center;justify-content:space-between">
+            <span style="width:26px;height:5px;border-radius:999px;background:rgba(251,246,238,.28)"></span>
+            <div :style="{ color: accent }" style="display:grid;place-items:center"><k-icon name="coffee-cup" :size="64" mono /></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+              <span class="display" style="font-weight:800;font-size:22px;letter-spacing:.18em;color:#F5E9D6">OPEN</span>
+              <span class="mono" style="font-size:8.5px;letter-spacing:.14em;color:rgba(245,233,214,.55)">7AM &ndash; 8PM</span>
+            </div>
+          </div>
+        </div>
+        <p class="mono" style="margin:14px 0 0;font-size:11.5px;line-height:1.7;color:var(--k-muted2)">Door sign &middot; 100 &times; 200mm<br />Double-sided, reversible to CLOSED</p>
+      </div>
+
+      <div>
+        <div style="aspect-ratio:4/5;background:#3A2A1E;border-radius:16px;padding:26px 24px;display:flex;flex-direction:column;gap:14px;justify-content:center">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:10px;border-bottom:1px solid rgba(251,246,238,.16)">
+            <span class="display" :style="{ color: accent }" style="font-weight:800;font-size:15px;letter-spacing:.16em">MENU</span>
+            <div style="display:grid;place-items:center;color:rgba(245,233,214,.75)"><k-icon name="coffee-bean" :size="26" mono /></div>
+          </div>
+          <div v-for="r in menuRows" :key="r.name" style="display:flex;align-items:center;gap:10px">
+            <div style="display:grid;place-items:center;flex:0 0 auto"><k-icon :name="r.name" :size="26" /></div>
+            <span style="flex:1;font-size:13px;color:#F5E9D6">{{ r.label }}</span>
+            <span class="mono" style="font-size:12px;color:rgba(245,233,214,.6)">&#8369;{{ r.price }}</span>
+          </div>
+        </div>
+        <p class="mono" style="margin:14px 0 0;font-size:11.5px;line-height:1.7;color:var(--k-muted2)">Menu board &middot; A2<br />Colour icons on dark, 24pt minimum</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:1120px;margin:0 auto;padding:84px 32px 96px">
+    <div style="background:var(--k-card);border:1px solid var(--k-line);border-radius:20px;padding:44px 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:48px;align-items:start">
+      <div>
+        <h2 class="display" style="margin:0 0 14px;font-weight:800;font-size:32px;letter-spacing:-.02em">MIT. No strings.</h2>
+        <p style="margin:0 0 16px;font-size:16px;line-height:1.7;color:var(--k-muted);text-wrap:pretty">Use the icons in personal and commercial work, ship them in products, print them on shirts, sell those shirts. No attribution required, no permission needed, no email.</p>
+        <p style="margin:0 0 16px;font-size:16px;line-height:1.7;color:var(--k-muted);text-wrap:pretty">If they earned a spot in something you're proud of, a star on GitHub, a link back, or a share with someone who ships is always welcome. None of it is required. &#9749;</p>
+        <p style="margin:0;font-size:14px;line-height:1.7;color:var(--k-muted2)">Not covered: the BaryoDev and Kapehan names and logos. Those stay &copy; BaryoDev.</p>
+      </div>
+      <div>
+        <p class="mono" :style="{ color: accent }" style="margin:0 0 10px;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Optional credit line</p>
+        <div style="background:var(--k-deep);border-radius:14px;padding:20px 22px">
+          <pre class="mono" style="margin:0;font-size:12.5px;line-height:1.8;color:#EFE6D8;white-space:pre-wrap">Coffee icons by &lt;a
+  href="https://github.com/BaryoDev/Kapehan"&gt;
+  Kapehan&lt;/a&gt; &middot; MIT</pre>
+        </div>
+        <button type="button" class="hov-accent" @click="copyCredit" style="margin-top:12px;width:100%;border:1px solid var(--k-line2);background:var(--k-bg);border-radius:10px;padding:11px 0;font-size:14px;font-weight:500;color:var(--k-ink);cursor:pointer">{{ s.copied === 'credit' ? 'Copied ✓' : 'Copy credit line' }}</button>
+      </div>
+    </div>
+
+    <p class="mono" style="margin:40px 0 0;text-align:center;font-size:12px;color:var(--k-muted2)">Kapehan v0.2 &middot; {{ icons.length }} icons &middot; <a href="https://github.com/BaryoDev/Kapehan" :style="{ color: accent, borderBottomColor: accentEdge }">github.com/BaryoDev/Kapehan</a></p>
+  </section>
+
+  <div v-if="openIcon" @click.self="s.open = null" style="position:fixed;inset:0;z-index:40;background:rgba(36,26,19,.55);display:grid;place-items:center;padding:28px">
+    <div role="dialog" aria-modal="true" :aria-label="'Customize ' + openIcon.name" style="width:100%;max-width:880px;max-height:100%;overflow:auto;background:var(--k-bg);border-radius:20px;box-shadow:0 32px 80px -24px rgba(36,26,19,.7)">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 28px;border-bottom:1px solid var(--k-line)">
+        <div>
+          <p class="display" style="margin:0;font-weight:800;font-size:24px;letter-spacing:-.015em">{{ openIcon.name }}</p>
+          <p class="mono" style="margin:4px 0 0;font-size:12px;color:var(--k-muted2)">{{ openIcon.category }} &middot; {{ openIcon.aliases.join(' · ') }}</p>
+        </div>
+        <button type="button" class="hov-accent-ink" @click="s.open = null" aria-label="Close" style="border:1px solid var(--k-line2);background:var(--k-card);border-radius:10px;width:38px;height:38px;font-size:17px;color:var(--k-muted);cursor:pointer">&#10005;</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:0">
+        <div style="padding:32px;display:flex;flex-direction:column;gap:18px;align-items:center;justify-content:center;border-right:1px solid var(--k-line)">
+          <div :style="{ background: s.sheetDark ? '#241A13' : '#FBF6EE', color: s.mono ? monoInk : '#5A3520' }" style="width:100%;aspect-ratio:1;max-width:260px;border-radius:16px;display:grid;place-items:center">
+            <k-icon :name="openIcon.name" :size="168" :mono="s.mono" />
+          </div>
+          <button type="button" class="mono hov-accent" @click="s.sheetDark = !s.sheetDark" style="border:1px solid var(--k-line2);background:var(--k-card);border-radius:8px;padding:7px 14px;font-size:11.5px;color:var(--k-muted);cursor:pointer">{{ s.sheetDark ? 'on dark' : 'on light' }}</button>
+        </div>
+
+        <div style="padding:28px 28px 32px;display:flex;flex-direction:column;gap:24px">
+          <div v-if="!s.mono">
+            <p class="mono" :style="{ color: accent }" style="margin:0 0 12px;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Colours in this icon</p>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <label v-for="t in openTokens" :key="t.hex" class="hov-accent" style="display:flex;align-items:center;gap:11px;background:var(--k-card);border:1px solid var(--k-line);border-radius:10px;padding:9px 12px;cursor:pointer">
+                <input type="color" :value="s.overrides[t.hex] || t.hex" @input="setOverride(t.hex, $event.target.value)" style="width:28px;height:28px;padding:0;border:1px solid var(--k-line2);border-radius:6px;background:none;cursor:pointer" />
+                <span class="mono" style="flex:1;font-size:12.5px;color:var(--k-ink)">{{ t.token }}</span>
+                <span class="mono" style="font-size:11px;color:var(--k-muted2)">{{ s.overrides[t.hex] || t.hex }}</span>
+              </label>
+            </div>
+            <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--k-muted2);text-wrap:pretty">Tokens are shared, so a change here follows the token across the whole set.</p>
+          </div>
+
+          <div v-else>
+            <p class="mono" :style="{ color: accent }" style="margin:0 0 12px;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Preview colour</p>
+            <label class="hov-accent" style="display:flex;align-items:center;gap:11px;background:var(--k-card);border:1px solid var(--k-line);border-radius:10px;padding:9px 12px;cursor:pointer">
+              <input type="color" :value="monoInk" @input="setMonoColor($event.target.value)" style="width:28px;height:28px;padding:0;border:1px solid var(--k-line2);border-radius:6px;background:none;cursor:pointer" />
+              <span class="mono" style="flex:1;font-size:12.5px;color:var(--k-ink)">currentColor</span>
+              <span class="mono" style="font-size:11px;color:var(--k-muted2)">{{ monoInk }}</span>
+            </label>
+            <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--k-muted2);text-wrap:pretty">Mono icons carry no colour of their own. They inherit it from CSS. This picker only changes the preview, and the file you download keeps <span class="mono" style="font-size:12px">currentColor</span> so it follows your text. Switch off <em>one colour</em> to edit real palette tokens.</p>
+          </div>
+
+          <div>
+            <p class="mono" :style="{ color: accent }" style="margin:0 0 10px;font-size:11px;letter-spacing:.14em;text-transform:uppercase">PNG size</p>
+            <div style="display:flex;gap:4px;background:var(--k-track);border-radius:10px;padding:4px;width:fit-content">
+              <button v-for="px in exportSizes" :key="px" type="button" class="mono" @click="s.exportPx = px" :style="pill(s.exportPx === px)" style="border:0;border-radius:7px;padding:8px 13px;font-size:12.5px;cursor:pointer">{{ px }}px</button>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+            <button type="button" @click="downloadOpenSvg" :style="{ background: accent }" style="border:0;border-radius:10px;padding:12px 0;font-size:14px;font-weight:600;cursor:pointer;color:#FBF6EE">Download SVG</button>
+            <button type="button" @click="downloadOpenPng" style="border:1px solid var(--k-ink);border-radius:10px;padding:12px 0;font-size:14px;font-weight:600;cursor:pointer;background:var(--k-ink);color:var(--k-bg)">Download PNG</button>
+            <button type="button" class="hov-accent" @click="copyOpenSvg" style="border:1px solid var(--k-line2);background:var(--k-card);border-radius:10px;padding:11px 0;font-size:13.5px;color:var(--k-ink);cursor:pointer">{{ s.copied === 'open:svg' ? 'Copied ✓' : 'Copy SVG' }}</button>
+            <button type="button" class="hov-accent" @click="copyOpenJsx" style="border:1px solid var(--k-line2);background:var(--k-card);border-radius:10px;padding:11px 0;font-size:13.5px;color:var(--k-ink);cursor:pointer">{{ s.copied === 'open:jsx' ? 'Copied ✓' : 'Copy JSX' }}</button>
+          </div>
+
+          <button type="button" class="mono hov-ink" @click="resetOpen" style="align-self:flex-start;border:0;background:none;padding:0;font-size:11.5px;color:var(--k-muted2);cursor:pointer;text-decoration:underline">reset this icon's colours</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div v-if="s.toast" class="mono" style="position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--k-ink);color:var(--k-bg);border-radius:999px;padding:12px 22px;font-size:13px;box-shadow:0 12px 32px -12px rgba(36,26,19,.6);animation:k-pop .18s ease-out;z-index:50">{{ s.toast }}</div>
+</div>
+`,
+};
+
+createApp(App).mount('#app');
+</script>
+</body>
+</html>
