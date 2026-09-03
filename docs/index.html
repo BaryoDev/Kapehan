@@ -9,6 +9,15 @@
 <meta property="og:title" content="Kapehan: free coffee icons" />
 <meta property="og:description" content="37 hand-drawn coffee, tea and tropical drink SVG icons. Full colour for merch, one colour for UI. MIT." />
 <meta property="og:url" content="https://baryodev.github.io/Kapehan/" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://baryodev.github.io/Kapehan/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Kapehan: 37 hand-drawn coffee, tea and tropical drink icons" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Kapehan: free coffee icons" />
+<meta name="twitter:description" content="37 hand-drawn coffee, tea and tropical drink SVG icons. Full colour for merch, one colour for UI. MIT." />
+<meta name="twitter:image" content="https://baryodev.github.io/Kapehan/og.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -17,18 +26,56 @@
   [data-theme="dark"] { --k-bg:#17100B; --k-card:#1F1611; --k-line:#33271E; --k-line2:#403126; --k-track:#2A1F18; --k-ink:#FBF6EE; --k-muted:#C9B9A6; --k-muted2:#A08F7D; --k-deep:#0F0A07; --k-code:#EFE6D8; color-scheme: dark; }
   body { margin: 0; background: var(--k-bg); color: var(--k-ink); font-family: "Instrument Sans", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
   * { box-sizing: border-box; }
-  a { color: #BE7008; text-decoration: none; border-bottom: 1px solid rgba(190,112,8,.35); }
+  a { color: #8A5106; text-decoration: none; border-bottom: 1px solid rgba(138,81,6,.35); }
+  /* The dark theme keeps the lighter amber: it already measures 4.94:1 on #17100B,
+     and #8A5106 would fail there. Contrast is per background, not per palette. */
+  [data-theme="dark"] a { color: #BE7008; border-bottom-color: rgba(190,112,8,.35); }
   a:hover { color: var(--k-ink); border-bottom-color: var(--k-ink); }
   ::selection { background: #E5901A; color: #241A13; }
   [data-theme="dark"] input[type="text"] { color: #FBF6EE; }
   input { font-family: inherit; }
   @keyframes k-pop { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
+  /* Keyboard users had no way to see where they were. --k-accent is set on the root
+     element by the app, so the ring follows the chosen accent; the literal is the
+     fallback for the moment before Vue mounts. */
+  :focus-visible { outline: 2px solid var(--k-accent, #C2593A); outline-offset: 2px; border-radius: 6px; }
+  :focus:not(:focus-visible) { outline: none; }
+
+  /* 6. Respect reduced motion. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    [style*="animation:k-pop"], [style*="animation: k-pop"] { animation: none !important; }
+  }
+
+  /* 1. The nav wrapped into three ragged rows on a phone. The accent swatches are a
+     nice-to-have, so they are the thing that goes; the count of them made the row
+     unwrappable at any sensible gap. */
+  @media (max-width: 640px) {
+    .accent-swatches { display: none !important; }
+    .site-nav { gap: 14px !important; font-size: 13px !important; }
+    .site-nav a, .site-nav button { padding: 6px 10px !important; }
+    .site-header { padding: 0 18px !important; }
+    /* The bar is flex-wrap with a hard height:64px. Once it wraps to two rows the
+       second row overflows that height and lands on top of the hero eyebrow. */
+    .site-topbar { height: auto !important; min-height: 64px; padding: 12px 0 14px !important; }
+    .site-hero { padding: 48px 0 56px !important; gap: 36px !important; }
+    section { padding-left: 18px !important; padding-right: 18px !important; }
+  }
+
   /* The design set these two families inline on nearly every node. As classes they stay
      out of the way of the :style bindings that carry the live accent colour. */
   .mono { font-family: 'JetBrains Mono', monospace; }
   .display { font-family: 'Bricolage Grotesque', sans-serif; }
-  pre { font-variant-ligatures: none; }
+  /* white-space:pre-wrap wraps at whitespace, but the code samples contain long
+     unbreakable tokens (href="https://github.com/BaryoDev/Kapehan">) that pre-wrap
+     cannot split, and those were pushing the whole page 21px wider than a phone. */
+  pre { font-variant-ligatures: none; overflow-wrap: anywhere; overflow-x: auto; }
 
   /* The design's style-hover and style-focus attributes, as real CSS. */
   .swatch { transition: transform .12s ease-out; }
@@ -51,7 +98,25 @@
 <body>
 <div id="app"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/vue@3.5.13/dist/vue.global.prod.js"></script>
+<!-- #app is empty until Vue mounts, so a blocked CDN, a failed SRI check or JS off
+     left a blank page for both people and crawlers. This is styled to read as the
+     page rather than as an apology. -->
+<noscript>
+  <div style="min-height:100vh;background:#241A13;color:#FBF6EE;padding:72px 32px;font-family:'Instrument Sans',system-ui,sans-serif">
+    <div style="max-width:1120px;margin:0 auto">
+      <p style="margin:0 0 18px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#C2593A">Filipino for coffee house</p>
+      <h1 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(36px, 8vw, 68px);line-height:1.02;letter-spacing:-.025em">Coffee icons,<br />drawn with a<br /><span style="color:#C2593A">roaster's</span> palette.</h1>
+      <p style="margin:24px 0 0;max-width:46ch;font-size:17px;line-height:1.6;color:rgba(251,246,238,.72)">Thirty-seven hand-drawn SVGs on one 48px grid, one shared palette, one baseline. Full colour for marketing and merch, one-colour currentColor for UI. MIT, free for tees, stickers, apps, anything.</p>
+      <p style="margin:28px 0 0;font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(251,246,238,.85)">npm i kapehan</p>
+      <p style="margin:20px 0 0;font-size:15px"><a href="https://github.com/BaryoDev/Kapehan" style="color:#E5901A;border-bottom:1px solid rgba(229,144,26,.4)">Browse the set on GitHub</a></p>
+      <p style="margin:28px 0 0;font-size:13.5px;color:rgba(251,246,238,.5)">The interactive icon browser needs JavaScript. Everything above works without it.</p>
+    </div>
+  </div>
+</noscript>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@3.5.13/dist/vue.global.prod.js"
+        integrity="sha384-W/1Fp/LgAYO/oTn9Gs+PbeWuMuq1eQCnUMPCeg8POmMYchhzxctjEqtbiCIxDOON"
+        crossorigin="anonymous"></script>
 <script type="module">
 import { icons, categories, palette, monoOf, stripHints, wrap } from './kapehan-icons.js';
 
@@ -181,12 +246,6 @@ const App = {
       immediate: true,
       handler(v) {
         document.body.dataset.theme = v;
-        // giscus renders in a cross-origin iframe, so the only way to retheme it is
-        // to ask it. Without this a light comment box sits on the dark page.
-        const frame = document.querySelector('iframe.giscus-frame');
-        if (frame && frame.contentWindow) {
-          frame.contentWindow.postMessage({ giscus: { setConfig: { theme: v } } }, 'https://giscus.app');
-        }
       },
     },
   },
@@ -194,7 +253,6 @@ const App = {
   mounted() {
     window.addEventListener('keydown', this.onKey);
     this.fetchStars();
-    this.mountGiscus();
   },
   unmounted() { window.removeEventListener('keydown', this.onKey); clearTimeout(this._t); },
 
@@ -220,29 +278,6 @@ const App = {
       } catch (e) {}
     },
 
-    mountGiscus() {
-      const mount = this.$refs.giscus;
-      if (!mount || mount.firstChild) return;
-      const el = document.createElement('script');
-      el.src = 'https://giscus.app/client.js';
-      el.async = true;
-      el.crossOrigin = 'anonymous';
-      Object.assign(el.dataset, {
-        repo: 'BaryoDev/Kapehan',
-        repoId: 'R_kgDOTZLo7w',
-        category: 'Announcements',
-        categoryId: 'DIC_kwDOTZLo784DEyp-',
-        mapping: 'specific',
-        term: 'Kapehan icon set',
-        strict: '0',
-        reactionsEnabled: '1',
-        emitMetadata: '0',
-        inputPosition: 'bottom',
-        theme: this.s.theme,
-        lang: 'en',
-      });
-      mount.appendChild(el);
-    },
     pill(on) { return on ? { background: 'var(--k-ink)', color: 'var(--k-bg)' } : { background: 'transparent', color: 'var(--k-muted)' }; },
 
     toggleTheme() {
@@ -340,15 +375,15 @@ const App = {
   template: `
 <div :data-theme="s.theme" :style="rootVars" style="min-height:100vh;background:var(--k-bg);color:var(--k-ink)">
 
-  <header style="background:#241A13;color:#FBF6EE;padding:0 32px">
-    <div style="max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;border-bottom:1px solid rgba(251,246,238,.12);gap:16px;flex-wrap:wrap">
+  <header class="site-header" style="background:#241A13;color:#FBF6EE;padding:0 32px">
+    <div class="site-topbar" style="max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;border-bottom:1px solid rgba(251,246,238,.12);gap:16px;flex-wrap:wrap">
       <div class="display" style="display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:.02em">
         <span style="display:grid;place-items:center;width:26px;height:26px"><k-icon name="coffee-bean" :size="24" mono /></span>
         <span>Kapehan</span>
         <span class="mono" :style="{ color: accent, borderColor: accentEdge }" style="font-weight:400;font-size:11px;border:1px solid;border-radius:999px;padding:2px 7px;letter-spacing:0">v0.2</span>
       </div>
-      <div style="display:flex;align-items:center;gap:22px;font-size:14px;color:rgba(251,246,238,.7);flex-wrap:wrap">
-        <div style="display:flex;align-items:center;gap:7px" title="Accent colour">
+      <div class="site-nav" style="display:flex;align-items:center;gap:22px;font-size:14px;color:rgba(251,246,238,.7);flex-wrap:wrap">
+        <div class="accent-swatches" style="display:flex;align-items:center;gap:7px" title="Accent colour">
           <button v-for="a in ACCENTS" :key="a.hex" type="button" class="swatch" @click="s.accent = a.hex" :title="a.name" :aria-label="'Accent ' + a.name"
             :style="{ background: a.hex, border: accent.toLowerCase() === a.hex.toLowerCase() ? '2px solid #FBF6EE' : '2px solid rgba(251,246,238,.18)', transform: accent.toLowerCase() === a.hex.toLowerCase() ? 'scale(1.18)' : 'none' }"
             style="width:22px;height:22px;border-radius:999px;padding:0;cursor:pointer"></button>
@@ -364,10 +399,10 @@ const App = {
       </div>
     </div>
 
-    <div style="max-width:1120px;margin:0 auto;padding:72px 0 84px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:56px;align-items:center">
+    <div class="site-hero" style="max-width:1120px;margin:0 auto;padding:72px 0 84px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:56px;align-items:center">
       <div>
         <p class="mono" :style="{ color: accent }" style="margin:0 0 18px;font-size:12px;letter-spacing:.16em;text-transform:uppercase">Filipino for coffee house</p>
-        <h1 class="display" style="margin:0;font-weight:800;font-size:68px;line-height:1.02;letter-spacing:-.025em;text-wrap:balance">Coffee icons,<br />drawn with a<br /><span :style="{ color: accent }">roaster's</span> palette.</h1>
+        <h1 class="display" style="margin:0;font-weight:800;font-size:clamp(36px, 8vw, 68px);line-height:1.02;letter-spacing:-.025em;text-wrap:balance">Coffee icons,<br />drawn with a<br /><span :style="{ color: accent }">roaster's</span> palette.</h1>
         <p style="margin:24px 0 0;max-width:46ch;font-size:17px;line-height:1.6;color:rgba(251,246,238,.72);text-wrap:pretty">Thirty-seven hand-drawn SVGs on one 48px grid, one shared palette, one baseline. Coffee from a barako demitasse to a palayok, plus the rest of the menu: matcha, milk tea, ube, salabat, halo-halo, sago-gulaman, pakwan. Full colour for marketing and merch, one-colour <span class="mono" :style="{ color: accent }" style="font-size:14px">currentColor</span> for UI. I just love coffee, that&rsquo;s all.</p>
         <div style="display:flex;gap:12px;margin-top:32px;flex-wrap:wrap">
           <a href="#browse" class="solid-cta" :style="{ background: accent }" style="border-radius:10px;padding:14px 22px;font-weight:600;font-size:15px">Browse the set</a>
@@ -377,7 +412,7 @@ const App = {
       </div>
 
       <div style="display:flex;flex-direction:column;gap:14px;width:100%;max-width:440px;justify-self:end">
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,96px),1fr));gap:14px">
           <div v-for="t in heroTiles" :key="t.name" class="hov-tile" :style="{ color: t.mono ? accent : 'inherit' }"
             style="aspect-ratio:1;display:grid;place-items:center;background:rgba(251,246,238,.05);border:1px solid rgba(251,246,238,.1);border-radius:14px">
             <k-icon :name="t.name" :size="48" :mono="t.mono" />
@@ -390,7 +425,7 @@ const App = {
 
   <section style="max-width:1120px;margin:0 auto;padding:84px 32px 0">
     <p class="mono" :style="{ color: accent }" style="margin:0 0 10px;font-size:12px;letter-spacing:.16em;text-transform:uppercase">How the set is built</p>
-    <h2 class="display" style="margin:0 0 12px;font-weight:800;font-size:38px;letter-spacing:-.02em">One grid, one palette, two tracks</h2>
+    <h2 class="display" style="margin:0 0 12px;font-weight:800;font-size:clamp(27px, 5vw, 38px);letter-spacing:-.02em">One grid, one palette, two tracks</h2>
     <p style="margin:0 0 40px;max-width:62ch;font-size:16.5px;line-height:1.65;color:var(--k-muted);text-wrap:pretty">Thirty-seven drinks, brewers and beans drawn to the same three rules, so a row of them reads as a family instead of a pile.</p>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px">
@@ -434,14 +469,14 @@ const App = {
   <section id="browse" style="max-width:1120px;margin:0 auto;padding:84px 32px 0">
     <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:26px">
       <div>
-        <h2 class="display" style="margin:0 0 8px;font-weight:800;font-size:38px;letter-spacing:-.02em">The set</h2>
+        <h2 class="display" style="margin:0 0 8px;font-weight:800;font-size:clamp(27px, 5vw, 38px);letter-spacing:-.02em">The set</h2>
         <p style="margin:0;font-size:16px;color:var(--k-muted)">Click any icon to recolour and export it. Every name has aliases, so <span class="mono" style="font-size:14px">cup-cold</span> finds <span class="mono" style="font-size:14px">cold-brew</span>.</p>
       </div>
       <span class="mono" style="font-size:13px;color:var(--k-muted2)">{{ countLabel }}</span>
     </div>
 
     <div style="position:sticky;top:0;z-index:5;background:var(--k-bg);padding:14px 0;border-bottom:1px solid var(--k-line);display:flex;gap:14px;align-items:center;flex-wrap:wrap">
-      <input class="search" type="text" placeholder="Search espresso, iced, palayok, tropical&hellip;" v-model="s.q"
+      <input class="search" type="text" aria-label="Search icons by name, alias or tag" placeholder="Search espresso, iced, palayok, tropical&hellip;" v-model="s.q"
         style="flex:1;min-width:220px;background:var(--k-card);border:1px solid var(--k-line2);border-radius:10px;padding:11px 15px;font-size:15px;color:var(--k-ink);outline:none" />
 
       <div style="display:flex;gap:4px;background:var(--k-track);border-radius:10px;padding:4px;flex-wrap:wrap">
@@ -524,7 +559,7 @@ const App = {
   </section>
 
   <section id="use" style="max-width:1120px;margin:0 auto;padding:84px 32px 0">
-    <h2 class="display" style="margin:0 0 12px;font-weight:800;font-size:38px;letter-spacing:-.02em">Use it</h2>
+    <h2 class="display" style="margin:0 0 12px;font-weight:800;font-size:clamp(27px, 5vw, 38px);letter-spacing:-.02em">Use it</h2>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px">
       <button type="button" class="mono hov-outline" @click="copyNpm" style="display:flex;align-items:center;gap:12px;background:var(--k-deep);color:#EFE6D8;border:0;border-radius:10px;padding:12px 16px;font-size:13px;cursor:pointer;text-align:left"><span :style="{ color: accent }">$</span><span>npm i kapehan</span><span style="font-size:11px;color:rgba(239,230,216,.55)">{{ s.copied === 'npm' ? 'copied ✓' : 'copy' }}</span></button>
       <button type="button" class="mono hov-outline" @click="copyCdn" style="display:flex;align-items:center;gap:12px;background:var(--k-deep);color:#EFE6D8;border:0;border-radius:10px;padding:12px 16px;font-size:13px;cursor:pointer;text-align:left"><span :style="{ color: accent }">cdn</span><span>unpkg.com/kapehan/kape-icon.js</span><span style="font-size:11px;color:rgba(239,230,216,.55)">{{ s.copied === 'cdn' ? 'copied ✓' : 'copy' }}</span></button>
@@ -571,7 +606,7 @@ const App = {
   </section>
 
   <section id="merch" style="max-width:1120px;margin:0 auto;padding:84px 32px 0">
-    <h2 class="display" style="margin:0 0 12px;font-weight:800;font-size:38px;letter-spacing:-.02em">Print it on things</h2>
+    <h2 class="display" style="margin:0 0 12px;font-weight:800;font-size:clamp(27px, 5vw, 38px);letter-spacing:-.02em">Print it on things</h2>
     <p style="margin:0 0 40px;max-width:62ch;font-size:16.5px;line-height:1.65;color:var(--k-muted)">MIT covers the artwork, so tees and stickers are fair game. Sell them if you like. Six ready compositions, with the specs a printer will ask for.</p>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px">
@@ -579,7 +614,7 @@ const App = {
         <div style="aspect-ratio:4/5;background:#241A13;border-radius:16px;display:grid;place-items:center;padding:32px">
           <div style="display:flex;flex-direction:column;align-items:center;gap:14px;color:#F5E9D6">
             <div style="display:grid;place-items:center"><k-icon name="barako" :size="88" /></div>
-            <p class="display" :style="{ color: accent }" style="margin:0;font-weight:800;font-size:26px;letter-spacing:.22em">KAPEHAN</p>
+            <p class="display" :style="{ color: accent }" style="margin:0;font-weight:800;font-size:clamp(20px, 3.6vw, 26px);letter-spacing:.22em">KAPEHAN</p>
             <p class="mono" style="margin:-6px 0 0;font-size:10.5px;letter-spacing:.2em;color:rgba(245,233,214,.6)">KAPE PARA SA LAHAT</p>
           </div>
         </div>
@@ -588,7 +623,7 @@ const App = {
 
       <div>
         <div style="aspect-ratio:4/5;background:#F1E8DA;border-radius:16px;display:grid;place-items:center;padding:26px">
-          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,96px),1fr));gap:14px">
             <div v-for="n in stickerIcons" :key="n" style="aspect-ratio:1;background:#FFFDF9;border-radius:16px;display:grid;place-items:center;box-shadow:0 4px 14px -8px rgba(36,26,19,.45)"><k-icon :name="n" :size="48" /></div>
           </div>
         </div>
@@ -597,7 +632,7 @@ const App = {
 
       <div>
         <div style="aspect-ratio:4/5;background:#D6A164;border-radius:16px;display:grid;place-items:center;padding:30px">
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;color:#5A3520">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,52px),1fr));gap:12px;color:#5A3520">
             <div v-for="k in beanTile" :key="k" style="display:grid;place-items:center"><k-icon name="coffee-bean" :size="34" mono /></div>
           </div>
         </div>
@@ -655,7 +690,7 @@ const App = {
   <section style="max-width:1120px;margin:0 auto;padding:84px 32px 96px">
     <div style="background:var(--k-card);border:1px solid var(--k-line);border-radius:20px;padding:44px 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:48px;align-items:start">
       <div>
-        <h2 class="display" style="margin:0 0 14px;font-weight:800;font-size:32px;letter-spacing:-.02em">MIT. No strings.</h2>
+        <h2 class="display" style="margin:0 0 14px;font-weight:800;font-size:clamp(24px, 4.4vw, 32px);letter-spacing:-.02em">MIT. No strings.</h2>
         <p style="margin:0 0 16px;font-size:16px;line-height:1.7;color:var(--k-muted);text-wrap:pretty">Use the icons in personal and commercial work, ship them in products, print them on shirts, sell those shirts. No attribution required, no permission needed, no email.</p>
         <p style="margin:0 0 16px;font-size:16px;line-height:1.7;color:var(--k-muted);text-wrap:pretty">If they earned a spot in something you're proud of, a star on GitHub, a link back, or a share with someone who ships is always welcome. None of it is required. &#9749;</p>
         <p style="margin:0;font-size:14px;line-height:1.7;color:var(--k-muted2)">Not covered: the BaryoDev and Kapehan names and logos. Those stay &copy; BaryoDev.</p>
@@ -671,14 +706,6 @@ const App = {
       </div>
     </div>
 
-    <div style="margin-top:48px;padding-top:40px;border-top:1px solid var(--k-line)">
-      <h2 class="display" style="margin:0 0 10px;font-weight:800;font-size:26px;letter-spacing:-.02em">Drew something with these?</h2>
-      <p style="margin:0 0 24px;max-width:62ch;font-size:16px;line-height:1.65;color:var(--k-muted);text-wrap:pretty">Show it here, ask for an icon that is missing, or just react. Comments run on GitHub Discussions, so they live in the repo rather than somewhere I could take away.</p>
-      <!-- giscus injects a cross-origin iframe in here. Vue created this node once and
-           has no bindings on it, so it never patches over what giscus put inside. -->
-      <div ref="giscus"></div>
-    </div>
-
     <div style="margin-top:44px;display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap">
       <a href="https://github.com/BaryoDev/Kapehan" class="mono" :style="{ color: accent, borderBottomColor: accentEdge }" style="font-size:13px">GitHub<span v-if="stars !== null"> &#9733; {{ stars }}</span></a>
       <a href="https://www.facebook.com/baryodev" class="mono" :style="{ color: accent, borderBottomColor: accentEdge }" style="font-size:13px" rel="noopener">Facebook</a>
@@ -692,7 +719,7 @@ const App = {
     <div role="dialog" aria-modal="true" :aria-label="'Customize ' + openIcon.name" style="width:100%;max-width:880px;max-height:100%;overflow:auto;background:var(--k-bg);border-radius:20px;box-shadow:0 32px 80px -24px rgba(36,26,19,.7)">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 28px;border-bottom:1px solid var(--k-line)">
         <div>
-          <p class="display" style="margin:0;font-weight:800;font-size:24px;letter-spacing:-.015em">{{ openIcon.name }}</p>
+          <p class="display" style="margin:0;font-weight:800;font-size:clamp(19px, 3.4vw, 24px);letter-spacing:-.015em">{{ openIcon.name }}</p>
           <p class="mono" style="margin:4px 0 0;font-size:12px;color:var(--k-muted2)">{{ openIcon.category }} &middot; {{ openIcon.aliases.join(' · ') }}</p>
         </div>
         <button type="button" class="hov-accent-ink" @click="s.open = null" aria-label="Close" style="border:1px solid var(--k-line2);background:var(--k-card);border-radius:10px;width:38px;height:38px;font-size:17px;color:var(--k-muted);cursor:pointer">&#10005;</button>
@@ -736,7 +763,7 @@ const App = {
             </div>
           </div>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr));gap:9px">
             <button type="button" @click="downloadOpenSvg" :style="{ background: accent }" style="border:0;border-radius:10px;padding:12px 0;font-size:14px;font-weight:600;cursor:pointer;color:#FBF6EE">Download SVG</button>
             <button type="button" @click="downloadOpenPng" style="border:1px solid var(--k-ink);border-radius:10px;padding:12px 0;font-size:14px;font-weight:600;cursor:pointer;background:var(--k-ink);color:var(--k-bg)">Download PNG</button>
             <button type="button" class="hov-accent" @click="copyOpenSvg" style="border:1px solid var(--k-line2);background:var(--k-card);border-radius:10px;padding:11px 0;font-size:13.5px;color:var(--k-ink);cursor:pointer">{{ s.copied === 'open:svg' ? 'Copied ✓' : 'Copy SVG' }}</button>

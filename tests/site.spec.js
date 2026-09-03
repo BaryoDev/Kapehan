@@ -133,3 +133,130 @@ test('a failing star API leaves the header intact', async ({ page }) => {
   // No count, no broken star glyph, just the link.
   await expect(gh).not.toHaveText(/\u2605/);
 });
+
+/**
+ * Accessibility and robustness. The page had zero media queries, zero focus styling,
+ * a link colour failing AA, and an empty #app that rendered nothing without JS.
+ */
+test.describe('responsive', () => {
+  for (const [label, width, height] of [['phone', 390, 844], ['tablet', 768, 1024], ['desktop', 1280, 900]]) {
+    test(`no horizontal overflow at ${width}px (${label})`, async ({ page }) => {
+      await page.setViewportSize({ width, height });
+      await page.goto('/docs/');
+      await expect(page.locator('.hov-card')).toHaveCount(37);
+      const m = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, inner: window.innerWidth }));
+      expect(m.scroll, `document is ${m.scroll}px wide in a ${m.inner}px window`).toBe(m.inner);
+    });
+  }
+
+  test('the h1 shrinks on a phone instead of staying 68px', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/docs/');
+    const px = await page.locator('h1').evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
+    expect(px).toBeGreaterThanOrEqual(36);
+    expect(px).toBeLessThan(50);
+  });
+
+  test('the accent swatches step out of the nav on a phone', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/docs/');
+    await expect(page.locator('.accent-swatches')).toBeHidden();
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await expect(page.locator('.accent-swatches')).toBeVisible();
+  });
+});
+
+test('the search box has an accessible name, not just a placeholder', async ({ page }) => {
+  await page.goto('/docs/');
+  await expect(page.getByRole('textbox', { name: /search icons/i })).toBeVisible();
+});
+
+test('keyboard focus draws a visible ring', async ({ page }) => {
+  await page.goto('/docs/');
+  await expect(page.locator('.hov-card')).toHaveCount(37);
+  const tile = page.locator('.hov-card button[title="Customize and export"]').first();
+  await tile.focus();
+  const ring = await tile.evaluate((el) => {
+    const cs = getComputedStyle(el);
+    return { width: cs.outlineWidth, style: cs.outlineStyle, offset: cs.outlineOffset };
+  });
+  expect(ring.style).not.toBe('none');
+  expect(parseFloat(ring.width)).toBeGreaterThanOrEqual(2);
+});
+
+test('the social card and the CDN hash are declared', async ({ page }) => {
+  await page.goto('/docs/');
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', 'https://baryodev.github.io/Kapehan/og.png');
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image');
+  // An SRI hash that does not match would block Vue and leave the noscript page, so
+  // the fact that the app mounts at all is the real assertion here.
+  await expect(page.locator('script[src*="vue.global.prod.js"]')).toHaveAttribute('integrity', /^sha384-/);
+});
+
+/**
+ * The export paths. Nothing covered these before, and they are the whole point of the
+ * page: a visitor comes to take an icon away.
+ */
+test.describe('downloads', () => {
+  test('an icon exports as SVG with the current recolouring baked in', async ({ page }) => {
+    await page.locator('.hov-card button[title="Customize and export"]').first().click();
+    const dialog = page.getByRole('dialog');
+    await dialog.locator('input[type=color]').first().evaluate((el) => {
+      el.value = '#00ff00';
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      dialog.getByRole('button', { name: 'Download SVG' }).click(),
+    ]);
+    expect(download.suggestedFilename()).toMatch(/\.svg$/);
+
+    const stream = await download.createReadStream();
+    const body = await new Promise((res) => {
+      let d = '';
+      stream.on('data', (c) => (d += c));
+      stream.on('end', () => res(d));
+    });
+    expect(body).toContain('<svg');
+    expect(body).toContain('#00ff00');
+  });
+
+  test('an icon exports as PNG at the chosen size', async ({ page }) => {
+    await page.locator('.hov-card button[title="Customize and export"]').first().click();
+    const dialog = page.getByRole('dialog');
+    await dialog.getByRole('button', { name: '256px' }).click();
+
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      dialog.getByRole('button', { name: 'Download PNG' }).click(),
+    ]);
+    expect(download.suggestedFilename()).toMatch(/-256\.png$/);
+  });
+
+  test('both sprite sheets download and carry every icon', async ({ page }) => {
+    for (const [label, name] of [['Colour sprite', 'kapehan-sprite.svg'], ['Mono sprite', 'kapehan-sprite-mono.svg']]) {
+      const [download] = await Promise.all([
+        page.waitForEvent('download'),
+        page.getByRole('button', { name: label }).click(),
+      ]);
+      expect(download.suggestedFilename()).toBe(name);
+
+      const stream = await download.createReadStream();
+      const body = await new Promise((res) => {
+        let d = '';
+        stream.on('data', (c) => (d += c));
+        stream.on('end', () => res(d));
+      });
+      expect((body.match(/<symbol /g) || []).length).toBe(37);
+      expect(body).toContain('id="kape-barako"');
+    }
+  });
+
+  test('the SVG and JSX copy buttons report back', async ({ page, context }) => {
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+    const card = page.locator('.hov-card').first();
+    await card.getByRole('button', { name: 'SVG' }).click();
+    await expect(card.getByRole('button', { name: /copied/ })).toBeVisible();
+  });
+});

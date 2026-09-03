@@ -42,7 +42,8 @@
     "test": "node scripts/check.mjs",
     "test:browser": "playwright test",
     "serve": "node scripts/serve.mjs",
-    "prepublishOnly": "npm test"
+    "prepublishOnly": "npm test",
+    "og": "node scripts/og.mjs"
   },
   "engines": {
     "node": ">=18"
