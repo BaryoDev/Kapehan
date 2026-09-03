@@ -120,7 +120,7 @@ const KIcon = {
 
 const App = {
   components: { KIcon },
-  data: () => ({ s, ACCENTS, SIZES, icons, categories, exportSizes: [256, 512, 1024] }),
+  data: () => ({ s, ACCENTS, SIZES, icons, categories, exportSizes: [256, 512, 1024], stars: null }),
 
   computed: {
     accent() { return this.s.accent; },
@@ -177,14 +177,72 @@ const App = {
   },
 
   watch: {
-    's.theme': { immediate: true, handler(v) { document.body.dataset.theme = v; } },
+    's.theme': {
+      immediate: true,
+      handler(v) {
+        document.body.dataset.theme = v;
+        // giscus renders in a cross-origin iframe, so the only way to retheme it is
+        // to ask it. Without this a light comment box sits on the dark page.
+        const frame = document.querySelector('iframe.giscus-frame');
+        if (frame && frame.contentWindow) {
+          frame.contentWindow.postMessage({ giscus: { setConfig: { theme: v } } }, 'https://giscus.app');
+        }
+      },
+    },
   },
 
-  mounted() { window.addEventListener('keydown', this.onKey); },
+  mounted() {
+    window.addEventListener('keydown', this.onKey);
+    this.fetchStars();
+    this.mountGiscus();
+  },
   unmounted() { window.removeEventListener('keydown', this.onKey); clearTimeout(this._t); },
 
   methods: {
     onKey(e) { if (e.key === 'Escape' && this.s.open) this.s.open = null; },
+
+    // A social widget must never be able to break the page, so every failure here is
+    // silent and the button just stays a plain link. Cached for an hour because the
+    // unauthenticated GitHub API allows 60 calls an hour per visitor IP.
+    async fetchStars() {
+      const KEY = 'kapehan.stars';
+      try {
+        const hit = JSON.parse(localStorage.getItem(KEY) || 'null');
+        if (hit && Date.now() - hit.at < 3600e3) { this.stars = hit.n; return; }
+      } catch (e) {}
+      try {
+        const res = await fetch('https://api.github.com/repos/BaryoDev/Kapehan');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (typeof data.stargazers_count !== 'number') return;
+        this.stars = data.stargazers_count;
+        try { localStorage.setItem(KEY, JSON.stringify({ n: this.stars, at: Date.now() })); } catch (e) {}
+      } catch (e) {}
+    },
+
+    mountGiscus() {
+      const mount = this.$refs.giscus;
+      if (!mount || mount.firstChild) return;
+      const el = document.createElement('script');
+      el.src = 'https://giscus.app/client.js';
+      el.async = true;
+      el.crossOrigin = 'anonymous';
+      Object.assign(el.dataset, {
+        repo: 'BaryoDev/Kapehan',
+        repoId: 'R_kgDOTZLo7w',
+        category: 'Announcements',
+        categoryId: 'DIC_kwDOTZLo784DEyp-',
+        mapping: 'specific',
+        term: 'Kapehan icon set',
+        strict: '0',
+        reactionsEnabled: '1',
+        emitMetadata: '0',
+        inputPosition: 'bottom',
+        theme: this.s.theme,
+        lang: 'en',
+      });
+      mount.appendChild(el);
+    },
     pill(on) { return on ? { background: 'var(--k-ink)', color: 'var(--k-bg)' } : { background: 'transparent', color: 'var(--k-muted)' }; },
 
     toggleTheme() {
@@ -299,7 +357,10 @@ const App = {
         <a href="#use" class="nav">Use</a>
         <a href="#merch" class="nav">Print</a>
         <button type="button" class="hov-accent" @click="toggleTheme" style="border:1px solid rgba(251,246,238,.3);border-radius:8px;padding:7px 13px;background:none;color:#FBF6EE;font:inherit;font-size:14px;cursor:pointer">{{ s.theme === 'dark' ? 'Light' : 'Dark' }}</button>
-        <a href="https://github.com/BaryoDev/Kapehan" class="ghost" style="border-radius:8px;padding:7px 13px">GitHub</a>
+        <a href="https://github.com/BaryoDev/Kapehan" class="ghost" style="border-radius:8px;padding:7px 13px;display:inline-flex;align-items:center;gap:8px">
+          <span>GitHub</span>
+          <span v-if="stars !== null" class="mono" :style="{ color: accent }" style="font-size:12px">&#9733; {{ stars }}</span>
+        </a>
       </div>
     </div>
 
@@ -610,7 +671,21 @@ const App = {
       </div>
     </div>
 
-    <p class="mono" style="margin:40px 0 0;text-align:center;font-size:12px;color:var(--k-muted2)">Kapehan v0.2 &middot; {{ icons.length }} icons &middot; <a href="https://github.com/BaryoDev/Kapehan" :style="{ color: accent, borderBottomColor: accentEdge }">github.com/BaryoDev/Kapehan</a></p>
+    <div style="margin-top:48px;padding-top:40px;border-top:1px solid var(--k-line)">
+      <h2 class="display" style="margin:0 0 10px;font-weight:800;font-size:26px;letter-spacing:-.02em">Drew something with these?</h2>
+      <p style="margin:0 0 24px;max-width:62ch;font-size:16px;line-height:1.65;color:var(--k-muted);text-wrap:pretty">Show it here, ask for an icon that is missing, or just react. Comments run on GitHub Discussions, so they live in the repo rather than somewhere I could take away.</p>
+      <!-- giscus injects a cross-origin iframe in here. Vue created this node once and
+           has no bindings on it, so it never patches over what giscus put inside. -->
+      <div ref="giscus"></div>
+    </div>
+
+    <div style="margin-top:44px;display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap">
+      <a href="https://github.com/BaryoDev/Kapehan" class="mono" :style="{ color: accent, borderBottomColor: accentEdge }" style="font-size:13px">GitHub<span v-if="stars !== null"> &#9733; {{ stars }}</span></a>
+      <a href="https://www.facebook.com/baryodev" class="mono" :style="{ color: accent, borderBottomColor: accentEdge }" style="font-size:13px" rel="noopener">Facebook</a>
+      <a href="https://baryodev.medium.com/" class="mono" :style="{ color: accent, borderBottomColor: accentEdge }" style="font-size:13px" rel="noopener">Medium</a>
+    </div>
+
+    <p class="mono" style="margin:18px 0 0;text-align:center;font-size:12px;color:var(--k-muted2)">Kapehan v0.2 &middot; {{ icons.length }} icons &middot; MIT</p>
   </section>
 
   <div v-if="openIcon" @click.self="s.open = null" style="position:fixed;inset:0;z-index:40;background:rgba(36,26,19,.55);display:grid;place-items:center;padding:28px">

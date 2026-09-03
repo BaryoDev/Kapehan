@@ -103,9 +103,33 @@ test('the theme toggle survives a reload', async ({ page }) => {
 
 test('the page loads with no console errors', async ({ page }) => {
   const errors = [];
-  page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
-  page.on('pageerror', (e) => errors.push(String(e)));
+  // giscus is a third party we do not control, and it logs loudly until the GitHub App
+  // is installed on the repo. Everything else still fails the test.
+  const ours = (t) => !/giscus/i.test(t);
+  page.on('console', (m) => m.type() === 'error' && ours(m.text()) && errors.push(m.text()));
+  page.on('pageerror', (e) => ours(String(e)) && errors.push(String(e)));
   await page.goto('/docs/');
   await expect(page.locator('.hov-card')).toHaveCount(37);
   expect(errors).toEqual([]);
+});
+
+test('the star count and the social links are present', async ({ page }) => {
+  // The star button must degrade to a plain link rather than break the header, so the
+  // link is asserted unconditionally and the count only when the API answered.
+  const gh = page.locator('header a[href="https://github.com/BaryoDev/Kapehan"]');
+  await expect(gh).toBeVisible();
+  await expect(page.locator('a[href="https://www.facebook.com/baryodev"]')).toBeVisible();
+  await expect(page.locator('a[href="https://baryodev.medium.com/"]')).toBeVisible();
+});
+
+test('a failing star API leaves the header intact', async ({ page }) => {
+  await page.route('https://api.github.com/**', (r) => r.fulfill({ status: 403, body: '{}' }));
+  await page.addInitScript(() => { try { localStorage.removeItem('kapehan.stars'); } catch (e) {} });
+  await page.goto('/docs/');
+  await expect(page.locator('.hov-card')).toHaveCount(37);
+  const gh = page.locator('header a[href="https://github.com/BaryoDev/Kapehan"]');
+  await expect(gh).toBeVisible();
+  await expect(gh).toHaveText(/GitHub/);
+  // No count, no broken star glyph, just the link.
+  await expect(gh).not.toHaveText(/\u2605/);
 });
