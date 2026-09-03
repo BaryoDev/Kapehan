@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48" fill="none" role="img" aria-label="kettle">
+  <path d="M33 26c5.4 0 5.4 9 0 9" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M16 26.4c-5.2 0-7.4-4.4-7.4-9.4" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M15 24h18v10a5 5 0 0 1-5 5h-8a5 5 0 0 1-5-5z" fill="currentColor"/>
+  <path d="M17 20h14l2 4H15z" fill="currentColor"/>
+  <rect x="20.4" y="16.6" width="7.2" height="3.6" rx="1.4" fill="currentColor"/>
+  <circle cx="24" cy="14.4" r="1.8" fill="currentColor"/>
+</svg>

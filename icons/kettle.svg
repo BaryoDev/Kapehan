@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" role="img" aria-label="kettle">
+  <ellipse cx="24" cy="41" rx="11" ry="2.4" fill="#DBC5A4"/>
+  <path d="M33 26c5.4 0 5.4 9 0 9" stroke="#241A13" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M16 26.4c-5.2 0-7.4-4.4-7.4-9.4" stroke="#A7B3BA" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M15 24h18v10a5 5 0 0 1-5 5h-8a5 5 0 0 1-5-5z" fill="#CBDCE3"/>
+  <path d="M17 20h14l2 4H15z" fill="#A7B3BA"/>
+  <rect x="20.4" y="16.6" width="7.2" height="3.6" rx="1.4" fill="#77878F"/>
+  <circle cx="24" cy="14.4" r="1.8" fill="#241A13"/>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" role="img" aria-label="avocado shake">
+  <ellipse cx="24" cy="42" rx="10.5" ry="2.2" fill="#DBC5A4"/>
+  <path d="M15.6 16h16.8l-1.7 22.4a3 3 0 0 1-3 2.8h-7.4a3 3 0 0 1-3-2.8z" fill="#CBDCE3"/>
+  <path d="M16.3 20.6h15.4l-1.3 17.8a2.7 2.7 0 0 1-2.7 2.5h-7.4a2.7 2.7 0 0 1-2.7-2.5z" fill="#7A9B5A"/>
+  <ellipse cx="24" cy="20.4" rx="7.7" ry="1.9" fill="#F5E9D6"/>
+  <ellipse cx="32" cy="14.2" rx="4.2" ry="5.4" fill="#6E8B5E"/>
+  <ellipse cx="32" cy="14.2" rx="2.9" ry="4.1" fill="#C4D49A"/>
+  <ellipse cx="32" cy="14.6" rx="1.9" ry="2.1" fill="#8C5A32"/>
+  <path d="M17.6 8 20.8 18.6" stroke="#C2593A" stroke-width="3.2" stroke-linecap="round"/>
+</svg>

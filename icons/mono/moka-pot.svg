@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48" fill="none" role="img" aria-label="moka pot">
+  <path d="M30 28.6c4.6 0 4.6 6.6 0 6.6" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+  <path d="M30.2 17.4 34.4 15.6 35.2 18.2 31 20z" fill="currentColor"/>
+  <path d="M18 27h12l1.6 10.4a2.4 2.4 0 0 1-2.4 2.6H18.8a2.4 2.4 0 0 1-2.4-2.6z" fill="currentColor"/>
+  <path d="M18.6 15.2h10.8l-1.4 9.4h-8z" fill="currentColor"/>
+  <rect x="18" y="12" width="12" height="3.4" rx="1.2" fill="currentColor"/>
+  <circle cx="24" cy="9.8" r="2" fill="currentColor"/>
+</svg>

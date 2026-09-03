@@ -1,10 +1,60 @@
 {
   "name": "kapehan",
-  "version": "0.1.0",
-  "description": "Free, hand-drawn coffee SVG icons (espresso, americano, latte, macchiato, and friends).",
-  "keywords": ["icons", "svg", "coffee", "espresso", "latte", "lucide", "ui"],
+  "version": "0.2.0",
+  "description": "Free, hand-drawn SVG icons for coffee shops: 37 coffee, tea and tropical drinks plus brewers and beans, in full colour and currentColor mono.",
+  "keywords": [
+    "icons",
+    "svg",
+    "coffee",
+    "espresso",
+    "latte",
+    "barako",
+    "matcha",
+    "milk-tea",
+    "boba",
+    "halo-halo",
+    "tropical",
+    "lucide",
+    "ui",
+    "web-component"
+  ],
   "author": "BaryoDev",
   "license": "MIT",
-  "files": ["icons", "LICENSE", "README.md"],
-  "homepage": "https://github.com/BaryoDev/Kapehan"
+  "type": "module",
+  "exports": {
+    ".": "./kape-icon.js",
+    "./kape-icon.js": "./kape-icon.js",
+    "./kapehan-icons.js": "./kapehan-icons.js",
+    "./icons/*": "./icons/*"
+  },
+  "files": [
+    "icons",
+    "kape-icon.js",
+    "kapehan-icons.js",
+    "LICENSE",
+    "README.md"
+  ],
+  "sideEffects": [
+    "./kape-icon.js"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/check.mjs",
+    "prepublishOnly": "npm test"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "homepage": "https://baryodev.github.io/Kapehan/",
+  "bugs": {
+    "url": "https://github.com/BaryoDev/Kapehan/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BaryoDev/Kapehan.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
 }
