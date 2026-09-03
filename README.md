@@ -186,9 +186,14 @@ instead of a pile.
 component and the site's data are generated from it:
 
 ```bash
-npm run build   # regenerate icons/, icons/mono/, kape-icon.js, docs/
-npm test        # fails if anything on disk drifted from the source
+npm run build         # regenerate icons/, icons/mono/, kape-icon.js, docs/
+npm test              # fails if anything on disk drifted from the source
+npm run test:browser  # drives the component and the site in a real browser
+npm run serve         # then open http://localhost:4173/docs/
 ```
+
+`npm test` needs nothing installed. `npm run test:browser` needs `npm ci` and
+`npx playwright install chromium` first. CI runs both on every pull request.
 
 Draw on the 48&times;48 grid, rest it on `y=42`, use only palette tokens, and mark any pure-highlight
 layer with `data-mono="drop"` so the mono build stays legible. If flattening would cost the icon its

@@ -40,6 +40,8 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "node scripts/check.mjs",
+    "test:browser": "playwright test",
+    "serve": "node scripts/serve.mjs",
     "prepublishOnly": "npm test"
   },
   "engines": {
@@ -56,5 +58,8 @@
   "publishConfig": {
     "access": "public",
     "provenance": true
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
   }
 }
