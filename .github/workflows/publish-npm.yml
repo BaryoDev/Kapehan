@@ -1,12 +1,18 @@
 name: Publish to npm
 
 on:
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       version:
-        description: "Version to publish (e.g., 0.1.0)"
+        description: "Version to publish (e.g. 0.2.0)"
         required: true
         type: string
+
+permissions:
+  contents: read
+  id-token: write
 
 jobs:
   publish:
@@ -27,9 +33,27 @@ jobs:
           fi
 
       - name: Set version
-        run: npm version ${{ github.event.inputs.version }} --no-git-tag-version --allow-same-version
+        if: github.event_name == 'workflow_dispatch'
+        run: npm version "${{ inputs.version }}" --no-git-tag-version --allow-same-version
+
+      # A release tagged v0.3.0 that publishes 0.2.0 is the failure this catches.
+      # npm accepts it, and the tag and the registry then disagree forever.
+      - name: Tag must match package.json
+        if: github.event_name == 'release'
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg="$(node -p "require('./package.json').version")"
+          if [ "$tag" != "$pkg" ]; then
+            echo "::error::tag $GITHUB_REF_NAME does not match package.json version $pkg"
+            exit 1
+          fi
+
+      # prepublishOnly runs this too, but failing here keeps a broken build
+      # out of the publish step rather than half way through it.
+      - name: Check generated files are in sync
+        run: npm test
 
       - name: Publish
-        run: npm publish --access public
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

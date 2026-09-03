@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+
+      # icons/, icons/mono/, kape-icon.js and docs/ are generated and committed.
+      # This fails the PR if any of them drifted from kapehan-icons.js.
+      - name: Check generated files are in sync
+        run: npm test
+
+      - name: Check the package contents
+        run: npm pack --dry-run
