@@ -53,6 +53,22 @@
  *      through InvokeVoidAsync, which discards the handle the function returns, so every
  *      mount of the palette left another window keydown listener bound to a dead
  *      component.
+ *
+ * Every rewrite above is gated in check(), and the gates are on what the rewrite produced
+ * rather than on a word it leaves lying in the file. Three of them were the latter and all
+ * three passed clean over the exact bug they were written for: the null guard could be
+ * deleted as long as the `?` stayed, @oncancel could be bound to a handler that reported
+ * nothing, and a receiver renamed by one assignment was no longer interop at all. A gate
+ * that greps for its own vocabulary teaches the next person the area is covered.
+ *
+ * What is still not verified here, and cannot be from this repo: the browser side of the
+ * bindHotkey handle. DotNet.createJSObjectReference marshalling that object back so
+ * IJSObjectReference.InvokeVoidAsync("dispose") reaches it, and removeEventListener then
+ * unbinding the listener, need a Blazor host and a DOM, and there is neither. What is
+ * checked instead is the seam the two sides meet at: the method name C# invokes is compared
+ * against the methods the handle in kapehan.interop.js actually carries, and a function that
+ * binds a listener must be released through a method that removes one. Kapehan.Components.Tests
+ * runs the managed half for real.
  */
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -514,17 +530,41 @@ window.kapehan.focus = focus;
 `;
 
 /**
- * The interop functions that hand back a disposable handle, read out of the file this
- * generator writes rather than listed twice. A caller that ignores one of these leaks a
- * listener, which is what rewrite 6 and the gate in check() are both about.
+ * The handles ${INTEROP} hands back, read out of the file this generator writes rather than
+ * described twice: for each exporting function, the methods on the object it returns, what
+ * each of those methods does, and whether the function bound a listener that one of them
+ * has to remove.
+ *
+ * All three matter to a caller. A caller that ignores the handle leaks a listener. A caller
+ * that holds it and invokes a name this object does not carry leaks the same listener while
+ * looking like it released it, and nothing in C# can see that, because the name is a string.
  */
-function handleReturning(src = INTEROP_JS) {
-  const out = new Set();
+function interopHandles(src = INTEROP_JS) {
+  const out = new Map();
   for (const m of src.matchAll(/export function (\w+)\s*\([^)]*\)\s*\{/g)) {
-    const body = src.slice(m.index, blockEnd(src, m.index + m[0].length));
-    if (body.includes('DotNet.createJSObjectReference')) out.add(m[1]);
+    const fnBody = src.slice(m.index, blockEnd(src, m.index + m[0].length));
+    const at = fnBody.indexOf('DotNet.createJSObjectReference(');
+    if (at === -1) continue;
+    const open = fnBody.indexOf('{', at);
+    if (open === -1) throw new Error(`${INTEROP}: ${m[1]}() returns a handle that is not an object literal`);
+    const literal = fnBody.slice(open + 1, blockEnd(fnBody, open + 1));
+
+    const methods = new Map();
+    const keys = [...literal.matchAll(/(?:^|,)\s*(\w+)\s*:/g)];
+    keys.forEach((k, i) => {
+      const from = k.index + k[0].length;
+      const to = i + 1 < keys.length ? keys[i + 1].index : literal.length;
+      methods.set(k[1], literal.slice(from, to));
+    });
+    if (!methods.size) throw new Error(`${INTEROP}: the handle ${m[1]}() returns carries no methods`);
+    out.set(m[1], { methods, binds: /addEventListener\(/.test(fnBody) });
   }
   return out;
+}
+
+/** Just the names, which is all the rewrite needs. */
+function handleReturning(src = INTEROP_JS) {
+  return new Set(interopHandles(src).keys());
 }
 
 function iconComponent() {
@@ -773,20 +813,53 @@ export async function artifacts() {
 /* ------------------------------------------------------------------ gates */
 
 /**
- * The interop calls in a file, as one regex, or null when there are none.
+ * Every name in the file that can reach the JS runtime, followed through assignment.
  *
- * The receivers are read out of the file rather than hard-coded: the injected IJSRuntime
- * under whatever name it was given, plus every IJSObjectReference field. Anchoring on the
- * name "JS" alone would miss a module handle, and matching every `.InvokeAsync` would hit
- * EventCallback, which is not interop and is safe during prerender.
+ * Matching the injected name textually was not enough. A field declared `IJSRuntime? _js`
+ * and assigned from the injected one in OnInitializedAsync is the same runtime under a
+ * different name, and the receiver set that only knew `@inject IJSRuntime JS` plus
+ * IJSObjectReference fields read that as no interop at all. So the seed is every
+ * declaration of a runtime or a module handle, whatever the shape of the declaration, and
+ * then assignment is followed to a fixpoint: `_js = JS`, `var js = JS`, a module handle
+ * copied to a local, all of them land in the set.
+ */
+function interopReceivers(text) {
+  const names = new Set();
+  const DECL = /\bIJS(?:Runtime|InProcessRuntime|ObjectReference|InProcessObjectReference)\s*\??\s+([A-Za-z_]\w*)\b/g;
+  for (const m of text.matchAll(DECL)) names.add(m[1]);
+  for (const m of text.matchAll(/@inject\s+IJSRuntime\s+([A-Za-z_]\w*)/g)) names.add(m[1]);
+
+  const ASSIGN = /(?:^|[;{}\n(,]|\bvar\s+)\s*([A-Za-z_]\w*)\s*=\s*(?:await\s+)?([A-Za-z_]\w*)\s*[;,)]/g;
+  for (let grew = true; grew; ) {
+    grew = false;
+    for (const m of text.matchAll(ASSIGN)) {
+      if (names.has(m[2]) && !names.has(m[1])) {
+        names.add(m[1]);
+        grew = true;
+      }
+    }
+  }
+  return names;
+}
+
+/**
+ * A regex matching any use of the JS runtime in a file, or null when it has none.
+ *
+ * Two shapes count, because two shapes reach JavaScript. A member access on a receiver is
+ * the ordinary call, and it is written `.Invoke*Async` today but an extension method
+ * tomorrow, so the member name is not part of the test. A receiver passed as an argument is
+ * a call this file cannot see the inside of, and a helper that takes IJSRuntime and does
+ * the interop itself is exactly as fatal during prerender as doing it here.
+ *
+ * What is deliberately not matched is a receiver on its own: `if (_module is null)` is the
+ * null check that makes prerender safe, not a call.
  */
 function interopCalls(text) {
-  const receivers = new Set();
-  for (const m of text.matchAll(/@inject\s+IJSRuntime\s+(\w+)/g)) receivers.add(m[1]);
-  for (const m of text.matchAll(/IJSObjectReference\??\s+(_\w+)/g)) receivers.add(m[1]);
-  if (!receivers.size) return null;
-  const re = new RegExp(`\\b(?:${[...receivers].join('|')})\\.Invoke\\w*Async`, 'g');
-  return re.test(text) ? new RegExp(re.source) : null;
+  const names = [...interopReceivers(text)];
+  if (!names.length) return null;
+  const alt = names.join('|');
+  const source = `\\b(${alt})\\s*\\??\\.\\w|[(,]\\s*(${alt})\\s*[,)]`;
+  return new RegExp(source).test(text) ? new RegExp(source) : null;
 }
 
 /**
@@ -860,43 +933,109 @@ function reachableBeforeFirstRender(markup, members) {
   return seen;
 }
 
-/** Reads an attribute value, keeping quotes inside a Razor `@( ... )` expression. */
-function attributeValue(text, from) {
-  let quote = null;
-  let depth = 0;
-  for (let i = from; i < text.length; i++) {
-    const ch = text[i];
-    if (quote) {
-      if (ch === '(') depth++;
-      else if (ch === ')') depth--;
-      else if (ch === quote && depth <= 0) return { value: text.slice(from + 1, i), end: i };
-      continue;
-    }
-    if (ch === '"') {
-      quote = ch;
-      depth = 0;
-      continue;
-    }
-    if (ch === '>') break;
-  }
-  return null;
+/**
+ * Razor comments blanked to spaces of the same length, so offsets still line up.
+ *
+ * Every gate below reads the markup by position. Deleting a comment would shift everything
+ * after it; a gate that then found `@oncancel=` inside a comment and called the element
+ * bound is the shape of blindness this file keeps producing.
+ */
+function blankComments(text) {
+  return text.replace(/@\*[\s\S]*?\*@/g, (m) => ' '.repeat(m.length));
 }
 
-/** The <KapeIcon ...> tags in a file, whole. */
-function iconTags(text) {
-  const out = [];
-  for (const m of text.matchAll(/<KapeIcon\b/g)) {
-    let i = m.index + m[0].length;
-    while (i < text.length && text[i] !== '>') {
-      if (text[i] === '"') {
-        const v = attributeValue(text, i);
-        if (!v) break;
-        i = v.end + 1;
-        continue;
-      }
-      i++;
+/** The index just past the `)` that closes the `(` at `open`, strings respected. */
+function parensEnd(text, open) {
+  let depth = 0;
+  let quote = null;
+  for (let i = open; i < text.length; i++) {
+    const c = text[i];
+    if (quote) {
+      if (c === '\\') i++;
+      else if (c === quote) quote = null;
+      continue;
     }
-    out.push(text.slice(m.index, i + 1));
+    if (c === '"' || c === "'") quote = c;
+    else if (c === '(') depth++;
+    else if (c === ')' && --depth === 0) return i + 1;
+  }
+  return text.length;
+}
+
+/** The index just past a Razor expression whose `@` sits at `at`. */
+function razorExpressionEnd(text, at) {
+  let i = at + 1;
+  if (text[i] === '(') return parensEnd(text, i);
+  while (i < text.length && /[\w.]/.test(text[i])) i++;
+  return text[i] === '(' ? parensEnd(text, i) : i;
+}
+
+/**
+ * One attribute value, starting at the first character after the `=`.
+ *
+ * Razor writes these three ways and this package uses all three: quoted ("barako",
+ * "@Item.Icon"), an unquoted Razor expression (Name=@("cup-cold")), and a bare token
+ * (Size=24). A reader that insists on a quote sees only the first, which is exactly how a
+ * bogus name inside `Name=@(...)` stayed invisible to the icon gate.
+ */
+function readValue(text, from) {
+  const ch = text[from];
+  if (ch === '"' || ch === "'") {
+    // A quote inside a Razor `@( ... )` belongs to the expression, not to the attribute.
+    let depth = 0;
+    for (let i = from + 1; i < text.length; i++) {
+      const c = text[i];
+      if (c === '(') depth++;
+      else if (c === ')') depth--;
+      else if (c === ch && depth <= 0) return { value: text.slice(from + 1, i), end: i };
+    }
+    return null;
+  }
+  if (ch === '@') {
+    const end = razorExpressionEnd(text, from);
+    return { value: text.slice(from, end), end: end - 1 };
+  }
+  let i = from;
+  while (i < text.length && !/[\s>/]/.test(text[i])) i++;
+  return i === from ? null : { value: text.slice(from, i), end: i - 1 };
+}
+
+/**
+ * The attributes of the tag opening at `start`, as name to raw value. A valueless attribute
+ * (`Colour`, `autofocus`) maps to null, which is not the same as absent.
+ */
+function tagAttributes(text, start) {
+  const out = new Map();
+  let i = start + 1;
+  while (i < text.length && /[\w.:-]/.test(text[i])) i++;
+  while (i < text.length) {
+    while (i < text.length && /\s/.test(text[i])) i++;
+    if (i >= text.length || text[i] === '>' || (text[i] === '/' && text[i + 1] === '>')) break;
+
+    const nameAt = i;
+    while (i < text.length && /[@\w.:-]/.test(text[i])) i++;
+    if (i === nameAt) {
+      i++;
+      continue;
+    }
+    const attr = text.slice(nameAt, i);
+
+    let j = i;
+    while (j < text.length && /\s/.test(text[j])) j++;
+    if (text[j] !== '=') {
+      out.set(attr, null);
+      continue;
+    }
+    j++;
+    while (j < text.length && /\s/.test(text[j])) j++;
+    const read = readValue(text, j);
+    if (!read) {
+      out.set(attr, null);
+      i = j + 1;
+      continue;
+    }
+    out.set(attr, read.value);
+    i = read.end + 1;
   }
   return out;
 }
@@ -931,19 +1070,17 @@ function parameterDefault(text, name) {
  */
 function iconClaims(text) {
   const claims = [];
-  for (const tag of iconTags(text)) {
-    const at = tag.search(/\bName\s*=\s*"/);
-    if (at === -1) continue;
-    const read = attributeValue(tag, tag.indexOf('"', at));
-    if (!read) continue;
-    const value = read.value;
+  const t = blankComments(text);
+  for (const m of t.matchAll(/<KapeIcon\b/g)) {
+    const value = tagAttributes(t, m.index).get('Name');
+    if (value == null) continue;
 
     if (/^[a-z][a-z0-9-]*$/.test(value)) {
-      claims.push({ name: value, how: `Name="${value}"` });
+      claims.push({ name: value, how: `Name=${value}` });
       continue;
     }
     if (!value.startsWith('@')) continue;
-    for (const lit of resultLiterals(value)) claims.push({ name: lit, how: `Name="${value}"` });
+    for (const lit of resultLiterals(value)) claims.push({ name: lit, how: `Name=${value}` });
 
     // A parameter handed straight to Name renders its own default whenever a consumer sets
     // nothing, so that default is an icon name this package promises. Only the whole
@@ -951,7 +1088,7 @@ function iconClaims(text) {
     // on, is not the name being rendered.
     const passed = value.match(/^@\(?([A-Za-z_]\w*)\)?$/);
     const fallback = passed && parameterDefault(text, passed[1]);
-    if (fallback) claims.push({ name: fallback, how: `the default of ${passed[1]}, which Name="${value}" renders` });
+    if (fallback) claims.push({ name: fallback, how: `the default of ${passed[1]}, which Name=${value} renders` });
   }
   return claims;
 }
@@ -968,6 +1105,73 @@ function summaries(text) {
     out.push([m[1], lines[j] ?? '']);
   }
   return out;
+}
+
+/**
+ * Whether anything reachable from the member `from` matches `re`.
+ *
+ * A binding is only worth as much as what it is bound to. `@oncancel="OnNativeCancel"` with
+ * an OnNativeCancel that returns Task.CompletedTask is a dialog that still swallows Escape,
+ * and a gate that greps for the attribute name calls that fixed.
+ */
+function reaches(members, from, re) {
+  const seen = new Set();
+  const queue = [from];
+  while (queue.length) {
+    const at = queue.pop();
+    if (seen.has(at) || !members.has(at)) continue;
+    seen.add(at);
+    const body = members.get(at);
+    if (re.test(body)) return true;
+    for (const m of body.matchAll(/[A-Za-z_]\w*/g)) if (members.has(m[0]) && !seen.has(m[0])) queue.push(m[0]);
+  }
+  return false;
+}
+
+/**
+ * The handler bound to `event` on the file's own <dialog>, or null.
+ *
+ * Read off the element, with comments blanked. The attribute appearing anywhere in the file
+ * is not the same claim: a commented-out binding, or one on some other element, leaves the
+ * dialog exactly as deaf as no binding at all.
+ */
+function dialogBinding(text, event) {
+  const markup = blankComments(text.slice(0, codeAt(text)));
+  const at = markup.search(/<dialog\b/);
+  if (at === -1) return null;
+  const value = tagAttributes(markup, at).get(event);
+  return value == null ? null : value.replace(/^@/, '').trim();
+}
+
+/** What a close callback firing looks like, whichever of the two names the component has. */
+const REPORTS_CLOSE = /\b(?:OnClose|OpenChanged)\s*\.\s*InvokeAsync\b/;
+
+/**
+ * Required reference parameters the markup dereferences with nothing guarding them.
+ *
+ * Rewrite 3 does two things: it makes the parameter nullable and it wraps the markup in a
+ * null guard. Only the first half was gated, so dropping the `@if` while leaving the `?`
+ * put the NullReferenceException back with a green suite. The guard has to actually cover
+ * the dereference, so the block it opens is measured rather than the line being grepped for.
+ */
+function unguardedRequiredModels(text) {
+  const split = codeAt(text);
+  const markup = blankComments(text.slice(0, split));
+  const code = text.slice(split);
+  const bad = new Set();
+
+  for (const m of code.matchAll(/\[Parameter,\s*EditorRequired\]\s*public\s+([A-Z]\w*)\?\s+(\w+)\s*\{\s*get;/g)) {
+    const name = m[2];
+    const covered = [];
+    for (const g of markup.matchAll(new RegExp(`@if\\s*\\(([^)]*\\b${name}\\s+is\\s+not\\s+null[^)]*)\\)`, 'g'))) {
+      const open = markup.indexOf('{', g.index + g[0].length);
+      if (open !== -1) covered.push([open, blockEnd(markup, open + 1)]);
+    }
+    for (const use of markup.matchAll(new RegExp(`\\b${name}\\s*\\.`, 'g'))) {
+      if (!covered.some(([a, b]) => use.index > a && use.index < b)) bad.add(name);
+    }
+  }
+  return [...bad];
 }
 
 /** Types the snippets may name without Models.cs having to define them. */
@@ -1023,7 +1227,7 @@ export async function check({ expected }) {
     }
     for (const member of reachableBeforeFirstRender(markup, members)) {
       const hit = members.get(member).match(calls);
-      if (hit) fail.push(`${path} reaches ${hit[0]} from ${member}(), which prerender runs before there is a JS runtime`);
+      if (hit) fail.push(`${path} reaches the JS runtime through ${hit[1] ?? hit[2]} from ${member}(), which prerender runs before there is a JS runtime`);
     }
   }
 
@@ -1042,26 +1246,52 @@ export async function check({ expected }) {
   // 3b. The rewrites in this file, checked in the output rather than assumed. Each one is a
   //     bug that shipped, and each one would come back the moment a rewrite stopped
   //     matching the canvas, which is exactly the kind of silence the rewrite exists to end.
-  const handles = handleReturning();
+  //
+  //     Every gate here is on the thing the rewrite produced, not on a word the rewrite
+  //     happens to leave in the file. Two of them used to be the latter, and both passed
+  //     clean over the exact bug they were written for: the guard could be deleted as long
+  //     as the `?` stayed, and @oncancel could be bound to a handler that reported nothing.
+  const handles = interopHandles();
   for (const [path, text] of razor) {
+    const code = text.slice(codeAt(text));
+    const members = membersOf(code);
+
     if (/\[Parameter[^\]]*\]\s*public\s+[^\n]*?=\s*default!;/.test(text)) {
       fail.push(`${path} defaults a [Parameter] to default!, and EditorRequired is a warning in the consumer's project, so the bare tag renders a null`);
+    }
+    for (const name of unguardedRequiredModels(text)) {
+      fail.push(`${path} makes the required ${name} nullable but dereferences it outside a null guard, so the bare tag throws through the render tree`);
     }
     if (/\.First\(/.test(text)) {
       fail.push(`${path} looks a row up with .First(), which throws when Value holds an id Options does not carry yet`);
     }
 
-    // A <dialog> the parent can be told about must listen for the dismissals it cannot see.
-    if (/<dialog\b/.test(text) && /EventCallback(?:<bool>)?\s+(?:OnClose|OpenChanged)\b/.test(text) && !/@oncancel=/.test(text)) {
-      fail.push(`${path} has a <dialog> and a close callback but binds no @oncancel, so Escape closes it without telling the parent`);
+    // A <dialog> the parent can be told about must hear the dismissals Blazor cannot see,
+    // and the handler it names must be the one that tells the parent.
+    if (/<dialog\b/.test(text) && /\[Parameter\]\s*public\s+EventCallback(?:<bool>)?\s+(?:OnClose|OpenChanged)\b/.test(text)) {
+      const cancel = dialogBinding(text, '@oncancel');
+      if (!cancel) {
+        fail.push(`${path} has a <dialog> and a close callback but the <dialog> binds no @oncancel, so Escape closes it without telling the parent`);
+      } else if (!reaches(members, cancel, REPORTS_CLOSE)) {
+        fail.push(`${path} binds @oncancel to ${cancel}(), which never reaches OnClose or OpenChanged, so Escape still closes it without telling the parent`);
+      }
+
+      const closed = dialogBinding(text, '@onclose');
+      if (!closed) {
+        fail.push(`${path} has a <dialog> but the <dialog> binds no @onclose, so _shown keeps the state the DOM has already left and the next Open shows nothing`);
+      } else if (!reaches(members, closed, /\b_shown\s*=/)) {
+        fail.push(`${path} binds @onclose to ${closed}(), which never resyncs _shown, so the next Open shows nothing`);
+      }
     }
 
     // What the .nupkg's XML docs claim is the consumer's IntelliSense, so a trigger named
-    // there has to be a trigger the markup binds.
+    // there has to be a trigger the markup binds to something that actually reports it.
     for (const [claim, line] of summaries(text)) {
       if (!/\[Parameter[^\]]*\]\s*public\s+EventCallback/.test(line)) continue;
-      if (/\bescape\b/i.test(claim) && !/@oncancel=|@onkeydown=/.test(text)) {
-        fail.push(`${path} documents "${claim}" but binds nothing that hears Escape`);
+      if (/\bescape\b/i.test(claim)) {
+        const cancel = dialogBinding(text, '@oncancel');
+        const heard = (cancel !== null && reaches(members, cancel, REPORTS_CLOSE)) || /@onkeydown=/.test(text);
+        if (!heard) fail.push(`${path} documents "${claim}" but nothing it binds reports an Escape`);
       }
       if (/\bbackdrop\b/i.test(claim) && !/closedby=/.test(text) && !/<dialog\b[^>]*@onclick=/.test(text)) {
         fail.push(`${path} documents "${claim}" but a native <dialog> does not dismiss on a backdrop click and nothing here makes it`);
@@ -1069,14 +1299,30 @@ export async function check({ expected }) {
     }
 
     // An interop function that hands back a dispose handle is a subscription. Dropping the
-    // handle leaks a listener per mount, which on Blazor Server is per navigation.
-    for (const fn of handles) {
+    // handle leaks a listener per mount, which on Blazor Server is per navigation. Holding
+    // it and invoking a name the handle does not carry leaks the same listener while
+    // looking released: the method name crosses the language boundary as a string, so
+    // nothing but this gate compares the two sides.
+    for (const [fn, handle] of handles) {
       if (!text.includes(`"${fn}"`)) continue;
       const held = text.match(new RegExp(`(_\\w+) = await [^;\\n]*InvokeAsync<IJSObjectReference>\\("${fn}"`));
       if (!held) {
         fail.push(`${path} calls ${fn}(), which returns a dispose handle, through a call that throws the handle away`);
-      } else if (!text.includes(`${held[1]}.InvokeVoidAsync("dispose")`)) {
-        fail.push(`${path} holds the ${fn}() handle in ${held[1]} but never calls dispose() on it`);
+        continue;
+      }
+      const on = held[1];
+      const invoked = new Set([...text.matchAll(new RegExp(`${on}\\s*\\??\\.InvokeVoidAsync\\("(\\w+)"`, 'g'))].map((m) => m[1]));
+      if (!invoked.size) fail.push(`${path} holds the ${fn}() handle in ${on} but invokes nothing on it`);
+      for (const called of invoked) {
+        if (!handle.methods.has(called)) {
+          fail.push(`${path} calls ${on}.InvokeVoidAsync("${called}") but the handle ${fn}() returns in ${INTEROP} carries only ${[...handle.methods.keys()].join(', ')}`);
+        }
+      }
+      if (handle.binds && ![...invoked].some((c) => /removeEventListener\(/.test(handle.methods.get(c) ?? ''))) {
+        fail.push(`${path} calls ${fn}(), which binds a listener, but nothing it invokes on ${on} removes it`);
+      }
+      if (!new RegExp(`${on}\\s*\\??\\.DisposeAsync\\(\\)`).test(text)) {
+        fail.push(`${path} never disposes the ${fn}() handle in ${on}, so the JS object reference outlives the component`);
       }
     }
     if (/DotNetObjectReference\.Create\(this\)/.test(text)) {
