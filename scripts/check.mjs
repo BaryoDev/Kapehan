@@ -9,6 +9,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { icons, categories, monoOf } from '../kapehan-icons.js';
 import { artifacts } from './build.mjs';
+import { components, classesOf, COMPONENT_CATEGORIES } from './components.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const fail = [];
@@ -83,6 +84,35 @@ for (const target of Object.values(pkg.exports ?? {})) {
   if (!(pkg.files ?? []).includes(top)) fail.push(`package.json exports ${target} but files[] does not ship ${top}`);
 }
 
+// The whole premise is that the CSS never forks per framework: React, Vue, Blazor and the
+// HTML snippet all render the same class names. A snippet naming a class the stylesheet
+// does not define renders unstyled, and looks perfectly fine in a diff.
+const comps = await components();
+// Selectors only. A bare kape- scan also picks up the @keyframes name kape-shimmer,
+// which is not a class anyone can put on an element.
+const cssText = await readFile(join(root, 'kapehan.css'), 'utf8');
+const cssClasses = new Set((cssText.match(/\.kape-[a-z0-9_-]+/g) ?? []).map((x) => x.slice(1)));
+for (const c of comps) {
+  for (const cls of classesOf(c)) {
+    if (cls === 'kape-icon' || cls === 'kape-doodle') continue; // elements, not stylesheet classes
+    if (!cssClasses.has(cls)) fail.push(`component "${c.key}" uses .${cls}, which kapehan.css does not define`);
+  }
+}
+
+// A family with CSS but no component is something the stylesheet ships that nobody can copy.
+// kape-stamps was exactly that until the second canvas export added an entry for it.
+const usedFamilies = new Set(comps.flatMap((c) => [...classesOf(c)]).map((x) => x.replace(/(--|__).*$/, '')));
+for (const cls of cssClasses) {
+  const family = cls.replace(/(--|__).*$/, '');
+  if (family === 'kape-sr') continue; // a screen-reader utility, not a component
+  if (!usedFamilies.has(family)) fail.push(`kapehan.css defines .${family} but no component uses it, so nobody can copy it`);
+}
+
+// An empty UI_NAV group renders as a heading with nothing under it.
+for (const cat of COMPONENT_CATEGORIES) {
+  if (!comps.some((c) => c.cat === cat)) fail.push(`no component is in the "${cat}" group`);
+}
+
 // Whatever the site and the README promise must actually exist. Both are read by people
 // who then run the command, so a promise the tarball does not keep is a broken install,
 // not a typo. Checked mechanically because it is exactly the thing nobody re-reads.
@@ -124,4 +154,4 @@ if (fail.length) {
   for (const f of fail) console.error('x', f);
   process.exit(1);
 }
-console.log(`ok: ${icons.length} icons, ${expected.size} generated files, all in sync`);
+console.log(`ok: ${icons.length} icons, ${comps.length} components, ${expected.size} generated files, all in sync`);

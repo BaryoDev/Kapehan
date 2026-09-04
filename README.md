@@ -117,6 +117,25 @@ Set the five roles and every `.kape-*` component and mono icon follows:
 
 Each palette carries a `use` badge saying what it suits: `app`, `web` or `brand`.
 
+## Components
+
+`kapehan.css` styles 34 component families. The manifest describes 30 of them as data, with
+the markup for four stacks, a props table and the accessibility contract:
+
+```js
+import { components, get, byCategory } from "kapehan/kapehan-components.js";
+
+get("combo").props;        // [{ name, type, default, required, description }, ...]
+get("combo").a11y.keys;    // ["ArrowDown opens and moves", "Enter toggles", ...]
+get("combo").react;        // the JSX
+get("combo").blazor;       // the .razor
+byCategory("Overlays");    // dialog, drawer
+```
+
+Generated from the design canvas, so the site, the package and the docs cannot disagree
+about what a component is. `npm test` fails if a snippet names a class `kapehan.css` does
+not define, or if the stylesheet ships a family no component uses.
+
 ## The system
 
 Every icon draws from one palette and rests on one baseline, so a row of them reads as a family
