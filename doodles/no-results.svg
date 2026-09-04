@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="A hand grinder with its crank on top and an empty catch jar, meaning the search found nothing">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" class="kape-doodle-no-results" aria-label="A hand grinder with its crank on top and an empty catch jar, meaning the search found nothing">
   <title>No results</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
   <style>
-    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
-    @keyframes k-twinkle{0%,100%{opacity:.1;transform:scale(.7)} 50%{opacity:1;transform:scale(1.1)}}
+    svg.kape-doodle-no-results [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-twinkle{0%,100%{opacity:.1;transform:scale(.7)} 50%{opacity:1;transform:scale(1.1)}}
     @media (prefers-reduced-motion: reduce){
-      svg [style*="animation"]{animation:none !important;}
-      *{transition-duration:.01ms !important;}
+      svg.kape-doodle-no-results [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-no-results *{transition-duration:.01ms !important;}
     }
   </style>
   <defs><pattern id="hs7" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
@@ -28,10 +28,10 @@
       <path d="M150 320c30 8 70 8 100 0" stroke-width="4" opacity=".4"></path>
       <path d="M60 372c96-8 192-8 286 0" stroke-width="3.5"></path>
     </g>
-    <g stroke="#C9B9A6" stroke-width="5" stroke-linecap="round" fill="none" style="animation:k-twinkle 3s ease-in-out infinite;animation-play-state:var(--anim,running)">
+    <g stroke="#C9B9A6" stroke-width="5" stroke-linecap="round" fill="none" style="animation:kape-k-twinkle 3s ease-in-out infinite;animation-play-state:var(--anim,running)">
       <path d="M300 200c8-8 20-8 28 0M310 240c10-6 22-4 30 4"></path>
     </g>
-    <circle cx="330" cy="164" r="6" fill="#E2D3BC" style="animation:k-twinkle 3s ease-in-out 1.2s infinite;animation-play-state:var(--anim,running)"></circle>
+    <circle cx="330" cy="164" r="6" fill="#E2D3BC" style="animation:kape-k-twinkle 3s ease-in-out 1.2s infinite;animation-play-state:var(--anim,running)"></circle>
     <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M142 300l12-12M148 320l14-14M160 336l12-12"></path></g>
   </g>
 </svg>

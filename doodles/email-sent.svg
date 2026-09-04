@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="A folded note stamped with a coffee bean sitting in an open envelope, meaning the email is on its way">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" class="kape-doodle-email-sent" aria-label="A folded note stamped with a coffee bean sitting in an open envelope, meaning the email is on its way">
   <title>Email sent</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
   <style>
-    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
-    @keyframes k-pulse{0%,100%{opacity:.35} 50%{opacity:1}}
+    svg.kape-doodle-email-sent [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-pulse{0%,100%{opacity:.35} 50%{opacity:1}}
     @media (prefers-reduced-motion: reduce){
-      svg [style*="animation"]{animation:none !important;}
-      *{transition-duration:.01ms !important;}
+      svg.kape-doodle-email-sent [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-email-sent *{transition-duration:.01ms !important;}
     }
   </style>
   <defs><pattern id="hs9" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
@@ -27,7 +27,7 @@
       <path d="M46 200c40 38 96 62 154 62 56 0 108-24 148-60" stroke-width="4"></path>
     </g>
     <g stroke="#C9B9A6" stroke-width="5" stroke-linecap="round" fill="none">
-      <path d="M336 138c14-12 34-12 48 0" style="animation:k-pulse 2.4s ease-in-out infinite;animation-play-state:var(--anim,running)"></path>
+      <path d="M336 138c14-12 34-12 48 0" style="animation:kape-k-pulse 2.4s ease-in-out infinite;animation-play-state:var(--anim,running)"></path>
       <path d="M328 108c20-18 50-18 70 0" stroke-dasharray="10 12" opacity=".45"></path>
     </g>
     <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M64 300l12-12M70 318l14-14M84 330l12-12"></path></g>

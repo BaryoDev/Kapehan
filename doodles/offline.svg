@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="A cup gone cold: the steam above it is shaped like wifi arcs, and the top arc is faded out">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" class="kape-doodle-offline" aria-label="A cup gone cold: the steam above it is shaped like wifi arcs, and the top arc is faded out">
   <title>Offline</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
   <style>
-    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
-    @keyframes k-pulse{0%,100%{opacity:.35} 50%{opacity:1}}
+    svg.kape-doodle-offline [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-pulse{0%,100%{opacity:.35} 50%{opacity:1}}
     @media (prefers-reduced-motion: reduce){
-      svg [style*="animation"]{animation:none !important;}
-      *{transition-duration:.01ms !important;}
+      svg.kape-doodle-offline [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-offline *{transition-duration:.01ms !important;}
     }
   </style>
   <defs><pattern id="hs6" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
@@ -25,7 +25,7 @@
     </g>
     <g fill="none" stroke="#C9B9A6" stroke-width="5" stroke-linecap="round">
       <path d="M170 176c16-14 44-14 60 0"></path>
-      <path d="M146 146c30-26 78-26 108 0" style="animation:k-pulse 2.8s ease-in-out infinite;animation-play-state:var(--anim,running)"></path>
+      <path d="M146 146c30-26 78-26 108 0" style="animation:kape-k-pulse 2.8s ease-in-out infinite;animation-play-state:var(--anim,running)"></path>
       <path d="M122 116c44-40 112-40 156 0" stroke-dasharray="10 12" opacity=".4"></path>
     </g>
     <path d="M198 196c0-2 4-2 4 0s-4 2-4 0" stroke="#C9B9A6" stroke-width="5" stroke-linecap="round" fill="none"></path>

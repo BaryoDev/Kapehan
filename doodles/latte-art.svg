@@ -1,13 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="Overhead close crop of a pitcher pouring a rosetta into a wide cup, the milk stream still connected">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" class="kape-doodle-latte-art" aria-label="Overhead close crop of a pitcher pouring a rosetta into a wide cup, the milk stream still connected">
   <title>Latte art pour</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
   <style>
-    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
-    @keyframes k-pulse{0%,100%{opacity:.35} 50%{opacity:1}}
-    @keyframes k-wob{0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(1.5deg)}}
+    svg.kape-doodle-latte-art [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-pulse{0%,100%{opacity:.35} 50%{opacity:1}}
+    @keyframes kape-k-wob{0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(1.5deg)}}
     @media (prefers-reduced-motion: reduce){
-      svg [style*="animation"]{animation:none !important;}
-      *{transition-duration:.01ms !important;}
+      svg.kape-doodle-latte-art [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-latte-art *{transition-duration:.01ms !important;}
     }
   </style>
   <defs><pattern id="hd9" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
@@ -33,7 +33,7 @@
       <circle cx="240" cy="216" r="116" stroke-width="3.4" opacity=".5"></circle>
       <circle cx="240" cy="216" r="102"></circle>
     </g>
-    <g style="animation:k-wob 5.4s ease-in-out infinite;animation-play-state:var(--anim,running)">
+    <g style="animation:kape-k-wob 5.4s ease-in-out infinite;animation-play-state:var(--anim,running)">
       <g stroke="none">
         <path d="M452 78c40-12 88-8 112 8l-16 106c-4 22-28 32-52 32s-44-10-46-32z" fill="#F1E8DA"></path>
         <path d="M452 78c40-12 88-8 112 8l-16 106c-4 22-28 32-52 32s-44-10-46-32z" fill="url(#hd9)"></path>
@@ -47,7 +47,7 @@
         <path d="M470 118c-30 16-48 34-56 56" stroke-width="3" opacity=".4"></path>
       </g>
     </g>
-    <path d="M400 124c-22 26-48 48-76 62" style="stroke:var(--acc,#C2593A);animation:k-pulse 2.8s ease-in-out infinite;animation-play-state:var(--anim,running)" stroke-width="7" stroke-linecap="round" fill="none"></path>
+    <path d="M400 124c-22 26-48 48-76 62" style="stroke:var(--acc,#C2593A);animation:kape-k-pulse 2.8s ease-in-out infinite;animation-play-state:var(--anim,running)" stroke-width="7" stroke-linecap="round" fill="none"></path>
     <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
       <path d="M84 320l14-14M106 340l16-16M132 354l14-14"></path>
     </g>

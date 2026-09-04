@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="Someone sunk into an armchair in profile with an open book, a cup steaming on the side table beside them">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" class="kape-doodle-reading-alone" aria-label="Someone sunk into an armchair in profile with an open book, a cup steaming on the side table beside them">
   <title>Reading alone</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
   <style>
-    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
-    @keyframes k-steam{0%{opacity:0;transform:translateY(6px)} 20%{opacity:.9} 100%{opacity:0;transform:translateY(-22px) translateX(4px)}}
+    svg.kape-doodle-reading-alone [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-steam{0%{opacity:0;transform:translateY(6px)} 20%{opacity:.9} 100%{opacity:0;transform:translateY(-22px) translateX(4px)}}
     @media (prefers-reduced-motion: reduce){
-      svg [style*="animation"]{animation:none !important;}
-      *{transition-duration:.01ms !important;}
+      svg.kape-doodle-reading-alone [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-reading-alone *{transition-duration:.01ms !important;}
     }
   </style>
   <defs><pattern id="hd8" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
@@ -50,8 +50,8 @@
       <path d="M500 232.6c16.72 4.92 38 4.92 57.76 0" stroke-width="3" opacity=".45"></path>
     </g>
     <g stroke="#C9B9A6" stroke-width="3.4" stroke-linecap="round" fill="none">
-      <path d="M518 190c-10-14 10-20-2-34" style="animation:k-steam 4.6s ease-out infinite;animation-play-state:var(--anim,running)"></path>
-      <path d="M548 184c-8-10 8-16-2-26" style="animation:k-steam 4.6s ease-out 2s infinite;animation-play-state:var(--anim,running)"></path>
+      <path d="M518 190c-10-14 10-20-2-34" style="animation:kape-k-steam 4.6s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+      <path d="M548 184c-8-10 8-16-2-26" style="animation:kape-k-steam 4.6s ease-out 2s infinite;animation-play-state:var(--anim,running)"></path>
     </g>
     <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
       <path d="M226 300l14-14M256 306l14-14M286 310l14-14M394 306l14-14"></path>

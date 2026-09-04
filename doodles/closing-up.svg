@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="Chairs turned upside down on a table, a broom leaning against it and a hanging sign flipped to closed">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" class="kape-doodle-closing-up" aria-label="Chairs turned upside down on a table, a broom leaning against it and a hanging sign flipped to closed">
   <title>Closing up</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
   <style>
-    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
-    @keyframes k-nod{0%,100%{transform:rotate(0)} 50%{transform:rotate(3deg)}}
+    svg.kape-doodle-closing-up [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-nod{0%,100%{transform:rotate(0)} 50%{transform:rotate(3deg)}}
     @media (prefers-reduced-motion: reduce){
-      svg [style*="animation"]{animation:none !important;}
-      *{transition-duration:.01ms !important;}
+      svg.kape-doodle-closing-up [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-closing-up *{transition-duration:.01ms !important;}
     }
   </style>
   <defs><pattern id="hd10" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
@@ -37,7 +37,7 @@
       <path d="M118 344l4 30M136 346l4 30M154 344l4 28" stroke-width="2.6" opacity=".5"></path>
       <path d="M40 380c186-8 384-8 562 2" stroke-width="3.5"></path>
     </g>
-    <g style="animation:k-nod 5.6s ease-in-out infinite;animation-play-state:var(--anim,running)">
+    <g style="animation:kape-k-nod 5.6s ease-in-out infinite;animation-play-state:var(--anim,running)">
       <g fill="none" stroke-width="3.4" stroke-linecap="round" style="stroke:var(--ink,#241A13)">
         <path d="M470 22l-4 34M502 22l4 34"></path>
       </g>

@@ -1,13 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="Top-down view of a round table with a cup of coffee, a bitten donut on a plate and a folded napkin">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" class="kape-doodle-coffee-donut" aria-label="Top-down view of a round table with a cup of coffee, a bitten donut on a plate and a folded napkin">
   <title>Coffee and donut</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
   <style>
-    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
-    @keyframes k-bob{0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-4px) rotate(-1deg)}}
-    @keyframes k-steam{0%{opacity:0;transform:translateY(6px)} 20%{opacity:.9} 100%{opacity:0;transform:translateY(-22px) translateX(4px)}}
+    svg.kape-doodle-coffee-donut [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-bob{0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-4px) rotate(-1deg)}}
+    @keyframes kape-k-steam{0%{opacity:0;transform:translateY(6px)} 20%{opacity:.9} 100%{opacity:0;transform:translateY(-22px) translateX(4px)}}
     @media (prefers-reduced-motion: reduce){
-      svg [style*="animation"]{animation:none !important;}
-      *{transition-duration:.01ms !important;}
+      svg.kape-doodle-coffee-donut [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-coffee-donut *{transition-duration:.01ms !important;}
     }
   </style>
   <defs><pattern id="hd4" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
@@ -37,11 +37,11 @@
       <path d="M70 232c30-8 60-8 90-2M160 230l4 108M70 232l2 110M72 342c30 6 62 6 92 0"></path>
       <path d="M88 254c20-2 40-2 60 0" stroke-width="2.5" opacity=".45"></path>
     </g>
-    <g style="animation:k-bob 4.8s ease-in-out infinite;animation-play-state:var(--anim,running)">
+    <g style="animation:kape-k-bob 4.8s ease-in-out infinite;animation-play-state:var(--anim,running)">
       <path d="M392 160l8 10M420 146l4 12M456 144l-2 12M382 200l12 2M512 196l-12 4M400 256l10-8M500 250l-10-6" stroke-width="5" stroke-linecap="round" style="stroke:var(--bg,#FBF6EE)"></path>
     </g>
-    <path d="M304 236c-10-12 8-18-2-30" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none" style="animation:k-steam 3.6s ease-out infinite;animation-play-state:var(--anim,running)"></path>
-    <path d="M270 120c-8-10 6-16-2-26" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:k-steam 3.6s ease-out 1.5s infinite;animation-play-state:var(--anim,running)"></path>
+    <path d="M304 236c-10-12 8-18-2-30" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none" style="animation:kape-k-steam 3.6s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+    <path d="M270 120c-8-10 6-16-2-26" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:kape-k-steam 3.6s ease-out 1.5s infinite;animation-play-state:var(--anim,running)"></path>
     <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
       <path d="M150 226l12-12M158 240l14-14M170 250l12-12"></path>
       <path d="M352 270l12-12M366 286l14-14M384 298l14-14M404 306l12-12"></path>

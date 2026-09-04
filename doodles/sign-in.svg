@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="A loyalty card with one stamp filled and a ripple around it, meaning sign in to keep collecting">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" class="kape-doodle-sign-in" aria-label="A loyalty card with one stamp filled and a ripple around it, meaning sign in to keep collecting">
   <title>Sign in</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
   <style>
-    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
-    @keyframes k-pulse{0%,100%{opacity:.35} 50%{opacity:1}}
+    svg.kape-doodle-sign-in [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-pulse{0%,100%{opacity:.35} 50%{opacity:1}}
     @media (prefers-reduced-motion: reduce){
-      svg [style*="animation"]{animation:none !important;}
-      *{transition-duration:.01ms !important;}
+      svg.kape-doodle-sign-in [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-sign-in *{transition-duration:.01ms !important;}
     }
   </style>
   <defs><pattern id="hs11" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
@@ -29,7 +29,7 @@
     </g>
     <circle cx="96" cy="240" r="18" style="fill:var(--acc,#C2593A)"></circle>
     <ellipse cx="96" cy="240" rx="6" ry="8" style="fill:var(--bg,#FBF6EE)"></ellipse>
-    <g style="animation:k-pulse 2.6s ease-in-out infinite;animation-play-state:var(--anim,running)">
+    <g style="animation:kape-k-pulse 2.6s ease-in-out infinite;animation-play-state:var(--anim,running)">
       <circle cx="96" cy="240" r="30" fill="none" stroke="#C9B9A6" stroke-width="4"></circle>
       <circle cx="96" cy="240" r="42" fill="none" stroke="#C9B9A6" stroke-width="3" opacity=".5"></circle>
     </g>

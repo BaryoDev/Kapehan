@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="An empty paper takeaway tray with a divider down the middle and two empty cup holes">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" class="kape-doodle-empty-cart" aria-label="An empty paper takeaway tray with a divider down the middle and two empty cup holes">
   <title>Empty cart</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
   <style>
-    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
-    @keyframes k-bob{0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-4px) rotate(-1deg)}}
+    svg.kape-doodle-empty-cart [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-bob{0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-4px) rotate(-1deg)}}
     @media (prefers-reduced-motion: reduce){
-      svg [style*="animation"]{animation:none !important;}
-      *{transition-duration:.01ms !important;}
+      svg.kape-doodle-empty-cart [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-empty-cart *{transition-duration:.01ms !important;}
     }
   </style>
   <defs><pattern id="hs8" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
@@ -26,7 +26,7 @@
 
       <path d="M40 372c112-8 224-8 320 0" stroke-width="3.5"></path>
     </g>
-    <g style="animation:k-bob 5s ease-in-out infinite;animation-play-state:var(--anim,running)">
+    <g style="animation:kape-k-bob 5s ease-in-out infinite;animation-play-state:var(--anim,running)">
       <path d="M330 108c-12-14 8-20-2-36" stroke="#C9B9A6" stroke-width="4" stroke-linecap="round" fill="none"></path>
       <circle cx="292" cy="96" r="6" fill="#E2D3BC"></circle>
     </g>

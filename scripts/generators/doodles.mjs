@@ -17,6 +17,17 @@
  *    Everything else is a bare `fill="#241A13"`. Tokenising those means moving the
  *    attribute into the style attribute, which is done here for the hexes the canvas
  *    itself names, and only those. See COLOURS.
+ *
+ * A third thing shapes the <style> both tracks carry. An SVG <style> is not scoped. Open
+ * doodles/loading.svg on its own and that does not matter, but the idiom README.md teaches
+ * for this repo's SVG assets, and the thing the canvas's Copy button exists for, is pasting
+ * the file's contents inline into a page. Then every rule in it is a rule of the host
+ * document. The canvas's reduced-motion block contains `* { transition-duration:.01ms }`,
+ * so a pasted doodle used to kill every transition on the whole page for any reader with
+ * prefers-reduced-motion set, and its @keyframes names used to overwrite the host's own
+ * k-spin. So: every selector is scoped, to `kape-doodle` for the element and to the root's
+ * own `svg.kape-doodle-<name>` class for a standalone file, and every keyframe name is
+ * emitted under KEYFRAME_PREFIX. Nothing this package writes may name a host's node.
  */
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -32,30 +43,95 @@ export const pkg = {
     './doodles/*': './doodles/*',
   },
   files: ['doodles', 'kape-doodle.js'],
+  // kape-doodle.js is imported for one side effect, customElements.define('kape-doodle').
+  // It exports DOODLES and KapeDoodle as well, so a bundler told the package is side-effect
+  // free will keep those two bindings if they are used and drop the define() call, and the
+  // element silently never registers. package.json must name the file.
+  sideEffects: ['./kape-doodle.js'],
 };
 
 /** Motion, in every form this repo can produce it. The still track must contain none. */
 const MOTION_ELEMENTS = ['animate', 'animateTransform', 'animateMotion', 'set'];
 const MOTION_PROPERTIES = /^(animation|transition|offset-path|offset-distance)/;
 
+/**
+ * What every @keyframes this package emits is called.
+ *
+ * A pasted standalone .svg puts its @keyframes in the host document, where the name is
+ * global and unqualifiable: there is no scoping construct for one. `k-spin` is a name a
+ * host page could plausibly have picked itself, and whichever definition came second wins.
+ * A prefix is the only defence, so the emitted files say kape-k-spin and the canvas keeps
+ * saying k-spin.
+ */
+const KEYFRAME_PREFIX = 'kape-';
+
+/** The class the standalone files put on their root, so their own <style> can name it. */
+const scopeClass = (doodleName) => `kape-doodle-${doodleName}`;
+
 const readSource = () => readFile(join(root, SOURCE), 'utf8');
 
 // ---------------------------------------------------------------------------
-// Tag walking. The canvas is hand-written HTML with every attribute double
-// quoted (verified: the only single quotes in the file are inside the trailing
-// <script>), so a scanner over `<name ...>` is enough and does not need a DOM.
+// Tag walking. Hand-written HTML, so a scanner over `<name ...>` is enough and
+// does not need a DOM, but it has to parse what HTML allows rather than what
+// the canvas happens to contain today: rewriteTags reserialises from what
+// parseAttrs returned, so an attribute the parser cannot see is an attribute
+// deleted from the output. It raises instead.
 // ---------------------------------------------------------------------------
 
-/** Splits a start tag's attribute text into ordered [name, value] pairs. */
-function parseAttrs(text) {
+/**
+ * Splits a start tag's attribute text into ordered [name, value] pairs, value null for a
+ * valueless attribute.
+ *
+ * Handles the three quoting forms HTML allows, not just the double quotes the canvas uses
+ * today. It used to match `name="value"` only, and since rewriteTags rebuilds the tag from
+ * these pairs, one `fill='#3F2A1D'` (which plenty of editors and formatters emit) meant a
+ * shape shipped with no fill at all, in both tracks, with every gate green.
+ */
+function parseAttrs(text, where = SOURCE) {
   const out = [];
-  const re = /([:A-Za-z_][-:.\w]*)\s*=\s*"([^"]*)"/g;
-  let m;
-  while ((m = re.exec(text))) out.push([m[1], m[2]]);
+  const n = text.length;
+  let i = 0;
+  while (i < n) {
+    // A solidus between attributes is stray markup, not part of a name.
+    while (i < n && /[\s/]/.test(text[i])) i++;
+    if (i >= n) break;
+
+    const name = /[^\s"'>/=]+/y;
+    name.lastIndex = i;
+    const m = name.exec(text);
+    if (!m) throw new Error(`${where}: cannot read an attribute name at "${text.slice(i, i + 40)}"`);
+    i = name.lastIndex;
+
+    let j = i;
+    while (j < n && /\s/.test(text[j])) j++;
+    if (text[j] !== '=') { out.push([m[0], null]); continue; }
+
+    j++;
+    while (j < n && /\s/.test(text[j])) j++;
+    const quote = text[j];
+    if (quote === '"' || quote === "'") {
+      const end = text.indexOf(quote, j + 1);
+      if (end === -1) throw new Error(`${where}: attribute ${m[0]} has no closing ${quote}`);
+      out.push([m[0], text.slice(j + 1, end)]);
+      i = end + 1;
+      continue;
+    }
+    const unquoted = /[^\s"'`<>=]+/y;
+    unquoted.lastIndex = j;
+    const u = unquoted.exec(text);
+    if (!u) throw new Error(`${where}: attribute ${m[0]} has an = but no value`);
+    out.push([m[0], u[0]]);
+    i = unquoted.lastIndex;
+  }
   return out;
 }
 
-const serializeAttrs = (pairs) => pairs.map(([k, v]) => ` ${k}="${v}"`).join('');
+/** Values keep their source bytes, so the quote has to move rather than the value. */
+const quoteAttr = (v) =>
+  !v.includes('"') ? `"${v}"` : !v.includes("'") ? `'${v}'` : `"${v.replace(/"/g, '&quot;')}"`;
+
+const serializeAttrs = (pairs) =>
+  pairs.map(([k, v]) => (v === null ? ` ${k}` : ` ${k}=${quoteAttr(v)}`)).join('');
 
 /**
  * Rewrites every start tag through fn(tagName, attrs) -> attrs | null.
@@ -248,11 +324,100 @@ function stripMotion(svg) {
   });
 }
 
-/** The @keyframes names an SVG's inline styles actually reference. */
-function keyframesUsed(svg) {
+// ---------------------------------------------------------------------------
+// Keyframe references inside inline styles
+// ---------------------------------------------------------------------------
+
+/** Splits a CSS value on top-level commas, so `steps(1,end)` stays one token. */
+function splitTopLevel(value) {
+  const out = [];
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < value.length; i++) {
+    const ch = value[i];
+    if (ch === '(') depth++;
+    else if (ch === ')') depth--;
+    else if (ch === ',' && depth === 0) { out.push(value.slice(start, i)); start = i + 1; }
+  }
+  out.push(value.slice(start));
+  return out;
+}
+
+/** Every top-level identifier in a CSS value, as [start, end, text]. Skips function args. */
+function identRuns(value) {
+  const runs = [];
+  let depth = 0;
+  let i = 0;
+  while (i < value.length) {
+    const ch = value[i];
+    if (ch === '(') { depth++; i++; continue; }
+    if (ch === ')') { depth--; i++; continue; }
+    if (depth === 0 && /[A-Za-z_-]/.test(ch)) {
+      let j = i;
+      while (j < value.length && /[-\w]/.test(value[j])) j++;
+      runs.push([i, j, value.slice(i, j)]);
+      i = j;
+      continue;
+    }
+    i++;
+  }
+  return runs;
+}
+
+const NOT_A_KEYFRAME = /^\s*(none|inherit|initial|unset|revert|revert-layer)\s*$/;
+
+/**
+ * Renames every @keyframes reference in an SVG's inline styles to its prefixed name, and
+ * reports which ones it found.
+ *
+ * It matches identifiers against the names the canvas actually defines rather than taking
+ * whatever word follows `animation:`. The shorthand is order-free: `animation:2.1s k-drip
+ * ease-in infinite` is as valid as `animation:k-drip 2.1s ease-in infinite`, and reading
+ * the first word used to yield no keyframe at all, so the standalone .svg shipped without
+ * the @keyframes it referenced, animated nothing, and the gate that exists to catch exactly
+ * that iterated over the same empty list and passed.
+ *
+ * A declaration that resolves to no name and is not `none` comes back in `unresolved`, so a
+ * keyframe the canvas renamed out from under a drawing is a failure rather than a silent
+ * still.
+ */
+function bindKeyframes(svg, names) {
   const used = new Set();
-  for (const m of svg.matchAll(/animation:\s*([A-Za-z_][-\w]*)/g)) used.add(m[1]);
-  return used;
+  const unresolved = [];
+
+  const out = rewriteTags(svg, (tag, attrs) => {
+    const at = attrs.findIndex(([k]) => k === 'style');
+    if (at === -1 || attrs[at][1] === null) return attrs;
+
+    let touched = false;
+    const decls = parseStyle(attrs[at][1]).map(([prop, value]) => {
+      if (prop !== 'animation' && prop !== 'animation-name') return [prop, value];
+      touched = true;
+      const parts = splitTopLevel(value).map((part) => {
+        let rebuilt = '';
+        let last = 0;
+        let hit = false;
+        for (const [start, end, ident] of identRuns(part)) {
+          const to = names.get(ident);
+          if (!to) continue;
+          used.add(to);
+          hit = true;
+          rebuilt += part.slice(last, start) + to;
+          last = end;
+        }
+        if (!hit && !NOT_A_KEYFRAME.test(part)) unresolved.push(`${prop}:${part.trim()}`);
+        return rebuilt + part.slice(last);
+      });
+      return [prop, parts.join(',')];
+    });
+
+    if (!touched) return attrs;
+    const copy = attrs.slice();
+    copy[at] = ['style', serializeStyle(decls)];
+    return copy;
+  });
+
+  return { svg: out, used: [...used].sort(), unresolved };
 }
 
 /**
@@ -268,12 +433,17 @@ function motionCss(src) {
   const css = src.slice(open + '<style>'.length, close);
 
   const keyframes = new Map();
+  const names = new Map();
   const rules = [];
   let reduced = null;
 
   for (const block of topLevelBlocks(css)) {
     const kf = /^@keyframes\s+([A-Za-z_][-\w]*)/.exec(block.prelude);
-    if (kf) { keyframes.set(kf[1], block.body.trim()); continue; }
+    if (kf) {
+      names.set(kf[1], KEYFRAME_PREFIX + kf[1]);
+      keyframes.set(KEYFRAME_PREFIX + kf[1], block.body.trim());
+      continue;
+    }
     if (/^@media/.test(block.prelude)) {
       if (/prefers-reduced-motion/.test(block.prelude)) {
         reduced = { prelude: block.prelude, rules: topLevelBlocks(block.body) };
@@ -286,7 +456,7 @@ function motionCss(src) {
   if (!keyframes.size) throw new Error(`${SOURCE}: the <style> block declares no @keyframes`);
   if (!rules.length) throw new Error(`${SOURCE}: no transform-box rule for animated nodes`);
   if (!reduced) throw new Error(`${SOURCE}: no prefers-reduced-motion block to honour`);
-  return { keyframes, rules, reduced };
+  return { keyframes, names, rules, reduced };
 }
 
 /** Splits CSS into top-level `prelude { body }` blocks, brace-matched. */
@@ -309,13 +479,30 @@ function topLevelBlocks(css) {
   return out;
 }
 
-/** Re-emits the motion CSS, optionally scoped under a prefix. */
+/**
+ * Confines a selector from the canvas to one drawing.
+ *
+ * The canvas writes `svg [style*="animation"]`, meaning an animated node inside an svg, and
+ * `*`, meaning the whole page. Both are true statements about the canvas, which owns its
+ * document. Neither is a thing this package may say about somebody else's, in either track:
+ * the element injects its CSS into the host document, and a standalone .svg pasted inline
+ * has its <style> read as the host's.
+ *
+ * Where the leading compound is `svg`, that is the root the file already is, so the scope
+ * replaces it. Everything else becomes a descendant of the scope.
+ */
+function scopeSelector(sel, scope) {
+  return sel
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .map((s) => (!scope ? s : /^svg(?![-\w])/.test(s) ? scope + s.slice(3) : `${scope} ${s}`))
+    .join(', ');
+}
+
+/** Re-emits the motion CSS, scoped under a selector. Unscoped only where nothing hosts it. */
 function renderMotionCss({ rules, reduced }, names, keyframes, prefix = '') {
-  const scope = (sel) =>
-    sel
-      .split(',')
-      .map((s) => (prefix ? `${prefix} ${s.trim()}` : s.trim()))
-      .join(', ');
+  const scope = (sel) => scopeSelector(sel, prefix);
 
   const lines = rules.map((r) => `${scope(r.prelude)}{${r.body.trim()}}`);
   for (const n of names) lines.push(`@keyframes ${n}{${keyframes.get(n)}}`);
@@ -331,6 +518,49 @@ function renderMotionCss({ rules, reduced }, names, keyframes, prefix = '') {
 const XML_ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' };
 const xmlEscape = (s) => s.replace(/[&<>"]/g, (c) => XML_ESCAPES[c]);
 
+const NAMED_ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
+
+/**
+ * HTML attribute text -> the string it stands for.
+ *
+ * parseAttrs returns the source bytes, which is what the drawing wants: a `d` or a `fill`
+ * goes back out unchanged. Prose does not. `data-screen-label="Coffee &amp; donut"` is the
+ * correct way to write an ampersand in HTML and means the four characters `Coffee & donut`,
+ * but xmlEscape then escaped the escape and the emitted <title> read "Coffee &amp; donut"
+ * out loud. So the two attributes that are prose, aria-label and data-screen-label, are
+ * decoded on the way in and escaped once on the way out.
+ *
+ * An entity it does not know is an error rather than a passthrough, because a passthrough
+ * is the double-escape again.
+ */
+function decodeEntities(text, where = SOURCE) {
+  return text.replace(/&(#[0-9]+|#[xX][0-9A-Fa-f]+|[A-Za-z][A-Za-z0-9]*);/g, (whole, body) => {
+    if (body[0] === '#') {
+      const cp = body[1] === 'x' || body[1] === 'X' ? parseInt(body.slice(2), 16) : Number(body.slice(1));
+      if (!Number.isInteger(cp) || cp < 1 || cp > 0x10ffff) throw new Error(`${where}: ${whole} is not a character`);
+      return String.fromCodePoint(cp);
+    }
+    const ch = NAMED_ENTITIES[body];
+    if (ch === undefined) throw new Error(`${where}: ${whole} is an entity this generator cannot decode`);
+    return ch;
+  });
+}
+
+/**
+ * An <svg> element's own start tag and everything inside it.
+ *
+ * The end of the start tag is found with findTagEnd, not indexOf('>'), because a `>` is
+ * legal inside an attribute value and an aria-label is prose. Cutting at the first `>`
+ * spliced the tail of that attribute into the drawing as visible text, in all 24 files,
+ * with the gate green.
+ */
+function splitSvgRoot(raw, where = SOURCE) {
+  const end = findTagEnd(raw, 0);
+  const close = raw.lastIndexOf('</svg>');
+  if (close === -1 || close < end) throw new Error(`${where}: an <svg> start tag has no </svg>`);
+  return { open: raw.slice(0, end + 1), inner: raw.slice(end + 1, close) };
+}
+
 /**
  * Every `<figure data-doodle="...">` in the canvas, with its inline SVG.
  *
@@ -341,40 +571,50 @@ const xmlEscape = (s) => s.replace(/[&<>"]/g, (c) => XML_ESCAPES[c]);
 export async function doodles() {
   const src = await readSource();
   const vars = colourVars(src);
+  const { names: keyframeNames } = motionCss(src);
   const out = [];
 
-  const figure = /<figure\b[^>]*\bdata-doodle="([^"]+)"[^>]*>/g;
+  // Walked with findTagEnd + parseAttrs rather than one `<figure[^>]*>` regex, for the same
+  // reason the <svg> below is: a `>` inside data-screen-label is legal and would end the
+  // match early, and the label is prose.
+  const opens = /<figure\b/g;
   let m;
-  while ((m = figure.exec(src))) {
-    const doodleName = m[1];
-    const label = /\bdata-screen-label="([^"]*)"/.exec(m[0])?.[1] ?? doodleName;
+  while ((m = opens.exec(src))) {
+    const tagEnd = findTagEnd(src, m.index);
+    opens.lastIndex = tagEnd + 1;
 
-    const svgStart = src.indexOf('<svg', m.index);
-    const figureEnd = skipElement(src, 'figure', figure.lastIndex);
+    const figureAttrs = new Map(parseAttrs(src.slice(m.index + '<figure'.length, tagEnd)));
+    const doodleName = figureAttrs.get('data-doodle');
+    if (!doodleName) continue;
+    const label = decodeEntities(figureAttrs.get('data-screen-label') || doodleName);
+
+    const svgStart = src.indexOf('<svg', tagEnd);
+    const figureEnd = skipElement(src, 'figure', tagEnd + 1);
     if (svgStart === -1 || svgStart > figureEnd) throw new Error(`${SOURCE}: ${doodleName} has no <svg>`);
     const svgEnd = skipElement(src, 'svg', findTagEnd(src, svgStart) + 1);
-    const raw = src.slice(svgStart, svgEnd);
+    const { open, inner } = splitSvgRoot(src.slice(svgStart, svgEnd));
 
-    const attrs = new Map(parseAttrs(raw.slice(0, findTagEnd(raw, 0))));
+    const attrs = new Map(parseAttrs(open.slice('<svg'.length, -1)));
     const viewBox = attrs.get('viewBox');
     const aria = attrs.get('aria-label');
     if (!viewBox) throw new Error(`${SOURCE}: ${doodleName} has no viewBox`);
     if (!aria) throw new Error(`${SOURCE}: ${doodleName} has no aria-label`);
 
-    const inner = raw.slice(raw.indexOf('>', 0) + 1, raw.lastIndexOf('</svg>'));
-    const { svg: body, moved } = tokeniseColours(inner, vars);
+    const { svg: coloured, moved } = tokeniseColours(inner, vars);
+    const { svg: body, used, unresolved } = bindKeyframes(coloured, keyframeNames);
 
     const [, , w, h] = viewBox.trim().split(/\s+/).map(Number);
     out.push({
       name: doodleName,
       label,
-      aria,
+      aria: decodeEntities(aria),
       viewBox: viewBox.trim(),
       width: w,
       height: h,
       body: dedent(body),
       still: dedent(stripMotion(body)),
-      keyframes: [...keyframesUsed(body)].sort(),
+      keyframes: used,
+      unresolved,
       tokenised: moved,
     });
   }
@@ -396,7 +636,7 @@ function dedent(svg) {
 const CREDIT = 'MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.';
 
 function svgFile(d, styleBlock) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${d.viewBox}" width="${d.width}" height="${d.height}" role="img" aria-label="${xmlEscape(d.aria)}">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${d.viewBox}" width="${d.width}" height="${d.height}" role="img" class="${scopeClass(d.name)}" aria-label="${xmlEscape(d.aria)}">
   <title>${xmlEscape(d.label)}</title>
   <desc>${CREDIT}</desc>
 ${styleBlock ? `  <style>\n${styleBlock.replace(/^/gm, '    ')}\n  </style>\n` : ''}${d.body}
@@ -498,7 +738,13 @@ export async function artifacts() {
   for (const d of list) {
     // "notifications" is drawn without motion. Giving it a keyframe-less <style> would be a
     // block of CSS that animates nothing, so it gets none and its two tracks come out equal.
-    const style = d.keyframes.length ? renderMotionCss(css, d.keyframes, css.keyframes) : '';
+    //
+    // The scope is the root's own class, because this <style> is not scoped by the file
+    // boundary: pasted inline, which is the idiom the README teaches, every rule in it is a
+    // rule of the host document.
+    const style = d.keyframes.length
+      ? renderMotionCss(css, d.keyframes, css.keyframes, `svg.${scopeClass(d.name)}`)
+      : '';
     out.set(`doodles/${d.name}.svg`, svgFile(d, style));
     out.set(`doodles/still/${d.name}.svg`, svgFile({ ...d, body: d.still }, ''));
   }
@@ -548,6 +794,15 @@ export async function check(ctx) {
     if (/\{\{|\}\}/.test(d.body)) fail.push(`${d.name}: an unresolved {{ placeholder }} leaked out of the canvas`);
   }
 
+  // An animation declaration naming nothing the canvas defines animates nothing. It used to
+  // be invisible: the name was read positionally, so a shorthand written duration-first
+  // yielded no keyframe, and every gate below iterated over that empty list.
+  for (const d of list) {
+    for (const u of d.unresolved) {
+      fail.push(`${d.name}: "${u}" names no @keyframes the canvas defines, so it animates nothing`);
+    }
+  }
+
   // The whole point of the animated track being a standalone file: the page's @keyframes do
   // not come with it, so a keyframe referenced but not carried animates nothing, silently,
   // and only in the downloaded copy.
@@ -561,11 +816,78 @@ export async function check(ctx) {
     }
   }
 
+  // Nothing either track emits may name a node, or a keyframe, it does not own. A standalone
+  // .svg pasted inline puts its whole <style> into the host document, so an unscoped rule
+  // there is a rule about the host's page: the canvas's `*{transition-duration:.01ms}` under
+  // prefers-reduced-motion killed every transition on it.
+  //
+  // The expected scope is written out here rather than built from scopeClass(), so that
+  // changing the scoping in the generator fails this instead of moving with it.
+  for (const d of list) {
+    fail.push(...unscopedSelectors(files.get(`doodles/${d.name}.svg`) ?? '', `svg.kape-doodle-${d.name}`, `doodles/${d.name}.svg`));
+  }
+  fail.push(...unscopedSelectors(files.get('kape-doodle.js') ?? '', 'kape-doodle', 'kape-doodle.js'));
+
+  // The keyframe binder, on input the canvas does not contain today. Order in the shorthand
+  // is free, `steps(1,end)` holds a comma that is not an animation separator, and `none` is
+  // a declaration that legitimately names no keyframe.
+  const kfNames = new Map([['k-drip', 'kape-k-drip'], ['k-blink', 'kape-k-blink']]);
+  const durationFirst = bindKeyframes('<g style="animation:2.1s k-drip ease-in infinite"></g>', kfNames);
+  if (!durationFirst.used.includes('kape-k-drip')) fail.push('bindKeyframes() misses a duration-first animation shorthand');
+  if (durationFirst.unresolved.length) fail.push('bindKeyframes() calls a duration-first shorthand unresolved');
+  if (!durationFirst.svg.includes('animation:2.1s kape-k-drip ease-in infinite')) {
+    fail.push('bindKeyframes() does not rename a duration-first shorthand in place');
+  }
+  const withFn = bindKeyframes('<g style="animation:k-blink 1.7s steps(1,end) infinite"></g>', kfNames);
+  if (withFn.used.join() !== 'kape-k-blink' || withFn.unresolved.length) {
+    fail.push('bindKeyframes() mis-splits a shorthand containing steps(1,end)');
+  }
+  if (bindKeyframes('<g style="animation:none"></g>', kfNames).unresolved.length) {
+    fail.push('bindKeyframes() calls animation:none an unresolved keyframe');
+  }
+  if (!bindKeyframes('<g style="animation:k-nope 2s linear"></g>', kfNames).unresolved.length) {
+    fail.push('bindKeyframes() lets an animation naming no keyframe through');
+  }
+
+  // rewriteTags reserialises every tag from what parseAttrs returned, so an attribute form
+  // the parser cannot see is an attribute deleted from the drawing. All three HTML quoting
+  // forms have to survive the round trip.
+  const quoting = `<path d='M0 0' fill="#3F2A1D" data-flag stroke=none></path>`;
+  const pairs = parseAttrs(` d='M0 0' fill="#3F2A1D" data-flag stroke=none `, 'a test');
+  const byName = new Map(pairs);
+  if (byName.get('d') !== 'M0 0') fail.push('parseAttrs() cannot read a single-quoted attribute');
+  if (byName.get('stroke') !== 'none') fail.push('parseAttrs() cannot read an unquoted attribute');
+  if (!pairs.some(([k, v]) => k === 'data-flag' && v === null)) fail.push('parseAttrs() cannot read a valueless attribute');
+  const round = rewriteTags(quoting, (tag, attrs) => attrs);
+  for (const want of ['d="M0 0"', 'fill="#3F2A1D"', ' data-flag', 'stroke="none"']) {
+    if (!round.includes(want)) fail.push(`a tag round trip loses ${want}`);
+  }
+
+  // A `>` is legal inside an attribute value, and an aria-label is prose. Cutting the start
+  // tag at the first `>` spliced the tail of that attribute into the drawing as text.
+  const tricky = '<svg viewBox="0 0 4 4" aria-label="a > b"><circle r="1"></circle></svg>';
+  const split = splitSvgRoot(tricky, 'a test');
+  if (split.inner !== '<circle r="1"></circle>') fail.push('splitSvgRoot() cuts the start tag at a > inside an attribute value');
+  if (new Map(parseAttrs(split.open.slice('<svg'.length, -1), 'a test')).get('aria-label') !== 'a > b') {
+    fail.push('splitSvgRoot() does not keep an attribute value containing >');
+  }
+
+  // A label written the correct way for HTML must be read back as the characters it stands
+  // for, and escaped once, not twice.
+  if (decodeEntities('Coffee &amp; donut', 'a test') !== 'Coffee & donut') fail.push('decodeEntities() does not decode &amp;');
+  if (decodeEntities('&#39;s &#x3C;', 'a test') !== "'s <") fail.push('decodeEntities() does not decode a numeric entity');
+  if (xmlEscape(decodeEntities('Coffee &amp; donut', 'a test')) !== 'Coffee &amp; donut') {
+    fail.push('a label written with an entity comes out escaped twice');
+  }
+
   // The canvas draws its motion in CSS and holds no SMIL at all today, so the code that
   // strips <animate> and friends would never run on real input and could rot unnoticed.
   // A gate that only ever sees input it already handles proves nothing, so it is given some.
+  // The four properties are written out rather than read from MOTION_PROPERTIES, so that
+  // dropping an alternative from that regex fails here instead of quietly matching less.
   const smil =
-    '<g style="animation:k-bob 4s linear infinite;fill:red">' +
+    `<g style="animation:k-bob 4s linear infinite;transition:opacity .3s ease;` +
+    `offset-path:path('M0 0 L10 10');offset-distance:40%;fill:red">` +
     '<animate attributeName="r" to="9"/>' +
     '<circle r="2"><set attributeName="fill" to="#000"></set></circle>' +
     '<animateTransform type="rotate"></animateTransform>' +
@@ -574,7 +896,9 @@ export async function check(ctx) {
   for (const el of MOTION_ELEMENTS) {
     if (stripped.includes(`<${el}`)) fail.push(`stripMotion() leaves <${el}> behind`);
   }
-  if (/animation\s*:/.test(stripped)) fail.push('stripMotion() leaves an animation declaration behind');
+  for (const prop of ['animation', 'transition', 'offset-path', 'offset-distance']) {
+    if (new RegExp(`(?:^|[;"])${prop}\\s*:`).test(stripped)) fail.push(`stripMotion() leaves ${prop} behind, so the still track is not still`);
+  }
   if (!stripped.includes('<circle r="2">')) fail.push('stripMotion() drops drawing it should keep');
   if (!stripped.includes('fill:red')) fail.push('stripMotion() drops a declaration that is not motion');
 
@@ -586,11 +910,54 @@ export async function check(ctx) {
     for (const el of MOTION_ELEMENTS) {
       if (new RegExp(`<${el}\\b`).test(body)) fail.push(`${path} still contains a <${el}> element`);
     }
-    for (const m of body.matchAll(/(?:^|[;"{\s])(animation|transition)(?:-[a-z-]+)?\s*:/g)) {
+    for (const m of body.matchAll(/(?:^|[;"{\s])(animation|transition|offset-path|offset-distance)(?:-[a-z-]+)?\s*:/g)) {
       fail.push(`${path} still declares ${m[1]}, so it is not a still`);
     }
     if (body.includes('@keyframes')) fail.push(`${path} carries @keyframes, which a still has no use for`);
   }
 
+  return fail;
+}
+
+/**
+ * Every rule in an emitted file's CSS that could match, or rename, something the host owns.
+ *
+ * Reads the CSS out of the bytes that ship rather than out of renderMotionCss(), because a
+ * scoping promise is only kept by the file. @keyframes are checked by name: there is no way
+ * to scope one, so the only defence is a prefix nobody else would pick.
+ */
+function unscopedSelectors(text, scope, where) {
+  const fail = [];
+  let css;
+  if (where.endsWith('.js')) {
+    // The element carries its CSS as one JSON string literal, on one line.
+    const at = text.indexOf('const CSS = ');
+    if (at === -1) return [`${where} declares no CSS, so <kape-doodle> would not animate`];
+    try {
+      css = JSON.parse(text.slice(at + 'const CSS = '.length, text.indexOf(';\n', at)));
+    } catch (e) {
+      return [`${where}: cannot read the CSS literal back: ${e.message}`];
+    }
+  } else {
+    // A doodle drawn without motion carries no <style> at all, and has nothing to scope.
+    const at = text.indexOf('<style>');
+    if (at === -1) return [];
+    css = text.slice(at + '<style>'.length, text.indexOf('</style>', at));
+  }
+
+  const walk = (blocks) => {
+    for (const b of blocks) {
+      const kf = /^@keyframes\s+([-\w]+)/.exec(b.prelude);
+      if (kf) {
+        if (!kf[1].startsWith('kape-')) fail.push(`${where} defines @keyframes ${kf[1]}, a global name the host page may already use`);
+        continue;
+      }
+      if (/^@media/.test(b.prelude)) { walk(topLevelBlocks(b.body)); continue; }
+      for (const sel of b.prelude.split(',').map((s) => s.trim()).filter(Boolean)) {
+        if (!sel.startsWith(scope)) fail.push(`${where} has the unscoped rule "${sel}", which matches nodes on the host page`);
+      }
+    }
+  };
+  walk(topLevelBlocks(css));
   return fail;
 }

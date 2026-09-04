@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="A takeaway cup with a name scrawled on the sleeve and a receipt tucked under the lid, marked with a check">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" class="kape-doodle-success" aria-label="A takeaway cup with a name scrawled on the sleeve and a receipt tucked under the lid, marked with a check">
   <title>Success</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
   <style>
-    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
-    @keyframes k-twinkle{0%,100%{opacity:.1;transform:scale(.7)} 50%{opacity:1;transform:scale(1.1)}}
+    svg.kape-doodle-success [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-twinkle{0%,100%{opacity:.1;transform:scale(.7)} 50%{opacity:1;transform:scale(1.1)}}
     @media (prefers-reduced-motion: reduce){
-      svg [style*="animation"]{animation:none !important;}
-      *{transition-duration:.01ms !important;}
+      svg.kape-doodle-success [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-success *{transition-duration:.01ms !important;}
     }
   </style>
   <defs><pattern id="hs5" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
@@ -32,10 +32,10 @@
       <path d="M138 196l12-12M140 216l14-14M144 236l14-14"></path>
       <path d="M150 300l12-12M154 320l14-14M164 336l12-12"></path>
     </g>
-    <g style="animation:k-twinkle 2.8s ease-in-out infinite;animation-play-state:var(--anim,running)">
+    <g style="animation:kape-k-twinkle 2.8s ease-in-out infinite;animation-play-state:var(--anim,running)">
       <path d="M88 78l-18-10M84 110l-20 2M96 52l-8-16" stroke="#BE7008" stroke-width="4.5" stroke-linecap="round"></path>
     </g>
-    <g style="animation:k-twinkle 2.8s ease-in-out 1s infinite;animation-play-state:var(--anim,running)">
+    <g style="animation:kape-k-twinkle 2.8s ease-in-out 1s infinite;animation-play-state:var(--anim,running)">
       <path d="M336 200l18-8M338 228l20 4" stroke="#BE7008" stroke-width="4.5" stroke-linecap="round"></path>
     </g>
   </g>

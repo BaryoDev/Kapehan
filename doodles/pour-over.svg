@@ -1,13 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="Close crop of a gooseneck kettle pouring into a pour-over cone on a glass carafe">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" class="kape-doodle-pour-over" aria-label="Close crop of a gooseneck kettle pouring into a pour-over cone on a glass carafe">
   <title>Pour-over</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
   <style>
-    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
-    @keyframes k-drip{0%{opacity:0;transform:translateY(0) scaleY(.6)} 15%{opacity:1;transform:translateY(4px) scaleY(1)} 70%{opacity:1;transform:translateY(52px)} 80%{opacity:0;transform:translateY(56px)} 100%{opacity:0}}
-    @keyframes k-steam{0%{opacity:0;transform:translateY(6px)} 20%{opacity:.9} 100%{opacity:0;transform:translateY(-22px) translateX(4px)}}
+    svg.kape-doodle-pour-over [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-drip{0%{opacity:0;transform:translateY(0) scaleY(.6)} 15%{opacity:1;transform:translateY(4px) scaleY(1)} 70%{opacity:1;transform:translateY(52px)} 80%{opacity:0;transform:translateY(56px)} 100%{opacity:0}}
+    @keyframes kape-k-steam{0%{opacity:0;transform:translateY(6px)} 20%{opacity:.9} 100%{opacity:0;transform:translateY(-22px) translateX(4px)}}
     @media (prefers-reduced-motion: reduce){
-      svg [style*="animation"]{animation:none !important;}
-      *{transition-duration:.01ms !important;}
+      svg.kape-doodle-pour-over [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-pour-over *{transition-duration:.01ms !important;}
     }
   </style>
   <defs><pattern id="hd1" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
@@ -43,13 +43,13 @@
       <path d="M40 386c180-10 380-8 560 2" stroke-width="3.5"></path>
     </g>
     <path d="M350 192c-6 12-10 26-12 40" style="stroke:var(--acc,#C2593A)" stroke-width="5" stroke-linecap="round" fill="none"></path>
-    <ellipse cx="322" cy="252" rx="5" ry="7" style="fill:var(--acc,#C2593A);animation:k-drip 2.1s ease-in infinite;animation-play-state:var(--anim,running)"></ellipse>
+    <ellipse cx="322" cy="252" rx="5" ry="7" style="fill:var(--acc,#C2593A);animation:kape-k-drip 2.1s ease-in infinite;animation-play-state:var(--anim,running)"></ellipse>
     <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
       <path d="M256 170l10-10M264 182l12-12M272 196l12-12M282 210l12-12"></path>
       <path d="M262 300l14-14M266 318l16-16M272 336l16-16M282 352l14-14"></path>
       <path d="M496 152l10-10M512 156l12-12M530 158l12-12M548 158l12-12"></path>
     </g>
-    <path d="M300 120c-12-14 10-22-2-38" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none" style="animation:k-steam 3.9s ease-out infinite;animation-play-state:var(--anim,running)"></path>
-    <path d="M336 108c-8-10 6-16-2-28" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:k-steam 3.9s ease-out 1.6s infinite;animation-play-state:var(--anim,running)"></path>
+    <path d="M300 120c-12-14 10-22-2-38" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none" style="animation:kape-k-steam 3.9s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+    <path d="M336 108c-8-10 6-16-2-28" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:kape-k-steam 3.9s ease-out 1.6s infinite;animation-play-state:var(--anim,running)"></path>
   </g>
 </svg>

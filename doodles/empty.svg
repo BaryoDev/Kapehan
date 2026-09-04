@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="A coffee ring stain on a napkin where a cup used to be, a spoon left beside it">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" class="kape-doodle-empty" aria-label="A coffee ring stain on a napkin where a cup used to be, a spoon left beside it">
   <title>Empty</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
   <style>
-    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
-    @keyframes k-bob{0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-4px) rotate(-1deg)}}
+    svg.kape-doodle-empty [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-bob{0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-4px) rotate(-1deg)}}
     @media (prefers-reduced-motion: reduce){
-      svg [style*="animation"]{animation:none !important;}
-      *{transition-duration:.01ms !important;}
+      svg.kape-doodle-empty [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-empty *{transition-duration:.01ms !important;}
     }
   </style>
   <defs><pattern id="hs3" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
@@ -26,7 +26,7 @@
       <path d="M124 214c-8-40 24-76 66-76 40 0 72 32 70 72 0 20-8 36-20 48"></path>
       <path d="M146 262c-8-8-14-18-16-30"></path>
     </g>
-    <g style="animation:k-bob 5.2s ease-in-out infinite;animation-play-state:var(--anim,running)">
+    <g style="animation:kape-k-bob 5.2s ease-in-out infinite;animation-play-state:var(--anim,running)">
       <path d="M262 258c12-12 30-10 38 2 6 10 2 24-10 30-12 4-26-2-30-14z" stroke="none" style="fill:var(--card,#FFFDF9)"></path>
       <path d="M262 258c12-12 30-10 38 2 6 10 2 24-10 30-12 4-26-2-30-14z" fill="none" stroke-width="4.5" stroke-linecap="round" style="stroke:var(--ink,#241A13)"></path>
       <path d="M296 262c22-22 44-44 66-66" stroke-width="5" stroke-linecap="round" style="stroke:var(--ink,#241A13)"></path>

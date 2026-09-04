@@ -1,14 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="A barista leaning over an espresso machine, seen from the side, cropped at the counter">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" class="kape-doodle-barista" aria-label="A barista leaning over an espresso machine, seen from the side, cropped at the counter">
   <title>Barista</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
   <style>
-    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
-    @keyframes k-blink{0%,45%{opacity:1} 50%,95%{opacity:0}}
-    @keyframes k-drip{0%{opacity:0;transform:translateY(0) scaleY(.6)} 15%{opacity:1;transform:translateY(4px) scaleY(1)} 70%{opacity:1;transform:translateY(52px)} 80%{opacity:0;transform:translateY(56px)} 100%{opacity:0}}
-    @keyframes k-steam{0%{opacity:0;transform:translateY(6px)} 20%{opacity:.9} 100%{opacity:0;transform:translateY(-22px) translateX(4px)}}
+    svg.kape-doodle-barista [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-blink{0%,45%{opacity:1} 50%,95%{opacity:0}}
+    @keyframes kape-k-drip{0%{opacity:0;transform:translateY(0) scaleY(.6)} 15%{opacity:1;transform:translateY(4px) scaleY(1)} 70%{opacity:1;transform:translateY(52px)} 80%{opacity:0;transform:translateY(56px)} 100%{opacity:0}}
+    @keyframes kape-k-steam{0%{opacity:0;transform:translateY(6px)} 20%{opacity:.9} 100%{opacity:0;transform:translateY(-22px) translateX(4px)}}
     @media (prefers-reduced-motion: reduce){
-      svg [style*="animation"]{animation:none !important;}
-      *{transition-duration:.01ms !important;}
+      svg.kape-doodle-barista [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-barista *{transition-duration:.01ms !important;}
     }
   </style>
   <defs><pattern id="hd2" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
@@ -46,10 +46,10 @@
       <path d="M0 318c220-10 430-10 640 0"></path>
       <path d="M0 326h640" stroke-width="2" opacity=".3"></path>
     </g>
-    <path d="M436 274v16M470 274v16" style="stroke:var(--acc,#C2593A);animation:k-drip 1.5s linear infinite;animation-play-state:var(--anim,running)" stroke-width="4" stroke-linecap="round"></path>
-    <circle cx="388" cy="168" r="8" style="fill:var(--acc,#C2593A);animation:k-blink 1.7s steps(1,end) infinite;animation-play-state:var(--anim,running)"></circle>
+    <path d="M436 274v16M470 274v16" style="stroke:var(--acc,#C2593A);animation:kape-k-drip 1.5s linear infinite;animation-play-state:var(--anim,running)" stroke-width="4" stroke-linecap="round"></path>
+    <circle cx="388" cy="168" r="8" style="fill:var(--acc,#C2593A);animation:kape-k-blink 1.7s steps(1,end) infinite;animation-play-state:var(--anim,running)"></circle>
     <circle cx="416" cy="168" r="8" fill="#BE7008"></circle>
-    <path d="M512 284c-10-12 8-18-2-30" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none" style="animation:k-steam 3.1s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+    <path d="M512 284c-10-12 8-18-2-30" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none" style="animation:kape-k-steam 3.1s ease-out infinite;animation-play-state:var(--anim,running)"></path>
     <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
       <path d="M108 240l12-12M106 258l14-14M106 276l14-14M108 294l14-14"></path>
       <path d="M540 220l12-12M542 240l14-14M544 260l14-14M546 280l14-14M548 298l12-12"></path>

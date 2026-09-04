@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="Two friends leaning towards each other over a small table, hands resting around their cups">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" class="kape-doodle-friends" aria-label="Two friends leaning towards each other over a small table, hands resting around their cups">
   <title>Friends</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
   <style>
-    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
-    @keyframes k-steam{0%{opacity:0;transform:translateY(6px)} 20%{opacity:.9} 100%{opacity:0;transform:translateY(-22px) translateX(4px)}}
+    svg.kape-doodle-friends [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-steam{0%{opacity:0;transform:translateY(6px)} 20%{opacity:.9} 100%{opacity:0;transform:translateY(-22px) translateX(4px)}}
     @media (prefers-reduced-motion: reduce){
-      svg [style*="animation"]{animation:none !important;}
-      *{transition-duration:.01ms !important;}
+      svg.kape-doodle-friends [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-friends *{transition-duration:.01ms !important;}
     }
   </style>
   <defs><pattern id="hd5" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
@@ -49,8 +49,8 @@
       <path d="M358 236c18-4 36-4 54 0l-4 30c-8 14-34 14-42 0z"></path>
       <path d="M410 246c14 2 16 18 2 24"></path>
     </g>
-    <path d="M258 214c-8-12 6-16-2-28" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:k-steam 3.5s ease-out infinite;animation-play-state:var(--anim,running)"></path>
-    <path d="M384 216c-8-12 6-16-2-28" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:k-steam 3.5s ease-out 1.6s infinite;animation-play-state:var(--anim,running)"></path>
+    <path d="M258 214c-8-12 6-16-2-28" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:kape-k-steam 3.5s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+    <path d="M384 216c-8-12 6-16-2-28" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:kape-k-steam 3.5s ease-out 1.6s infinite;animation-play-state:var(--anim,running)"></path>
     <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
       <path d="M40 320l14-14M36 342l16-16M34 364l16-16M36 382l12-12"></path>
       <path d="M588 312l12-12M594 334l14-14M600 356l14-14M606 378l12-12" stroke="#7A3A28"></path>
