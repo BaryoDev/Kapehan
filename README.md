@@ -70,6 +70,9 @@ import { icons, palette, monoOf, wrap } from "kapehan/kapehan-icons.js";
 
 ## Component CSS
 
+> Ships in **0.3.0**, not yet published. `npm i kapehan` gives you 0.2.0 today, which has
+> the icons and the web component but not this.
+
 `kapehan.css` is a token-driven component sheet (`.kape-btn`, `.kape-card`, `.kape-combo`,
 `.kape-drawer` and friends). Import it once, then set the five palette roles:
 
@@ -90,6 +93,9 @@ five-line change. No component holds a hex; `npm test` fails the build if one ap
 `:root`. Square corners everywhere with `<html data-edges="square">`.
 
 ## Theming
+
+> Ships in **0.3.0**, not yet published. `npm i kapehan` gives you 0.2.0 today, which has
+> the icons and the web component but not this.
 
 The 28 palettes ship as data, extracted from the design canvas rather than retyped:
 
