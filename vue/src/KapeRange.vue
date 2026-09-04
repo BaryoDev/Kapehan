@@ -33,11 +33,18 @@ const shift = (days) => {
   focused.value = next;
   view.value = new Date(next.getFullYear(), next.getMonth(), 1);
 };
+const shiftMonth = (n) => {
+  const next = new Date(focused.value.getFullYear(), focused.value.getMonth() + n, 1);
+  const last = new Date(next.getFullYear(), next.getMonth() + 1, 0).getDate();
+  next.setDate(Math.min(focused.value.getDate(), last));
+  focused.value = next;
+  view.value = new Date(next.getFullYear(), next.getMonth(), 1);
+};
 const onKeydown = (e) => {
   const map = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
   if (map[e.key]) { shift(map[e.key]); e.preventDefault(); }
-  else if (e.key === "PageUp") { shift(-30); e.preventDefault(); }
-  else if (e.key === "PageDown") { shift(30); e.preventDefault(); }
+  else if (e.key === "PageUp") { shiftMonth(-1); e.preventDefault(); }
+  else if (e.key === "PageDown") { shiftMonth(1); e.preventDefault(); }
   else if (e.key === "Enter") { pick(focused.value); e.preventDefault(); }
   else if (e.key === "Escape") { draft.value = { from: props.from, to: props.to }; open.value = false; }
 };
@@ -60,9 +67,9 @@ const label = computed(() => (draft.value.from ? fmt(draft.value.from) + " to " 
 
       <div class="kape-cal" @keydown="onKeydown">
         <header>
-          <button aria-label="Previous month" @click="shift(-30)">&lsaquo;</button>
+          <button aria-label="Previous month" @click="shiftMonth(-1)">&lsaquo;</button>
           <span v-text="view.toLocaleDateString('en-PH', { month: 'long', year: 'numeric' })"></span>
-          <button aria-label="Next month" @click="shift(30)">&rsaquo;</button>
+          <button aria-label="Next month" @click="shiftMonth(1)">&rsaquo;</button>
         </header>
         <div class="kape-cal__grid" role="group" aria-label="Days">
           <button

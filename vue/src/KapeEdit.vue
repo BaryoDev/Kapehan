@@ -5,6 +5,7 @@ const emit = defineEmits(["save"]);
 const editing = ref(null);
 const draft = ref("");
 const field = ref(null);
+const status = ref("");
 
 const start = async (d) => {
   editing.value = d.id;
@@ -14,10 +15,15 @@ const start = async (d) => {
 };
 const commit = (d) => {
   const n = Number(draft.value);
-  if (!Number.isNaN(n)) emit("save", d.id, n);
+  if (draft.value.trim() === "" || Number.isNaN(n)) {
+    status.value = "Not a number, " + d.name + " unchanged";
+  } else {
+    status.value = d.name + " saved at " + n;
+    emit("save", d.id, n);
+  }
   editing.value = null;
 };
-const cancel = () => { editing.value = null; };
+const cancel = () => { editing.value = null; status.value = "Edit cancelled"; };
 </script>
 
 <template>
