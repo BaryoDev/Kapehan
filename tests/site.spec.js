@@ -1,20 +1,35 @@
 import { test, expect } from '@playwright/test';
+import { icons, categories } from '../kapehan-icons.js';
+
+// Counts come from the generator, never a literal. These assertions used to hardcode 37
+// and every one of them broke the day the Desserts group landed.
+const ICON_COUNT = icons.length;
+const GROUP_COUNT = categories.length;
+const TROPICAL = icons.filter((i) => i.category === 'Tropical').length;
 
 /**
  * The published site in docs/. It is the shop window for the package, so a broken
  * search or a recolour that stops propagating is a shipping bug, not a cosmetic one.
  */
 test.beforeEach(async ({ page }) => {
+  // The header fetches a live star count on every page load. Unstubbed, a 36-test run makes
+  // 36 calls against GitHub's 60-per-hour-per-IP budget, so the API starts answering 403 and
+  // the browser logs it. That made the console-error test fail 2 runs in 3, and would flake
+  // harder in CI where runners share an IP. Tests that care about the real failure path
+  // override this route themselves.
+  await page.route('https://api.github.com/**', (route) =>
+    route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ stargazers_count: 7 }) }));
+  await page.addInitScript(() => { try { localStorage.removeItem('kapehan.stars'); } catch (e) {} });
   await page.goto('/docs/');
-  await expect(page.locator('.hov-card')).toHaveCount(37);
+  await expect(page.locator('.hov-card')).toHaveCount(ICON_COUNT);
 });
 
 const search = (page) => page.locator('input.search');
 const cardNames = (page) => page.locator('.hov-card p.mono');
 
 test('renders every icon and names the groups', async ({ page }) => {
-  await expect(page.getByText('37 icons · 7 groups')).toBeVisible();
-  await expect(page.locator('.hov-card svg')).toHaveCount(37);
+  await expect(page.getByText(`${ICON_COUNT} icons · ${GROUP_COUNT} groups`)).toBeVisible();
+  await expect(page.locator('.hov-card svg')).toHaveCount(ICON_COUNT);
 });
 
 test('search finds an icon by tag and by alias', async ({ page }) => {
@@ -33,7 +48,22 @@ test('a search with no hits shows the empty state', async ({ page }) => {
 
 test('a category filters the grid', async ({ page }) => {
   await page.getByRole('button', { name: 'Tropical', exact: true }).click();
-  await expect(page.locator('.hov-card')).toHaveCount(9);
+  await expect(page.locator('.hov-card')).toHaveCount(TROPICAL);
+});
+
+test('the Desserts group filters to its own icons', async ({ page }) => {
+  const desserts = icons.filter((i) => i.category === 'Desserts');
+  expect(desserts.length).toBeGreaterThan(0);
+  await page.getByRole('button', { name: 'Desserts', exact: true }).click();
+  await expect(page.locator('.hov-card')).toHaveCount(desserts.length);
+  await expect(page.locator('.hov-card p.mono')).toHaveText(desserts.map((i) => i.name));
+});
+
+test('a Filipino pastry is findable by its own name', async ({ page }) => {
+  for (const [term, expected] of [['pandesal', 'pandesal'], ['brioche', 'ensaymada'], ['doughnut', 'donut']]) {
+    await search(page).fill(term);
+    await expect(cardNames(page)).toHaveText([expected]);
+  }
 });
 
 test('one colour leaves no literal hex behind', async ({ page }) => {
@@ -109,7 +139,7 @@ test('the page loads with no console errors', async ({ page }) => {
   page.on('console', (m) => m.type() === 'error' && ours(m.text()) && errors.push(m.text()));
   page.on('pageerror', (e) => ours(String(e)) && errors.push(String(e)));
   await page.goto('/docs/');
-  await expect(page.locator('.hov-card')).toHaveCount(37);
+  await expect(page.locator('.hov-card')).toHaveCount(ICON_COUNT);
   expect(errors).toEqual([]);
 });
 
@@ -118,6 +148,7 @@ test('the star count and the social links are present', async ({ page }) => {
   // link is asserted unconditionally and the count only when the API answered.
   const gh = page.locator('header a[href="https://github.com/BaryoDev/Kapehan"]');
   await expect(gh).toBeVisible();
+  await expect(gh).toContainText('7');
   await expect(page.locator('a[href="https://www.facebook.com/baryodev"]')).toBeVisible();
   await expect(page.locator('a[href="https://baryodev.medium.com/"]')).toBeVisible();
 });
@@ -126,7 +157,7 @@ test('a failing star API leaves the header intact', async ({ page }) => {
   await page.route('https://api.github.com/**', (r) => r.fulfill({ status: 403, body: '{}' }));
   await page.addInitScript(() => { try { localStorage.removeItem('kapehan.stars'); } catch (e) {} });
   await page.goto('/docs/');
-  await expect(page.locator('.hov-card')).toHaveCount(37);
+  await expect(page.locator('.hov-card')).toHaveCount(ICON_COUNT);
   const gh = page.locator('header a[href="https://github.com/BaryoDev/Kapehan"]');
   await expect(gh).toBeVisible();
   await expect(gh).toHaveText(/GitHub/);
@@ -143,7 +174,7 @@ test.describe('responsive', () => {
     test(`no horizontal overflow at ${width}px (${label})`, async ({ page }) => {
       await page.setViewportSize({ width, height });
       await page.goto('/docs/');
-      await expect(page.locator('.hov-card')).toHaveCount(37);
+      await expect(page.locator('.hov-card')).toHaveCount(ICON_COUNT);
       const m = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, inner: window.innerWidth }));
       expect(m.scroll, `document is ${m.scroll}px wide in a ${m.inner}px window`).toBe(m.inner);
     });
@@ -173,7 +204,7 @@ test('the search box has an accessible name, not just a placeholder', async ({ p
 
 test('keyboard focus draws a visible ring', async ({ page }) => {
   await page.goto('/docs/');
-  await expect(page.locator('.hov-card')).toHaveCount(37);
+  await expect(page.locator('.hov-card')).toHaveCount(ICON_COUNT);
   const tile = page.locator('.hov-card button[title="Customize and export"]').first();
   await tile.focus();
   const ring = await tile.evaluate((el) => {
@@ -248,7 +279,7 @@ test.describe('downloads', () => {
         stream.on('data', (c) => (d += c));
         stream.on('end', () => res(d));
       });
-      expect((body.match(/<symbol /g) || []).length).toBe(37);
+      expect((body.match(/<symbol /g) || []).length).toBe(ICON_COUNT);
       expect(body).toContain('id="kape-barako"');
     }
   });

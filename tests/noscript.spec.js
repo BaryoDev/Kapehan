@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * Its own file on purpose: site.spec.js has a beforeEach that waits for 37 icon cards,
+ * Its own file on purpose: site.spec.js has a beforeEach that waits for every icon card,
  * which can never appear with JS off.
  *
  * #app is empty in the HTML, so before this fallback existed a blocked CDN, a failed

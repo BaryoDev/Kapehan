@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kapehan Doodles v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin:0; padding:0; }
+  body { background:#FBF6EE; }
+  a { color:#8A5106; text-decoration:none; border-bottom:1px solid rgba(138,81,6,.35); }
+  a:hover { color:#C2593A; border-bottom-color:rgba(194,89,58,.6); }
+  svg [style*="animation"] { transform-box:fill-box; transform-origin:center; }
+  @keyframes k-steam { 0%{opacity:0;transform:translateY(6px)} 20%{opacity:.9} 100%{opacity:0;transform:translateY(-22px) translateX(4px)} }
+  @keyframes k-drip { 0%{opacity:0;transform:translateY(0) scaleY(.6)} 15%{opacity:1;transform:translateY(4px) scaleY(1)} 70%{opacity:1;transform:translateY(52px)} 80%{opacity:0;transform:translateY(56px)} 100%{opacity:0} }
+  @keyframes k-bob { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-4px) rotate(-1deg)} }
+  @keyframes k-spin { to{transform:rotate(360deg)} }
+  @keyframes k-blink { 0%,45%{opacity:1} 50%,95%{opacity:0} }
+  @keyframes k-wob { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(1.5deg)} }
+  @keyframes k-twinkle { 0%,100%{opacity:.1;transform:scale(.7)} 50%{opacity:1;transform:scale(1.1)} }
+  @keyframes k-sip { 0%,58%,100%{transform:translate(0,0) rotate(0)} 30%{transform:translate(-5px,-9px) rotate(-7deg)} }
+  @keyframes k-tap { 0%,100%{transform:translateY(0)} 40%{transform:translateY(-4px) rotate(-3deg)} }
+  @keyframes k-nod { 0%,100%{transform:rotate(0)} 50%{transform:rotate(3deg)} }
+  @keyframes k-click { 0%,70%,100%{transform:translateY(0) rotate(0)} 78%{transform:translateY(5px) rotate(2deg)} }
+  @keyframes k-pulse { 0%,100%{opacity:.35} 50%{opacity:1} }
+  @media (prefers-reduced-motion: reduce) {
+    svg [style*="animation"] { animation:none !important; }
+    * { transition-duration:.01ms !important; }
+  }
+</style>
+</helmet>
+
+<div style="min-height:{{ minH }};background:var(--bg,#FBF6EE);color:var(--ink,#241A13);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;--acc:{{ acc }};--hatch-op:{{ hatchOp }};--anim:{{ anim }};--bg:{{ pageBg }};--card:{{ cardBg }};--line:{{ lineCol }};--ink:{{ inkCol }};--muted:{{ mutedCol }}">
+  <div style="max-width:1180px;margin:0 auto;padding:{{ pad }}">
+
+    <sc-if value="{{ showHead }}" hint-placeholder-val="{{ true }}">
+    <header style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:48px;align-items:end;padding-bottom:40px;border-bottom:1px solid var(--line,#EFE4D3)">
+      <div>
+        <div style="font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted,#7A6A5C);margin-bottom:22px">Kapehan · Doodles · second pass</div>
+        <h1 style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:clamp(40px,6.4vw,72px);line-height:.98;letter-spacing:-.02em;text-wrap:balance">Drawn like somebody <em style="font-style:italic;color:var(--acc,#C2593A)">sat there.</em></h1>
+      </div>
+      <p style="margin:0;font-size:16px;line-height:1.65;color:var(--muted,#7A6A5C);max-width:44ch;text-wrap:pretty">Wobbly contours, fills that miss their lines a little, hatching only where the shadow falls. Twelve café moments, twelve things a screen has to say. Below them, how they sit inside a real page and a real phone.</p>
+    </header>
+    </sc-if>
+
+    <sc-if value="{{ showPlace }}" hint-placeholder-val="{{ true }}">
+    <section style="padding-top:{{ placeTop }}">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:28px">
+        <h2 style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:clamp(28px,3.6vw,40px);letter-spacing:-.015em">In place</h2>
+        <span style="font-size:13px;color:var(--muted,#7A6A5C)">the headline carries the message, the doodle sets the mood</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:start">
+        <div style="zoom:.55;border-radius:12px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(36,26,19,.35)">
+          <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" width="{{ 1100 }}" height="{{ 640 }}" url="tindahan.coffee/menu/ube-latte" hint-size="1100px,640px">
+            <div style="height:100%;background:#FBF6EE;color:#241A13;font-family:system-ui,-apple-system,sans-serif;display:flex;flex-direction:column">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:26px 56px;font-size:15px">
+                <div style="font-family:Newsreader,Georgia,serif;font-size:24px;letter-spacing:-.01em">Tindahan Coffee</div>
+                <div style="display:flex;gap:32px;color:#6E5F52">
+                  <span>Menu</span><span>Beans</span><span>Our shop</span><span style="color:#241A13">Order</span>
+                </div>
+              </div>
+              <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:0 56px 40px;gap:40px">
+                <div>
+                  <div style="font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#7A6A5C">Error 404</div>
+                  <h3 style="margin:14px 0 0;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:54px;line-height:1.02;letter-spacing:-.02em;text-wrap:balance">That page got knocked off the table.</h3>
+                  <p style="margin:18px 0 0;font-size:18px;line-height:1.55;color:#6E5F52;max-width:40ch">The ube latte moved to the seasonal menu. Everything else is where you left it.</p>
+                  <div style="display:flex;gap:12px;margin-top:30px">
+                    <span style="display:inline-block;padding:14px 22px;border-radius:999px;background:#241A13;color:#FBF6EE;font-size:15px;font-weight:600">Back to the menu</span>
+                    <span style="display:inline-block;padding:14px 22px;border-radius:999px;border:1.5px solid #E2D3BC;color:#241A13;font-size:15px;font-weight:600">Seasonal drinks</span>
+                  </div>
+                </div>
+                <svg viewBox="0 0 400 400" style="width:100%;max-width:420px;justify-self:end"><use href="#dd-404"></use></svg>
+              </div>
+            </div>
+          </x-import>
+        </div>
+
+        <div style="zoom:.4">
+          <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+            <div style="height:100%;background:#FBF6EE;color:#241A13;font-family:-apple-system,system-ui,sans-serif;display:flex;flex-direction:column;padding:72px 24px 40px;box-sizing:border-box">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:17px;font-weight:600">Your bag</span>
+                <span style="font-size:15px;color:#7A6A5C">Edit</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px">
+                <svg viewBox="0 0 400 400" style="width:230px;margin-bottom:10px"><use href="#dd-empty"></use></svg>
+                <div style="font-size:22px;font-weight:700;letter-spacing:-.01em">Nothing in the bag yet</div>
+                <div style="font-size:15px;line-height:1.45;color:#7A6A5C;max-width:26ch">Pick something from today's menu and it'll show up here.</div>
+              </div>
+              <span style="display:block;text-align:center;padding:16px;border-radius:14px;background:#241A13;color:#FBF6EE;font-size:16px;font-weight:600">Browse the menu</span>
+            </div>
+          </x-import>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:start;margin-top:24px">
+        <div style="zoom:.4">
+          <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+            <div style="height:100%;background:#17100B;color:#FBF6EE;font-family:-apple-system,system-ui,sans-serif;display:flex;flex-direction:column;padding:72px 24px 40px;box-sizing:border-box">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:17px;font-weight:600">Order status</span>
+                <span style="font-size:15px;color:#A08F7D">#2381</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px">
+                <div style="width:230px;background:#FFFDF9;border-radius:24px;padding:10px;margin-bottom:14px"><svg viewBox="0 0 400 400" style="width:100%;display:block"><use href="#dd-offline"></use></svg></div>
+                <div style="font-size:22px;font-weight:700;letter-spacing:-.01em">You're offline</div>
+                <div style="font-size:15px;line-height:1.45;color:#C9B9A6;max-width:28ch">Your order is safe. We'll refresh the status the moment you're back.</div>
+              </div>
+              <span style="display:block;text-align:center;padding:16px;border-radius:14px;border:1.5px solid #3A2B1F;color:#FBF6EE;font-size:16px;font-weight:600">Try again</span>
+            </div>
+          </x-import>
+        </div>
+
+        <div style="zoom:.55;border-radius:12px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(36,26,19,.35)">
+          <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" width="{{ 1100 }}" height="{{ 640 }}" url="tindahan.coffee" hint-size="1100px,640px">
+            <div style="height:100%;background:#FFFDF9;color:#241A13;font-family:system-ui,-apple-system,sans-serif;display:flex;flex-direction:column">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:26px 56px;font-size:15px">
+                <div style="font-family:Newsreader,Georgia,serif;font-size:24px;letter-spacing:-.01em">Tindahan Coffee</div>
+                <div style="display:flex;gap:32px;color:#6E5F52"><span>Menu</span><span>Beans</span><span>Our shop</span><span style="color:#241A13">Order</span></div>
+              </div>
+              <div style="flex:1;display:grid;grid-template-columns:1.1fr 1fr;align-items:end;padding:0 0 0 56px;gap:24px">
+                <div style="padding-bottom:64px">
+                  <h3 style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:62px;line-height:1;letter-spacing:-.02em;text-wrap:balance">Open at six.<br />Brewing by five.</h3>
+                  <p style="margin:20px 0 0;font-size:18px;line-height:1.55;color:#6E5F52;max-width:38ch">A small shop on Kalayaan Avenue. Beans from Sagada and Bukidnon, roasted on Tuesdays.</p>
+                  <span style="display:inline-block;margin-top:28px;padding:14px 22px;border-radius:999px;background:#C2593A;color:#FBF6EE;font-size:15px;font-weight:600">See the menu</span>
+                </div>
+                <svg viewBox="0 0 640 400" style="width:100%;display:block"><use href="#dd-barista"></use></svg>
+              </div>
+            </div>
+          </x-import>
+        </div>
+      </div>
+    </section>
+    </sc-if>
+
+    <sc-if value="{{ showGallery }}" hint-placeholder-val="{{ true }}">
+    <section style="padding-top:{{ galTop }}">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:28px">
+        <h2 style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:clamp(28px,3.6vw,40px);letter-spacing:-.015em">Café moments</h2>
+        <span style="font-size:13px;color:var(--muted,#7A6A5C)">640 × 400 · cropped tight, drawn off-centre · 12 scenes</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:36px 28px">
+
+        <figure data-doodle="pour-over" data-screen-label="Pour-over" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Close crop of a gooseneck kettle pouring into a pour-over cone on a glass carafe">
+              <defs><pattern id="hd1" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-pour">
+                <g stroke="none">
+                  <path d="M262 322c22-6 100-6 128 2l-6 44c-4 20-30 26-58 26s-54-6-58-26z" style="fill:var(--acc,#C2593A)"></path>
+                  <path d="M216 150c70-10 150-8 224 0l-54 84c-40 4-78 4-118 0z" fill="#F1E8DA"></path>
+                  <path d="M474 98c46-14 96-10 128 4l8 62c-42 16-98 16-132 2z" fill="#F1E8DA"></path>
+                  <path d="M474 98c46-14 96-10 128 4l8 62c-42 16-98 16-132 2z" fill="url(#hd1)"></path>
+                  <path d="M118 340c-8-16 8-30 22-28 16 2 22 20 12 32-10 10-28 8-34-4z" fill="#3F2A1D"></path>
+                  <path d="M160 358c-4-14 12-24 24-20 14 4 16 20 6 30s-26 4-30-10z" fill="#3F2A1D"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M244 224c50-6 110-4 156 2"></path>
+                  <path d="M246 232l12 128c2 22 26 32 62 32 34 0 58-10 62-30l10-130"></path>
+                  <path d="M400 250c40 6 42 52 6 62"></path>
+                  <path d="M212 146c72-10 156-10 230-2"></path>
+                  <path d="M228 152l52 86c34 6 74 6 108 0l50-88"></path>
+                  <path d="M262 200c30 6 84 6 118-2" stroke-width="3" opacity=".5"></path>
+                  <path d="M470 100c40-14 100-12 136 4"></path>
+                  <path d="M472 104l10 60c40 14 92 12 130-4"></path>
+                  <path d="M474 130c-46 4-100 26-134 60"></path>
+                  <path d="M482 156c-48 12-94 34-126 62"></path>
+                  <path d="M492 94c12-30 66-38 92-14"></path>
+                  <path d="M540 80l4-16M530 62c8-4 18-4 26 0"></path>
+                  <path d="M526 70c-4-22 20-36 40-26 12 6 16 20 8 30"></path>
+                  <path d="M566 44c24-16 50-22 74-22"></path>
+                  <path d="M574 74c22-6 44-8 66-8"></path>
+                  <path d="M118 340c-8-16 8-30 22-28 16 2 22 20 12 32-10 10-28 8-34-4z" stroke-width="3"></path>
+                  <path d="M160 358c-4-14 12-24 24-20 14 4 16 20 6 30s-26 4-30-10z" stroke-width="3"></path>
+                  <path d="M126 322c8 8 12 20 10 30" stroke="#F1E8DA" stroke-width="2.5"></path>
+                  <path d="M172 342c6 6 10 14 8 24" stroke="#F1E8DA" stroke-width="2.5"></path>
+                  <path d="M40 386c180-10 380-8 560 2" stroke-width="3.5"></path>
+                </g>
+                <path d="M350 192c-6 12-10 26-12 40" style="stroke:var(--acc,#C2593A)" stroke-width="5" stroke-linecap="round" fill="none"></path>
+                <ellipse cx="322" cy="252" rx="5" ry="7" style="fill:var(--acc,#C2593A);animation:k-drip 2.1s ease-in infinite;animation-play-state:var(--anim,running)"></ellipse>
+                <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M256 170l10-10M264 182l12-12M272 196l12-12M282 210l12-12"></path>
+                  <path d="M262 300l14-14M266 318l16-16M272 336l16-16M282 352l14-14"></path>
+                  <path d="M496 152l10-10M512 156l12-12M530 158l12-12M548 158l12-12"></path>
+                </g>
+                <path d="M300 120c-12-14 10-22-2-38" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none" style="animation:k-steam 3.9s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+                <path d="M336 108c-8-10 6-16-2-28" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:k-steam 3.9s ease-out 1.6s infinite;animation-play-state:var(--anim,running)"></path>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Pour-over</span> <span style="color:var(--muted,#7A6A5C)">hand cropped at the wrist, kettle leaves the frame</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="barista" data-screen-label="Barista" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="A barista leaning over an espresso machine, seen from the side, cropped at the counter">
+              <defs><pattern id="hd2" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-barista">
+                <g stroke="none">
+                  <path d="M118 128c14-38 64-44 88-14 10 12 6 30-2 40-18-16-52-14-84 4-2-10-4-20-2-30z" fill="#3F2A1D"></path>
+                  <path d="M134 182c34-16 82-2 108 30 20 26 30 60 34 94l-176 6c-6-46 4-102 34-130z" fill="#F1E8DA"></path>
+                  <path d="M134 182c34-16 82-2 108 30 20 26 30 60 34 94l-176 6c-6-46 4-102 34-130z" fill="url(#hd2)"></path>
+                  <path d="M170 228c24-6 50-2 66 10l8 70-88 2z" style="fill:var(--acc,#C2593A)"></path>
+                  <path d="M226 212c42 4 76 28 96 60l-18 22c-26-22-56-40-86-46z" fill="#F1E8DA"></path>
+                  <path d="M338 128c74-10 160-8 236 2l-6 178-222 6z" fill="#F1E8DA"></path>
+                  <path d="M338 128c74-10 160-8 236 2l-6 178-222 6z" fill="url(#hd2)"></path>
+                  <path d="M356 146c68-8 134-6 202 0l-2 46c-70 6-134 6-204 2z" fill="#FFFDF9"></path>
+                  <path d="M0 316c220-10 430-10 640 0v84H0z" fill="#E2D3BC"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M110 138c8-40 62-50 92-24 16 14 14 42-6 56-30 20-72 8-84-14"></path>
+                  <path d="M120 122c22-14 56-14 80 2"></path>
+                  <path d="M156 176c-10 8-14 16-14 26"></path>
+                  <path d="M128 190c34-22 88-8 116 28 22 30 30 66 32 100"></path>
+                  <path d="M136 196c-30 30-38 84-32 124"></path>
+                  <path d="M166 230c28-8 56-2 74 10"></path>
+                  <path d="M174 238l-4 72M240 244l6 66"></path>
+                  <path d="M226 212c42 4 78 28 98 60"></path>
+                  <path d="M218 248c30 8 56 26 76 48"></path>
+                  <path d="M318 270c14-10 32-4 34 10 2 12-12 20-26 14-8-4-12-14-8-24z"></path>
+                  <path d="M336 126c78-10 162-8 240 2"></path>
+                  <path d="M342 132l-4 176M574 134l-4 174"></path>
+                  <path d="M354 146c70-8 138-6 206 0M356 190c68 4 136 4 204 0"></path>
+                  <path d="M354 148l2 44M560 146l-2 44"></path>
+                  <path d="M418 232c26-4 46-2 64 2M424 236l4 22c10 8 34 8 44 0l4-22"></path>
+                  <path d="M436 260v14M470 260v14"></path>
+                  <path d="M424 280c22-4 40-2 56 2l-4 26h-46z"></path>
+                  <path d="M520 214c4 28 0 50-12 66"></path>
+                  <path d="M0 318c220-10 430-10 640 0"></path>
+                  <path d="M0 326h640" stroke-width="2" opacity=".3"></path>
+                </g>
+                <path d="M436 274v16M470 274v16" style="stroke:var(--acc,#C2593A);animation:k-drip 1.5s linear infinite;animation-play-state:var(--anim,running)" stroke-width="4" stroke-linecap="round"></path>
+                <circle cx="388" cy="168" r="8" style="fill:var(--acc,#C2593A);animation:k-blink 1.7s steps(1,end) infinite;animation-play-state:var(--anim,running)"></circle>
+                <circle cx="416" cy="168" r="8" fill="#BE7008"></circle>
+                <path d="M512 284c-10-12 8-18-2-30" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none" style="animation:k-steam 3.1s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+                <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M108 240l12-12M106 258l14-14M106 276l14-14M108 294l14-14"></path>
+                  <path d="M540 220l12-12M542 240l14-14M544 260l14-14M546 280l14-14M548 298l12-12"></path>
+                  <path d="M126 112l10-10M140 106l10-10"></path>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Barista</span> <span style="color:var(--muted,#7A6A5C)">leaning in, weight on the counter, shot pulling</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="latte-sip" data-screen-label="Latte sip" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Close-up of someone with shoulders raised, lifting a wide latte cup with both hands">
+              <defs><pattern id="hd3" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-latte">
+                <g stroke="none">
+                  <path d="M232 108c20-70 110-92 168-52 30 20 40 50 34 82-58-30-136-28-202 8-6-12-4-26 0-38z" fill="#3F2A1D"></path>
+                  <path d="M262 220c-70 10-130 50-160 110l-10 74 456-4-6-70c-30-60-100-100-170-110z" fill="#F1E8DA"></path>
+                  <path d="M262 220c-70 10-130 50-160 110l-10 74 456-4-6-70c-30-60-100-100-170-110z" fill="url(#hd3)"></path>
+                  <path d="M262 224c40 24 90 24 130-2l-10 40c-36 20-76 20-112 0z" style="fill:var(--acc,#C2593A)"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M230 128c6-64 74-102 136-82 46 14 76 56 68 106"></path>
+                  <path d="M236 96c50-32 130-26 190 18"></path>
+                  <path d="M228 150c-6 40 14 76 46 92"></path>
+                  <path d="M430 156c4 34-12 68-40 88"></path>
+                  <path d="M274 208c-4 14-6 24-4 34"></path>
+                  <path d="M262 224c-80 16-150 66-176 148"></path>
+                  <path d="M392 226c70 12 134 60 166 132"></path>
+                  <path d="M0 386c200-10 420-10 640 0" stroke-width="3.5"></path>
+                </g>
+                <g style="animation:k-sip 5.5s ease-in-out infinite;animation-play-state:var(--anim,running)">
+                  <path d="M232 250c70-8 140-8 210 0l-10 46c-14 40-46 60-96 60s-80-20-94-60z" fill="#FFFDF9" stroke="none"></path>
+                  <path d="M246 268c60-8 122-8 182 0l-6 20c-10 30-40 44-84 44s-72-14-84-44z" style="fill:var(--acc,#C2593A)" stroke="none"></path>
+                  <path d="M296 282c22-10 50-8 66 6-10 12-30 16-48 10-8-4-14-10-18-16z" fill="#FFFDF9" stroke="none"></path>
+                  <path d="M234 296c-22-8-48 2-54 22-6 22 12 40 40 38l12-2 10-56z" fill="#FFFDF9" stroke="none"></path>
+                  <path d="M440 300c22-10 48-2 56 18 6 22-12 40-44 36l-6-2-12-50z" fill="#FFFDF9" stroke="none"></path>
+                  <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M228 248c74-10 148-10 222 0"></path>
+                    <path d="M232 254l10 40c14 40 46 62 96 62s80-22 94-62l12-42"></path>
+                    <path d="M446 266c36 6 36 48 2 58"></path>
+                    <path d="M232 296c-22-8-46 2-52 20-6 22 12 40 40 38l10-2"></path>
+                    <path d="M180 316c8-10 22-14 36-10M182 330c10-6 22-8 34-6"></path>
+                    <path d="M440 300c22-10 48-2 54 18 6 22-12 40-42 36"></path>
+                    <path d="M492 320c-8-10-22-14-36-10M490 334c-10-6-22-8-34-6"></path>
+                  </g>
+                  <path d="M290 232c-10-12 8-18-2-30" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none" style="animation:k-steam 3.4s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+                  <path d="M380 236c-10-12 8-18-2-30" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:k-steam 3.4s ease-out 1.3s infinite;animation-play-state:var(--anim,running)"></path>
+                  <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                    <path d="M250 300l12-12M260 318l14-14M272 336l14-14M288 350l12-12"></path>
+                  </g>
+                </g>
+                <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M120 330l14-14M116 350l16-16M116 370l16-16"></path>
+                  <path d="M512 340l14-14M516 360l14-14M522 378l12-12"></path>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Latte sip</span> <span style="color:var(--muted,#7A6A5C)">shoulders up, both hands, face behind the rim</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="coffee-donut" data-screen-label="Coffee and donut" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Top-down view of a round table with a cup of coffee, a bitten donut on a plate and a folded napkin">
+              <defs><pattern id="hd4" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-donut">
+                <g stroke="none">
+                  <path d="M60 40c160-70 400-70 560 10 60 130 40 260-30 350H80C0 300-10 160 60 40z" fill="#F1E8DA"></path>
+                  <path d="M60 40c160-70 400-70 560 10 60 130 40 260-30 350H80C0 300-10 160 60 40z" fill="url(#hd4)"></path>
+                  <path d="M74 234c28-6 58-6 86 0l4 106c-30 6-62 6-92 0z" fill="#FFFDF9"></path>
+                  <ellipse cx="214" cy="192" rx="66" ry="64" fill="#FFFDF9"></ellipse>
+                  <ellipse cx="216" cy="194" rx="50" ry="48" style="fill:var(--acc,#C2593A)"></ellipse>
+                  <ellipse cx="452" cy="216" rx="122" ry="114" fill="#FFFDF9"></ellipse>
+                  <path d="M448 130c50-4 92 34 92 82 0 46-40 84-90 84-48 0-88-36-86-84 0-46 38-80 84-82zM452 180c-20 0-32 16-32 34 0 20 14 34 32 34s32-14 32-34c0-18-14-34-32-34z" style="fill:var(--acc,#C2593A)" fill-rule="evenodd"></path>
+                  <circle cx="524" cy="154" r="27" fill="#FFFDF9"></circle>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M40 60c180-70 400-64 560 30"></path>
+                  <path d="M598 92c50 120 34 240-38 316M44 62C-10 190 8 300 90 388"></path>
+                  <path d="M144 192c0-42 30-72 70-72 38 0 68 30 68 70 0 40-30 70-70 70-38 0-68-30-68-68z"></path>
+                  <path d="M166 192c0-30 22-52 50-52 26 0 48 22 48 50 0 28-22 50-50 50-26 0-48-22-48-48"></path>
+                  <path d="M282 178c26 2 34 30 12 44"></path>
+                  <path d="M200 176c14-8 30-6 38 6-4 12-16 18-28 14" stroke="#F1E8DA" stroke-width="3"></path>
+                  <path d="M330 210c0-64 54-116 122-116 66 0 120 52 120 118 0 64-54 116-120 116-68 0-122-52-122-118"></path>
+                  <path d="M362 214c0-46 40-84 88-84 50 0 90 38 90 86 0 46-40 84-90 84-48 0-88-38-88-86z"></path>
+                  <path d="M420 214c0-18 14-32 32-32 16 0 30 14 30 32 0 16-14 30-30 30-18 0-32-14-32-30z"></path>
+                  <path d="M500 140c-8 12-4 30 10 38 12 6 26 4 36-6"></path>
+                  <path d="M506 152l-6 4M512 168l-6 6M528 176l-2 8" stroke-width="3"></path>
+                  <path d="M70 232c30-8 60-8 90-2M160 230l4 108M70 232l2 110M72 342c30 6 62 6 92 0"></path>
+                  <path d="M88 254c20-2 40-2 60 0" stroke-width="2.5" opacity=".45"></path>
+                </g>
+                <g style="animation:k-bob 4.8s ease-in-out infinite;animation-play-state:var(--anim,running)">
+                  <path d="M392 160l8 10M420 146l4 12M456 144l-2 12M382 200l12 2M512 196l-12 4M400 256l10-8M500 250l-10-6" stroke="#FBF6EE" stroke-width="5" stroke-linecap="round"></path>
+                </g>
+                <path d="M304 236c-10-12 8-18-2-30" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none" style="animation:k-steam 3.6s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+                <path d="M270 120c-8-10 6-16-2-26" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:k-steam 3.6s ease-out 1.5s infinite;animation-play-state:var(--anim,running)"></path>
+                <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M150 226l12-12M158 240l14-14M170 250l12-12"></path>
+                  <path d="M352 270l12-12M366 286l14-14M384 298l14-14M404 306l12-12"></path>
+                  <path d="M80 300l10-10M82 318l12-12"></path>
+                </g>
+                <circle cx="316" cy="300" r="3" fill="#A08F7D"></circle>
+                <circle cx="336" cy="318" r="4" fill="#A08F7D"></circle>
+                <circle cx="290" cy="328" r="2.5" fill="#A08F7D"></circle>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Coffee + donut</span> <span style="color:var(--muted,#7A6A5C)">seen from above, one bite gone</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="friends" data-screen-label="Friends" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Two friends leaning towards each other over a small table, hands resting around their cups">
+              <defs><pattern id="hd5" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-friends">
+                <g stroke="none">
+                  <path d="M108 118c10-42 62-52 88-22 10 12 8 30 0 42-24-16-56-14-86 4-4-8-4-16-2-24z" fill="#3F2A1D"></path>
+                  <path d="M474 110c-6-40 40-62 74-40 16 10 22 30 16 46-24-14-56-12-84 6-4-4-6-8-6-12z" fill="#5A3A24"></path>
+                  <path d="M552 128c18 4 26 22 16 38-8-10-18-16-30-18 6-8 10-14 14-20z" fill="#5A3A24"></path>
+                  <path d="M84 182c40-22 92-10 122 26l30 40-64 130-160 6c-4-70 18-150 72-202z" fill="#F1E8DA"></path>
+                  <path d="M84 182c40-22 92-10 122 26l30 40-64 130-160 6c-4-70 18-150 72-202z" fill="url(#hd5)"></path>
+                  <path d="M552 186c-40-24-92-12-124 22l-32 44 66 130 166 4c4-72-20-150-76-200z" style="fill:var(--acc,#C2593A)"></path>
+                  <path d="M198 272c78-10 168-10 244 2l6 20c-80 8-176 8-256 0z" fill="#E2D3BC"></path>
+                  <path d="M240 238c14-2 30-2 44 0l-4 26c-10 12-28 12-38 0z" fill="#FFFDF9"></path>
+                  <path d="M362 240c14-2 30-2 44 0l-4 26c-10 12-28 12-38 0z" fill="#FFFDF9"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M104 128c4-44 62-58 92-30 16 16 14 46-6 60-30 22-76 6-86-20"></path>
+                  <path d="M110 114c22-14 56-14 80 4"></path>
+                  <path d="M138 170c-6 12-6 20-2 30"></path>
+                  <path d="M84 186c44-24 100-8 132 32l24 32"></path>
+                  <path d="M86 192C34 244 8 320 12 388"></path>
+                  <path d="M186 232c22 8 38 18 50 30"></path>
+                  <path d="M232 246c-8 6-8 16-2 22 8 6 20 4 24-4" fill="#FFFDF9"></path>
+                  <path d="M226 250c22 4 40 6 62 6" stroke-width="3" opacity=".45"></path>
+                  <path d="M470 124c-8-42 44-70 80-46 20 14 26 44 10 62-26 28-74 20-90-10"></path>
+                  <path d="M478 106c24-16 60-14 84 6"></path>
+                  <path d="M554 128c18 6 24 24 14 38"></path>
+                  <path d="M506 176c6 10 6 20 2 30"></path>
+                  <path d="M552 190c-46-26-102-10-134 32l-22 30"></path>
+                  <path d="M552 196c52 50 80 128 76 194"></path>
+                  <path d="M398 250c22 26 58 40 100 42"></path>
+                  <path d="M556 220c-32 6-58 20-78 40" stroke-width="4"></path>
+                  <path d="M568 244c-24 6-44 18-58 32" stroke-width="4"></path>
+                  <path d="M424 268c10-8 22-8 28 0 6 8 2 20-8 22-10 2-20-4-20-12" fill="#FFFDF9"></path>
+                  <path d="M430 262c14 2 26 2 40 0" stroke-width="3" opacity=".45"></path>
+                  <path d="M196 272c80-12 170-12 250 2M198 276l-4 22c84 8 172 8 256 0l-6-24"></path>
+                  <path d="M300 300l-6 88M340 300l6 88M270 388h108"></path>
+                  <path d="M236 234c18-4 36-4 54 0l-4 30c-8 14-34 14-42 0z"></path>
+                  <path d="M288 244c14 2 16 18 2 24"></path>
+                  <path d="M358 236c18-4 36-4 54 0l-4 30c-8 14-34 14-42 0z"></path>
+                  <path d="M410 246c14 2 16 18 2 24"></path>
+                </g>
+                <path d="M258 214c-8-12 6-16-2-28" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:k-steam 3.5s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+                <path d="M384 216c-8-12 6-16-2-28" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:k-steam 3.5s ease-out 1.6s infinite;animation-play-state:var(--anim,running)"></path>
+                <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M40 320l14-14M36 342l16-16M34 364l16-16M36 382l12-12"></path>
+                  <path d="M588 312l12-12M594 334l14-14M600 356l14-14M606 378l12-12" stroke="#7A3A28"></path>
+                  <path d="M206 290l10-10M222 294l10-10"></path>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Friends</span> <span style="color:var(--muted,#7A6A5C)">both leaning in, hands around their cups</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="laptop" data-screen-label="Laptop" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Someone seen from behind at a laptop with a bean logo on the lid, one hand clicking beside the keyboard, a mug and a plant on the table">
+              <defs><pattern id="hd6" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-laptop">
+                <g stroke="none">
+                  <path d="M188 112c4-46 60-64 96-40 26 16 34 50 20 78-40-6-84-4-118 12-6-16-4-34 2-50z" fill="#3F2A1D"></path>
+                  <path d="M258 46c14-6 30 2 32 16 2 12-8 22-22 22-12 0-22-10-22-22 0-6 4-12 12-16z" fill="#3F2A1D"></path>
+                  <path d="M178 176c44-30 110-22 146 14 30 30 40 72 40 112H130c-4-46 12-96 48-126z" fill="#F1E8DA"></path>
+                  <path d="M178 176c44-30 110-22 146 14 30 30 40 72 40 112H130c-4-46 12-96 48-126z" fill="url(#hd6)"></path>
+                  <path d="M0 300c220-8 430-8 640 0v100H0z" fill="#E2D3BC"></path>
+                  <path d="M170 238c10 20 18 34 24 48M200 228c8 18 14 32 18 46" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round"></path>
+                  <path d="M492 220c22-2 42-2 60 2l-6 50c-14 8-36 8-50 0z" style="fill:var(--acc,#C2593A)"></path>
+                  <path d="M572 236c14-2 26-2 36 2l-6 52h-28z" fill="#E2D3BC"></path>
+                  <path d="M590 236c-6-26-22-34-36-32 4 20 16 28 36 32zM590 236c4-28 22-38 38-34-6 22-18 30-38 34z" fill="#8FA07A"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M182 118c0-50 62-72 100-46 30 20 36 60 14 86-34 40-96 24-114-16"></path>
+                  <path d="M188 106c30-18 70-16 100 8"></path>
+                  <path d="M254 48c16-8 32 0 34 14 2 14-10 24-24 22-12-2-20-12-18-24"></path>
+                  <path d="M228 160c-4 10-6 20-4 30"></path>
+                  <path d="M174 182c14-10 28-16 44-18M322 218c8 10 14 20 18 30"></path>
+                  <path d="M180 186c-42 34-56 88-52 126"></path>
+                  <path d="M184 224c-22 12-40 34-46 62"></path>
+                  <path d="M0 302c220-8 430-8 640 0"></path>
+                  <path d="M0 312h640" stroke-width="2" opacity=".3"></path>
+                  <path d="M208 152c74-6 150-4 226 4l-10 128-224 4z" fill="#F1E8DA" stroke="none"></path>
+                  <path d="M206 150c76-6 154-4 232 4"></path>
+                  <path d="M208 154l-8 130M438 156l6 128"></path>
+                  <path d="M188 286c86-6 178-6 266 2"></path>
+                  <path d="M196 290l-10 14c96 6 190 6 284 0l-10-16" stroke-width="3.5"></path>
+                  <path d="M488 218c24-4 46-2 66 2M490 222l6 46c14 8 40 8 54 0l6-46"></path>
+                  <path d="M556 236c22 2 26 32 2 38"></path>
+                  <path d="M570 236c16-2 28-2 40 2l-6 52h-30z"></path>
+                  <path d="M590 236c-6-26-22-34-36-32 4 20 16 28 36 32zM590 236c4-28 22-38 38-34-6 22-18 30-38 34z" stroke-width="3"></path>
+                  <path d="M590 236v-28" stroke-width="2.5"></path>
+                </g>
+                <g style="animation:k-click 1.9s ease-in-out infinite;animation-play-state:var(--anim,running);transform-origin:452px 250px">
+                  <path d="M448 252c6 16 4 30-4 42" fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round"></path>
+                  <path d="M432 296c-6-16 6-28 24-28 18 0 28 12 24 28z" fill="#FFFDF9" stroke="#241A13" stroke-width="4.5" stroke-linejoin="round"></path>
+                  <path d="M442 274v22M456 270v26M468 276v20" stroke="#241A13" stroke-width="3.5" fill="none" stroke-linecap="round" opacity=".5"></path>
+                </g>
+                <g style="animation:k-pulse 3.2s ease-in-out infinite;animation-play-state:var(--anim,running)">
+                  <ellipse cx="322" cy="216" rx="13" ry="19" transform="rotate(-24 322 216)" fill="#8C5A32"></ellipse>
+                  <path d="M315 201c8 8 9 22 3 30" fill="none" stroke="#F1E8DA" stroke-width="3" stroke-linecap="round"></path>
+                </g>
+                <path d="M506 204c-10-12 8-18-2-30" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none" style="animation:k-steam 3.7s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+                <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M136 260l12-12M134 280l14-14M136 298l12-12"></path>
+                  <path d="M412 176l12-12M416 196l14-14M420 216l14-14M424 236l14-14M428 256l14-14"></path>
+                  <path d="M576 264l10-10M578 280l12-12"></path>
+                </g>
+              </g>
+            </svg>
+    
+        <figure data-doodle="cashier" data-screen-label="Cashier" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="A cashier behind a counter turning a card terminal towards you, a receipt curling out of the till and a cup waiting on the counter">
+              <defs><pattern id="hd7" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-cashier">
+                <g stroke="none">
+                  <path d="M96 288c150-10 300-10 452 2l-4 42c-150 10-296 10-444 0z" fill="#F1E8DA"></path>
+                  <path d="M96 288c150-10 300-10 452 2l-4 42c-150 10-296 10-444 0z" fill="url(#hd7)"></path>
+                  <path d="M366 160c22-30 84-32 108-2 14 18 16 60 10 126-40 8-88 8-128 0-6-62-4-106 10-124z" fill="#F1E8DA"></path>
+                  <circle cx="420" cy="112" r="34" fill="#F1E8DA"></circle>
+                  <path d="M246 206c34-8 74-6 104 4l-6 70c-32 8-66 8-96 0z" fill="#3F2A1D"></path>
+                  <path d="M256 218c26-6 58-4 82 2l-4 48c-24 6-52 6-74 0z" fill="#FFFDF9"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M92 288c152-12 306-12 458 2"></path>
+                  <path d="M96 292l-2 40c150 12 298 12 448 0l2-38"></path>
+                  <path d="M366 160c22-30 84-32 108-2 14 18 16 60 10 126"></path>
+                  <path d="M356 284c-6-64-4-106 10-124"></path>
+                  <circle cx="420" cy="112" r="34"></circle>
+                  <path d="M370 176c-26 18-38 50-40 78" stroke-width="3.6"></path>
+                  <path d="M242 202c38-10 80-8 112 4"></path>
+                  <path d="M246 210l-2 70c32 10 68 10 100 0l6-72"></path>
+                  <path d="M254 220c28-8 62-6 86 2" stroke-width="3" opacity=".5"></path>
+                </g>
+                <g style="animation:k-tap 3.6s ease-in-out infinite;animation-play-state:var(--anim,running)">
+                  <path d="M330 280c-20 4-32 0-38-8-6-10 2-18 14-16 10 2 18 8 24 16z" fill="#F1E8DA" stroke="#241A13" stroke-width="3.6" stroke-linejoin="round"></path>
+                  <path d="M306 264c-6-4-10-10-10-16" stroke="#241A13" stroke-width="3" stroke-linecap="round" fill="none" opacity=".6"></path>
+                </g>
+                <g stroke="none">
+                  <path d="M118 234c29.4 -12.48 54.6 -9.600000000000001 84 3.84l-10.08 74.88c-2 17.28 -16.8 23.04 -31.92 23.04s-30.24 -5.76 -33.6 -23.04z" style="fill:var(--acc,#C2593A)"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M114 232c31.5 -13.440000000000001 58.8 -11.52 92 4.800000000000001"></path>
+                  <path d="M118 238l8.4 72.96000000000001c2 19.200000000000003 16.8 24.96 33.6 24.96 16.8 0 31.92 -5.76 33.6 -24.96l8.4 -74.88"></path>
+                  <path d="M204 257.04c25.2 5.76 25.2 38.400000000000006 2 44.160000000000004" stroke-width="3.6"></path>
+                  <path d="M124 262.8c18.48 5.76 42 5.76 63.84 0" stroke-width="3" opacity=".45"></path>
+                </g>
+                <g style="animation:k-bob 4.2s ease-in-out infinite;animation-play-state:var(--anim,running)">
+                  <path d="M266 330c22-4 46-4 66 2l-4 56c-22 6-44 6-64 0z" fill="#FFFDF9" stroke="#241A13" stroke-width="3.4" stroke-linejoin="round"></path>
+                  <path d="M276 348c16-4 34-2 48 2M276 362c14-4 32-2 46 2M276 376c12-4 28-2 40 2" stroke="#A08F7D" stroke-width="2.4" stroke-linecap="round" fill="none"></path>
+                </g>
+                <path d="M176 216c-10-12 8-18-2-32" stroke="#C9B9A6" stroke-width="3.4" stroke-linecap="round" fill="none" style="animation:k-steam 4.2s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M124 316l14-14M152 320l14-14M384 214l12-12M392 238l14-14M400 262l14-14"></path>
+                </g>
+                <path d="M40 376c186-10 386-8 562 2" stroke="#241A13" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Cashier</span> <span style="color:var(--muted,#7A6A5C)">terminal turned towards you, receipt still printing</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="reading-alone" data-screen-label="Reading alone" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Someone sunk into an armchair in profile with an open book, a cup steaming on the side table beside them">
+              <defs><pattern id="hd8" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-reading">
+                <g stroke="none">
+                  <path d="M148 158c34-10 60 2 64 30 4 34 4 76 0 108-24 8-46 8-66 0-2-46 0-100 2-138z" fill="#F1E8DA"></path>
+                  <path d="M148 158c34-10 60 2 64 30 4 34 4 76 0 108-24 8-46 8-66 0-2-46 0-100 2-138z" fill="url(#hd8)"></path>
+                  <path d="M204 268c74-14 150-12 214 4l4 42c-76 12-156 12-224 0z" fill="#F1E8DA"></path>
+                  <path d="M204 268c74-14 150-12 214 4l4 42c-76 12-156 12-224 0z" fill="url(#hd8)"></path>
+                  <path d="M252 190c26-32 78-30 100 6 12 22 12 50 6 76-40 10-84 10-122-2 0-32 4-60 16-80z" fill="#F1E8DA"></path>
+                  <circle cx="288" cy="146" r="31" fill="#F1E8DA"></circle>
+                  <path d="M292 220l50 30v36l-50-28z" fill="#FFFDF9"></path>
+                  <path d="M394 226l-52 24v36l52-26z" fill="#FFFDF9"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M146 158c36-12 62 2 66 32 4 34 4 76 0 108"></path>
+                  <path d="M146 160c-2 44-4 96-2 136"></path>
+                  <path d="M200 266c76-16 154-14 220 6"></path>
+                  <path d="M204 274l4 40c72 14 154 14 226 0l-4-42"></path>
+                  <path d="M212 316c-2 22-4 40-4 56M430 320c2 22 4 38 4 54" stroke-width="3.6"></path>
+                  <path d="M252 192c28-34 80-32 102 6 12 22 12 50 6 76"></path>
+                  <path d="M244 272c-2-32 2-60 14-80"></path>
+                  <circle cx="288" cy="146" r="31"></circle>
+                  <path d="M292 220l50 30 52-24" stroke-width="4"></path>
+                  <path d="M292 220v28l50 28v-26M394 226v30l-52 26" stroke-width="4"></path>
+                  <path d="M342 250v36" stroke-width="4"></path>
+                  <path d="M300 228l38 22M386 232l-38 18M300 238l38 22M386 242l-38 18" stroke-width="2.2" opacity=".4"></path>
+                  <ellipse cx="292" cy="250" rx="13" ry="10" fill="#F1E8DA" stroke-width="3.6"></ellipse>
+                  <ellipse cx="396" cy="254" rx="13" ry="10" fill="#F1E8DA" stroke-width="3.6"></ellipse>
+                  <path d="M480 264c34-8 70-8 104 2" stroke-width="4.5"></path>
+                  <path d="M484 270c34 8 70 8 100 0" stroke-width="3.2" opacity=".5"></path>
+                  <path d="M500 278l-6 78M566 278l6 78M478 360c40 8 84 8 122 0" stroke-width="4.5"></path>
+                </g>
+                <g stroke="none">
+                  <path d="M494 208c26.599999999999998 -10.66 49.400000000000006 -8.200000000000001 76 3.2800000000000002l-9.12 63.96c-2 14.76 -15.200000000000001 19.68 -28.88 19.68s-27.36 -4.92 -30.400000000000002 -19.68z" style="fill:var(--acc,#C2593A)"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M490 206c28.5 -11.48 53.2 -9.84 84 4.1000000000000005"></path>
+                  <path d="M494 212l7.6000000000000005 62.32c2 16.400000000000002 15.200000000000001 21.32 30.400000000000002 21.32 15.200000000000001 0 28.88 -4.92 30.400000000000002 -21.32l7.6000000000000005 -63.96"></path>
+                  <path d="M572 227.68c22.8 4.92 22.8 32.800000000000004 2 37.72" stroke-width="3.6"></path>
+                  <path d="M500 232.6c16.72 4.92 38 4.92 57.76 0" stroke-width="3" opacity=".45"></path>
+                </g>
+                <g stroke="#C9B9A6" stroke-width="3.4" stroke-linecap="round" fill="none">
+                  <path d="M518 190c-10-14 10-20-2-34" style="animation:k-steam 4.6s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+                  <path d="M548 184c-8-10 8-16-2-26" style="animation:k-steam 4.6s ease-out 2s infinite;animation-play-state:var(--anim,running)"></path>
+                </g>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M226 300l14-14M256 306l14-14M286 310l14-14M394 306l14-14"></path>
+                  <path d="M268 198l12-12M278 216l12-12"></path>
+                </g>
+                <path d="M56 378c180-8 372-8 550 2" stroke="#241A13" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Reading alone</span> <span style="color:var(--muted,#7A6A5C)">sunk in the chair, cup within reach</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="latte-art" data-screen-label="Latte art pour" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Overhead close crop of a pitcher pouring a rosetta into a wide cup, the milk stream still connected">
+              <defs><pattern id="hd9" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-latte-art">
+                <g stroke="none">
+                  <circle cx="240" cy="216" r="140" fill="#F1E8DA"></circle>
+                  <circle cx="240" cy="216" r="140" fill="url(#hd9)"></circle>
+                  <circle cx="240" cy="216" r="116" fill="#FFFDF9"></circle>
+                  <circle cx="240" cy="216" r="102" style="fill:var(--acc,#C2593A)"></circle>
+                  <path d="M240 124c10 14 14 30 14 46 14-14 30-22 46-22-6 18-20 32-38 40 18 2 32 10 42 22-18 6-38 4-52-4 12 12 18 26 18 42-16-6-28-18-34-32-6 16-18 28-34 34 0-16 6-30 18-42-14 8-34 10-52 4 10-12 24-20 42-22-18-8-32-22-38-40 16 0 32 8 46 22 0-16 4-32 14-46z" fill="#FFFDF9" opacity="0"></path>
+                  <path d="M236 130c8 16 10 30 8 44-10-12-22-20-36-24 12 20 26 34 42 42-14-4-30-4-46 2 18 12 36 16 52 14-12 2-26 10-38 22 20 6 40 4 56-6-10 6-20 18-28 34 22-2 40-14 52-32 4 22 0 42-10 60 18-14 28-34 30-58 8 18 10 36 6 54 12-20 14-42 6-64 14 14 22 30 26 48 4-24-4-46-22-64 18 8 32 20 42 36-6-24-24-42-50-52 18 0 34 4 48 14-16-18-38-26-64-24 14-8 30-12 46-10-20-12-42-12-64 2 8-14 20-24 34-30-24-2-44 8-60 28 2-16 8-30 18-42-20 10-32 28-38 54-2-14-4-28-2-42z" fill="#FFFDF9" opacity="0"></path>
+                  <g fill="#FFFDF9">
+                    <path d="M240 302c-30-8-46-24-48-44 16 10 32 18 48 22 16-4 32-12 48-22-2 20-18 36-48 44z"></path>
+                    <path d="M240 264c-26-8-40-22-42-40 14 10 28 16 42 20 14-4 28-10 42-20-2 18-16 32-42 40z"></path>
+                    <path d="M240 228c-22-8-34-20-36-36 12 8 24 14 36 18 12-4 24-10 36-18-2 16-14 28-36 36z"></path>
+                    <path d="M240 194c-18-6-28-16-30-30 10 6 20 12 30 15 10-3 20-9 30-15-2 14-12 24-30 30z"></path>
+                    <path d="M240 162c-13-5-20-12-22-22 8 5 15 9 22 11 7-2 14-6 22-11-2 10-9 17-22 22z"></path>
+                  </g>
+                  <path d="M234 142h12l-2 168h-8z" fill="#FFFDF9"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="240" cy="216" r="140"></circle>
+                  <circle cx="240" cy="216" r="116" stroke-width="3.4" opacity=".5"></circle>
+                  <circle cx="240" cy="216" r="102"></circle>
+                </g>
+                <g style="animation:k-wob 5.4s ease-in-out infinite;animation-play-state:var(--anim,running)">
+                  <g stroke="none">
+                    <path d="M452 78c40-12 88-8 112 8l-16 106c-4 22-28 32-52 32s-44-10-46-32z" fill="#F1E8DA"></path>
+                    <path d="M452 78c40-12 88-8 112 8l-16 106c-4 22-28 32-52 32s-44-10-46-32z" fill="url(#hd9)"></path>
+                    <path d="M452 80c-24 6-40 18-48 34 20-6 38-14 52-24z" fill="#F1E8DA"></path>
+                  </g>
+                  <g fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M448 78c42-14 92-10 118 8"></path>
+                    <path d="M452 84l14 104c2 24 26 34 50 34s46-12 50-34l14-106"></path>
+                    <path d="M566 106c30 8 34 54 4 72" stroke-width="4"></path>
+                    <path d="M448 78c-26 6-44 20-52 38 22-6 42-16 56-26" stroke-width="4"></path>
+                    <path d="M470 118c-30 16-48 34-56 56" stroke-width="3" opacity=".4"></path>
+                  </g>
+                </g>
+                <path d="M400 124c-22 26-48 48-76 62" style="stroke:var(--acc,#C2593A);animation:k-pulse 2.8s ease-in-out infinite;animation-play-state:var(--anim,running)" stroke-width="7" stroke-linecap="round" fill="none"></path>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M84 320l14-14M106 340l16-16M132 354l14-14"></path>
+                </g>
+                <path d="M40 384c176-8 366-8 548 2" stroke="#241A13" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Latte art pour</span> <span style="color:var(--muted,#7A6A5C)">the stream is still connected</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="closing-up" data-screen-label="Closing up" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Chairs turned upside down on a table, a broom leaning against it and a hanging sign flipped to closed">
+              <defs><pattern id="hd10" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-closing">
+                <g stroke="none">
+                  <path d="M186 274c88-12 180-12 268 2l-4 24c-88 12-176 12-264 0z" fill="#F1E8DA"></path>
+                  <path d="M186 274c88-12 180-12 268 2l-4 24c-88 12-176 12-264 0z" fill="url(#hd10)"></path>
+                  <path d="M104 330c22-6 46-4 66 6l-8 40c-20 6-42 6-62-2z" fill="#F1E8DA"></path>
+                  <path d="M104 330c22-6 46-4 66 6l-8 40c-20 6-42 6-62-2z" fill="url(#hd10)"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M182 274c90-14 184-14 272 2"></path>
+                  <path d="M186 280l-2 20c88 14 180 14 268 0l2-22"></path>
+                  <path d="M206 302c-4 26-6 50-6 74M434 302c4 26 6 50 6 74" stroke-width="3.8"></path>
+                  <path d="M220 214c30-8 60-8 90 2l-4 16c-28 8-56 8-84 0z" fill="#F1E8DA" stroke-width="4.5"></path>
+                  <path d="M228 212l-6-64M300 214l6-64M244 210l-4-58M286 212l4-58" stroke-width="4"></path>
+                  <path d="M226 170c26-6 54-6 78 2" stroke-width="3.2" opacity=".5"></path>
+                  <path d="M248 232c-2 16-4 28-4 38M282 234c2 16 4 26 4 36" stroke-width="4"></path>
+                  <path d="M244 270c14 4 30 4 44 0" stroke-width="3.6"></path>
+                  <path d="M330 216c30-8 60-8 90 2l-4 16c-28 8-56 8-84 0z" fill="#F1E8DA" stroke-width="4.5"></path>
+                  <path d="M338 214l-6-64M410 216l6-64M354 212l-4-58M396 214l4-58" stroke-width="4"></path>
+                  <path d="M336 172c26-6 54-6 78 2" stroke-width="3.2" opacity=".5"></path>
+                  <path d="M358 234c-2 16-4 28-4 38M392 236c2 16 4 26 4 36" stroke-width="4"></path>
+                  <path d="M354 272c14 4 30 4 44 0" stroke-width="3.6"></path>
+                  <path d="M148 336c-8-64-12-114-14-152" stroke-width="5"></path>
+                  <path d="M104 330c22-8 48-6 68 6"></path>
+                  <path d="M104 336l6 38c20 8 44 8 64 0l6-40"></path>
+                  <path d="M118 344l4 30M136 346l4 30M154 344l4 28" stroke-width="2.6" opacity=".5"></path>
+                  <path d="M40 380c186-8 384-8 562 2" stroke-width="3.5"></path>
+                </g>
+                <g style="animation:k-nod 5.6s ease-in-out infinite;animation-play-state:var(--anim,running)">
+                  <g fill="none" stroke="#241A13" stroke-width="3.4" stroke-linecap="round">
+                    <path d="M470 22l-4 34M502 22l4 34"></path>
+                  </g>
+                  <path d="M428 56c44-8 92-6 132 4l4 62c-44 10-96 10-140-2z" fill="#F1E8DA" stroke="#241A13" stroke-width="4.5" stroke-linejoin="round"></path>
+                  <path d="M428 56c44-8 92-6 132 4l4 62c-44 10-96 10-140-2z" fill="url(#hd10)" stroke="none"></path>
+                  <g stroke="#241A13" stroke-width="4" stroke-linecap="round" fill="none">
+                    <path d="M446 80c22-4 46-4 68 0M446 96c26-4 54-4 80 0M446 112c16-4 34-4 48 0"></path>
+                  </g>
+                </g>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M216 322l14-14M252 330l14-14M288 334l14-14M324 332l14-14M360 326l14-14"></path>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Closing up</span> <span style="color:var(--muted,#7A6A5C)">chairs on the table, sign already turned</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="beans-roasting" data-screen-label="Beans roasting" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="A drum roaster in profile with beans tumbling behind the glass door and heat rising off the chimney">
+              <defs><pattern id="hd11" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-roasting">
+                <g stroke="none">
+                  <path d="M338 56c34-6 74-4 106 4l-8 96c-32 8-70 8-102-2z" fill="#F1E8DA"></path>
+                  <path d="M164 148c96-16 200-14 292 4l-6 148c-96 16-192 16-282 0z" fill="#F1E8DA"></path>
+                  <path d="M164 148c96-16 200-14 292 4l-6 148c-96 16-192 16-282 0z" fill="url(#hd11)"></path>
+                  <circle cx="272" cy="226" r="72" fill="#3F2A1D"></circle>
+                  <circle cx="272" cy="226" r="58" style="fill:var(--acc,#C2593A)"></circle>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M334 54c36-8 78-6 112 6"></path>
+                  <path d="M338 60l-4 96M442 62l-6 94"></path>
+                  <path d="M354 100c26 6 56 6 82 0" stroke-width="3" opacity=".45"></path>
+                  <path d="M160 146c98-18 204-16 298 6"></path>
+                  <path d="M164 154l4 148c94 18 194 18 288 0l4-152"></path>
+                  <circle cx="272" cy="226" r="72"></circle>
+                  <circle cx="272" cy="226" r="58" stroke-width="3.4" opacity=".5"></circle>
+                  <path d="M378 202c26-6 54-4 78 2M378 240c26-6 54-4 78 2" stroke-width="3.4" opacity=".5"></path>
+                  <circle cx="416" cy="280" r="12" fill="#FFFDF9" stroke-width="4"></circle>
+                  <path d="M192 306l-8 62M430 306l8 62" stroke-width="5"></path>
+                  <path d="M40 378c186-8 384-8 562 2" stroke-width="3.5"></path>
+                </g>
+                <g style="animation:k-spin 11s linear infinite;animation-play-state:var(--anim,running)">
+                  <g fill="#3F2A1D" stroke="#241A13" stroke-width="2.6">
+                    <ellipse cx="272" cy="182" rx="15" ry="11" transform="rotate(-18 272 182)"></ellipse>
+                    <ellipse cx="308" cy="212" rx="15" ry="11" transform="rotate(24 308 212)"></ellipse>
+                    <ellipse cx="290" cy="260" rx="15" ry="11" transform="rotate(-8 290 260)"></ellipse>
+                    <ellipse cx="242" cy="262" rx="15" ry="11" transform="rotate(38 242 262)"></ellipse>
+                    <ellipse cx="230" cy="206" rx="15" ry="11" transform="rotate(-32 230 206)"></ellipse>
+                  </g>
+                  <g stroke="#F1E8DA" stroke-width="2.4" stroke-linecap="round" fill="none">
+                    <path d="M266 178c6 2 10 4 12 8M302 208c6 2 10 4 12 8M284 256c6 2 10 4 12 8M236 258c6 2 10 4 12 8M224 202c6 2 10 4 12 8"></path>
+                  </g>
+                </g>
+                <g stroke="#C9B9A6" stroke-width="3.6" stroke-linecap="round" fill="none">
+                  <path d="M368 38c-12-16 12-24-2-38" style="animation:k-steam 4.4s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+                  <path d="M410 34c-10-14 10-20-2-30" style="animation:k-steam 4.4s ease-out 1.8s infinite;animation-play-state:var(--anim,running)"></path>
+                </g>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M184 176l12-12M188 200l14-14M192 224l14-14M194 250l14-14M470 200l12-12M474 226l14-14M476 252l14-14"></path>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Beans roasting</span> <span style="color:var(--muted,#7A6A5C)">the drum turns, the chimney breathes</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="cup-pandesal" data-screen-label="Cup and pandesal" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Seen from above: a cup of coffee, a plate of pandesal and one roll being dunked, crumbs on the table">
+              <defs><pattern id="hd12" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-pandesal">
+                <g stroke="none">
+                  <circle cx="200" cy="222" r="112" fill="#F1E8DA"></circle>
+                  <circle cx="200" cy="222" r="112" fill="url(#hd12)"></circle>
+                  <circle cx="200" cy="222" r="92" fill="#FFFDF9"></circle>
+                  <circle cx="200" cy="222" r="78" style="fill:var(--acc,#C2593A)"></circle>
+                  <circle cx="452" cy="258" r="108" fill="#FFFDF9"></circle>
+                  <circle cx="452" cy="258" r="108" fill="url(#hd12)"></circle>
+                  <ellipse cx="414" cy="230" rx="52" ry="36" transform="rotate(-14 414 230)" fill="#F1E8DA"></ellipse>
+                  <ellipse cx="486" cy="246" rx="52" ry="36" transform="rotate(10 486 246)" fill="#F1E8DA"></ellipse>
+                  <ellipse cx="448" cy="302" rx="52" ry="36" transform="rotate(-4 448 302)" fill="#F1E8DA"></ellipse>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="200" cy="222" r="112"></circle>
+                  <circle cx="200" cy="222" r="92" stroke-width="3.4" opacity=".5"></circle>
+                  <circle cx="200" cy="222" r="78"></circle>
+                  <path d="M310 196c34 4 40 56 4 66" stroke-width="5"></path>
+                  <circle cx="452" cy="258" r="108"></circle>
+                  <circle cx="452" cy="258" r="90" stroke-width="3" opacity=".4"></circle>
+                  <ellipse cx="414" cy="230" rx="52" ry="36" transform="rotate(-14 414 230)" stroke-width="4"></ellipse>
+                  <ellipse cx="486" cy="246" rx="52" ry="36" transform="rotate(10 486 246)" stroke-width="4"></ellipse>
+                  <ellipse cx="448" cy="302" rx="52" ry="36" transform="rotate(-4 448 302)" stroke-width="4"></ellipse>
+                  <path d="M392 218c14 6 30 8 46 4M464 234c14 6 30 8 46 4M426 290c14 6 30 8 46 4" stroke-width="2.8" opacity=".5"></path>
+                </g>
+                <g style="animation:k-bob 4.8s ease-in-out infinite;animation-play-state:var(--anim,running)">
+                  <ellipse cx="284" cy="90" rx="50" ry="35" transform="rotate(-26 284 90)" fill="#F1E8DA" stroke="#241A13" stroke-width="4.5"></ellipse>
+                  <path d="M262 76c14 6 30 8 46 4" stroke="#241A13" stroke-width="2.8" stroke-linecap="round" fill="none" opacity=".5"></path>
+                  <path d="M266 124c22-6 44-4 62 4" stroke="#241A13" stroke-width="4" stroke-linecap="round" fill="none"></path>
+                  <ellipse cx="290" cy="146" rx="6" ry="9" style="fill:var(--acc,#C2593A)"></ellipse>
+                </g>
+                <g fill="#3F2A1D">
+                  <circle cx="306" cy="348" r="5"></circle>
+                  <circle cx="334" cy="360" r="4"></circle>
+                  <circle cx="278" cy="362" r="3.5"></circle>
+                  <circle cx="566" cy="336" r="4.5"></circle>
+                </g>
+                <path d="M164 172c-10-14 10-20-2-34" stroke="#C9B9A6" stroke-width="3.4" stroke-linecap="round" fill="none" style="animation:k-steam 4.4s ease-out 1.2s infinite;animation-play-state:var(--anim,running)"></path>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M84 300l14-14M108 320l14-14M136 336l14-14"></path>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Cup + pandesal</span> <span style="color:var(--muted,#7A6A5C)">one roll on its way into the coffee</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+      </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Laptop</span> <span style="color:var(--muted,#7A6A5C)">bean on the lid, one hand clicking</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+      </div>
+    </section>
+
+    <section style="padding-top:88px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:28px">
+        <h2 style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:clamp(28px,3.6vw,40px);letter-spacing:-.015em">Things a screen has to say</h2>
+        <span style="font-size:13px;color:var(--muted,#7A6A5C)">400 × 400 · one object, one idea · web and app states</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:36px 28px">
+
+        <figure data-doodle="loading" data-screen-label="Loading" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A cup of coffee seen from above, the crema swirling slowly">
+              <defs><pattern id="hs1" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-loading">
+                <g stroke="none">
+                  <path d="M64 206c-4-78 60-140 138-138 76 0 138 62 136 138 0 76-62 136-138 136-78 0-140-62-136-136z" fill="#F1E8DA"></path>
+                  <path d="M64 206c-4-78 60-140 138-138 76 0 138 62 136 138 0 76-62 136-138 136-78 0-140-62-136-136z" fill="url(#hs1)"></path>
+                  <circle cx="204" cy="204" r="98" fill="#FFFDF9"></circle>
+                  <circle cx="206" cy="206" r="82" style="fill:var(--acc,#C2593A)"></circle>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M60 200c0-78 62-140 140-140 80 0 142 62 140 140 0 80-62 140-140 140-80 0-142-64-140-140"></path>
+                  <path d="M108 202c0-52 42-94 94-94 52 0 96 42 94 94 0 52-42 94-94 94-54 0-96-44-94-94z"></path>
+                  <path d="M336 168c40 6 46 60 8 74"></path>
+                  <path d="M124 300c10 14 30 22 44 26M256 322c14-4 30-14 38-24" stroke-width="3" opacity=".35"></path>
+                </g>
+                <g style="animation:k-spin 6s linear infinite;animation-play-state:var(--anim,running)">
+                  <path d="M202 202c0-14 12-24 26-20 14 4 20 22 10 36-12 16-38 18-54 4-20-18-20-52 2-70 26-22 68-14 84 16" fill="none" stroke="#FBF6EE" stroke-width="4.5" stroke-linecap="round" opacity=".9"></path>
+                  <path d="M150 216c-2 26 20 46 46 44" fill="none" stroke="#FBF6EE" stroke-width="3" stroke-linecap="round" opacity=".5"></path>
+                </g>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M80 254l12-12M86 274l14-14M96 292l14-14M110 310l14-14"></path>
+                </g>
+                <path d="M120 60c-10-14 8-20-2-36" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none" style="animation:k-steam 3.4s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+                <path d="M160 46c-8-10 6-16-2-28" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:k-steam 3.4s ease-out 1.4s infinite;animation-play-state:var(--anim,running)"></path>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Loading</span> <span style="color:var(--muted,#7A6A5C)">the crema is the spinner</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="not-found" data-screen-label="404" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A cup knocked on its side, coffee spreading out, 404 written in the spill">
+              <defs><pattern id="hs2" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-404">
+                <g stroke="none">
+                  <path d="M52 286c-10-34 40-52 90-40 30 8 44-20 96-18 52 4 90 30 108 56 12 20-4 40-34 42-70 6-190 6-232-4-16-4-24-20-28-36z" style="fill:var(--acc,#C2593A)"></path>
+                  <path d="M104 106c48-12 92-4 122 16l-20 96c-10 26-46 34-82 24-30-8-46-30-40-56z" fill="#F1E8DA"></path>
+                  <path d="M104 106c48-12 92-4 122 16l-20 96c-10 26-46 34-82 24-30-8-46-30-40-56z" fill="url(#hs2)"></path>
+                </g>
+                <g style="animation:k-wob 4.4s ease-in-out infinite;animation-play-state:var(--anim,running)">
+                  <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M98 108c50-16 100-8 130 14"></path>
+                    <path d="M100 114l-24 82c-6 30 20 54 56 58 34 4 66-14 74-40l26-90"></path>
+                    <path d="M222 130c30 4 34 46 2 54" stroke-width="4.5"></path>
+                    <path d="M92 104c40-30 110-30 144 8" stroke-width="4"></path>
+                  </g>
+                  <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                    <path d="M96 176l12-12M92 196l14-14M94 216l14-14M104 232l12-12"></path>
+                  </g>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M50 282c-14-36 40-56 92-42 32 8 46-20 98-18 54 4 92 32 110 58"></path>
+                  <path d="M350 282c10 22-6 40-36 42-72 6-190 6-234-4"></path>
+                </g>
+                <g fill="none" stroke="#FBF6EE" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M128 262l-2 36M136 264l-22 24h30"></path>
+                  <path d="M180 270c-2-14 24-14 26 0l-2 20c-2 14-24 14-26 0z"></path>
+                  <path d="M262 262l-2 36M270 264l-22 24h30"></path>
+                </g>
+                <circle cx="340" cy="238" r="5" style="fill:var(--acc,#C2593A)"></circle>
+                <circle cx="40" cy="250" r="4" style="fill:var(--acc,#C2593A)"></circle>
+                <path d="M348 214c-4-10 6-16-1-25" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:k-steam 3.8s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">404</span> <span style="color:var(--muted,#7A6A5C)">hand-lettered in the spill, no typeface</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="empty" data-screen-label="Empty" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A coffee ring stain on a napkin where a cup used to be, a spoon left beside it">
+              <defs><pattern id="hs3" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-empty">
+                <g stroke="none">
+                  <path d="M68 84c86-14 174-12 262 6l-6 224c-88 12-176 10-262-4z" fill="#F1E8DA"></path>
+                  <path d="M68 84c86-14 174-12 262 6l-6 224c-88 12-176 10-262-4z" fill="url(#hs3)"></path>
+                  <path d="M118 196c-4-40 34-72 76-70 40 2 74 34 72 74-2 40-36 70-76 68-40-2-72-32-72-72zM134 198c0 30 28 54 58 54 32 0 58-24 58-56 0-30-28-54-58-54-32 0-58 24-58 56z" style="fill:var(--acc,#C2593A)" fill-rule="evenodd" opacity=".55"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M62 82c86-16 178-14 268 4"></path>
+                  <path d="M64 88l4 222M330 90l-6 218"></path>
+                  <path d="M70 312c86 12 176 10 260-4"></path>
+                  <path d="M196 108l6 194" stroke-width="2.5" opacity=".3"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".7">
+                  <path d="M124 214c-8-40 24-76 66-76 40 0 72 32 70 72 0 20-8 36-20 48"></path>
+                  <path d="M146 262c-8-8-14-18-16-30"></path>
+                </g>
+                <g style="animation:k-bob 5.2s ease-in-out infinite;animation-play-state:var(--anim,running)">
+                  <path d="M262 258c12-12 30-10 38 2 6 10 2 24-10 30-12 4-26-2-30-14z" fill="#FFFDF9" stroke="none"></path>
+                  <path d="M262 258c12-12 30-10 38 2 6 10 2 24-10 30-12 4-26-2-30-14z" fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round"></path>
+                  <path d="M296 262c22-22 44-44 66-66" stroke="#241A13" stroke-width="5" stroke-linecap="round"></path>
+                </g>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M80 270l12-12M84 290l14-14M96 300l12-12"></path>
+                  <path d="M270 110l12-12M286 114l14-14M302 118l14-14"></path>
+                </g>
+                <circle cx="110" cy="130" r="3" fill="#A08F7D"></circle>
+                <circle cx="96" cy="150" r="2" fill="#A08F7D"></circle>
+                <path d="M226 128c-3-4 3-6-1-10M208 122c-2-3 2-5-1-8" stroke="#A08F7D" stroke-width="2" stroke-linecap="round" fill="none"></path>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Empty</span> <span style="color:var(--muted,#7A6A5C)">the ring where the cup was</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="error" data-screen-label="Error" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A mug with a jagged crack down its side, coffee leaking out of the crack into a small puddle">
+              <defs><pattern id="hs4" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-error">
+                <g stroke="none">
+                  <path d="M114 102c56-10 110-8 160 4l-8 184c-4 26-30 38-72 38s-66-12-70-38z" fill="#F1E8DA"></path>
+                  <path d="M114 102c56-10 110-8 160 4l-8 184c-4 26-30 38-72 38s-66-12-70-38z" fill="url(#hs4)"></path>
+                  <path d="M124 166c48-4 96-2 144 4l-6 122c-4 24-30 34-70 34s-64-10-68-34z" style="fill:var(--acc,#C2593A)"></path>
+                  <path d="M262 342c-30-10 20-30 50-16 14 6 8 22-8 22-14 2-30 0-42-6z" style="fill:var(--acc,#C2593A)"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M108 100c60-14 116-10 168 4"></path>
+                  <path d="M112 106l6 178c2 28 30 42 72 42s70-14 72-42l8-176"></path>
+                  <path d="M272 138c40 8 40 68 0 78"></path>
+                  <path d="M106 96c50-28 130-28 178 6" stroke-width="4"></path>
+                  <path d="M206 108l-10 36 18 22-14 34 20 26-10 42" stroke-width="4.5"></path>
+                  <path d="M230 148l10 12M228 220l12 10"></path>
+                </g>
+                <path d="M212 226c-4 20 4 48 22 68" stroke="#7A3A28" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+                <ellipse cx="234" cy="300" rx="4" ry="6" style="fill:var(--acc,#C2593A);animation:k-drip 1.9s ease-in infinite;animation-play-state:var(--anim,running)"></ellipse>
+                <path d="M258 342c-30-12 22-32 54-16 14 6 8 22-8 22" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round"></path>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M124 240l12-12M126 260l14-14M130 280l14-14M138 298l12-12"></path>
+                  <path d="M124 122l10-10M128 140l12-12"></path>
+                </g>
+                <g style="animation:k-twinkle 2.4s ease-in-out infinite;animation-play-state:var(--anim,running)">
+                  <path d="M184 76l-6-26M214 72l8-24M156 88l-16-16" stroke="#241A13" stroke-width="4" stroke-linecap="round"></path>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Error</span> <span style="color:var(--muted,#7A6A5C)">cracked but standing, still leaking</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="success" data-screen-label="Success" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A takeaway cup with a name scrawled on the sleeve and a receipt tucked under the lid, marked with a check">
+              <defs><pattern id="hs5" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-success">
+                <g stroke="none">
+                  <path d="M128 118c50-8 100-6 146 2l-22 210c-4 20-22 30-52 30s-48-10-52-30z" fill="#FFFDF9"></path>
+                  <path d="M120 176c54-8 108-6 160 4l-8 76c-52 8-104 6-154-2z" fill="#E2D3BC"></path>
+                  <path d="M120 176c54-8 108-6 160 4l-8 76c-52 8-104 6-154-2z" fill="url(#hs5)"></path>
+                  <path d="M116 108c56-14 118-12 170 2l2 22c-58 8-116 8-174 0z" fill="#F1E8DA"></path>
+                  <path d="M232 62c28-6 56-4 80 4l-10 100c-26 8-54 8-80 2z" fill="#FFFDF9"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M112 106c58-14 120-12 176 2"></path>
+                  <path d="M114 110l4 20c56 8 114 8 172-2l4-20"></path>
+                  <path d="M126 132l20 202c2 20 22 30 54 30s50-10 54-30l20-206"></path>
+                  <path d="M118 176c56-8 110-6 164 4M118 182l4 74c52 8 104 8 154-2l4-74"></path>
+                  <path d="M228 60c28-8 58-6 84 4l-12 102c-26 8-54 8-80 2"></path>
+                  <path d="M244 84h44M244 100h32M244 116h40" stroke-width="3" opacity=".45"></path>
+                  <path d="M260 136l10 12 24-30" style="stroke:var(--acc,#C2593A)" stroke-width="6"></path>
+                </g>
+                <path d="M146 214c8-12 16-6 20 4 6 14 14 6 20-4 6-10 14-6 18 6 4 12 14 8 20-4" fill="none" style="stroke:var(--acc,#C2593A)" stroke-width="4" stroke-linecap="round"></path>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M138 196l12-12M140 216l14-14M144 236l14-14"></path>
+                  <path d="M150 300l12-12M154 320l14-14M164 336l12-12"></path>
+                </g>
+                <g style="animation:k-twinkle 2.8s ease-in-out infinite;animation-play-state:var(--anim,running)">
+                  <path d="M88 78l-18-10M84 110l-20 2M96 52l-8-16" stroke="#BE7008" stroke-width="4.5" stroke-linecap="round"></path>
+                </g>
+                <g style="animation:k-twinkle 2.8s ease-in-out 1s infinite;animation-play-state:var(--anim,running)">
+                  <path d="M336 200l18-8M338 228l20 4" stroke="#BE7008" stroke-width="4.5" stroke-linecap="round"></path>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Success</span> <span style="color:var(--muted,#7A6A5C)">receipt under the lid, name scrawled on the sleeve</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="offline" data-screen-label="Offline" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A cup gone cold: the steam above it is shaped like wifi arcs, and the top arc is faded out">
+              <defs><pattern id="hs6" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-offline">
+                <g stroke="none">
+                  <path d="M104 208c60-10 130-8 194 4l-12 108c-4 22-30 32-84 32s-78-10-82-32z" fill="#F1E8DA"></path>
+                  <path d="M104 208c60-10 130-8 194 4l-12 108c-4 22-30 32-84 32s-78-10-82-32z" fill="url(#hs6)"></path>
+                  <path d="M118 236c58-6 118-6 174 2l-4 34c-56 6-112 6-166 0z" style="fill:var(--acc,#C2593A)" opacity=".5"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M98 206c66-12 136-10 204 2"></path>
+                  <path d="M102 212l10 104c4 24 32 36 86 36s84-12 88-36l12-104"></path>
+                  <path d="M302 232c34 8 36 60 0 70"></path>
+                  <path d="M116 234c58-8 118-6 176 4" stroke-width="3" opacity=".4"></path>
+                  <path d="M40 372c110-8 220-8 330 0" stroke-width="3.5"></path>
+                </g>
+                <g fill="none" stroke="#C9B9A6" stroke-width="5" stroke-linecap="round">
+                  <path d="M170 176c16-14 44-14 60 0"></path>
+                  <path d="M146 146c30-26 78-26 108 0" style="animation:k-pulse 2.8s ease-in-out infinite;animation-play-state:var(--anim,running)"></path>
+                  <path d="M122 116c44-40 112-40 156 0" stroke-dasharray="10 12" opacity=".4"></path>
+                </g>
+                <path d="M198 196c0-2 4-2 4 0s-4 2-4 0" stroke="#C9B9A6" stroke-width="5" stroke-linecap="round" fill="none"></path>
+                <path d="M258 88l30 30" stroke="#241A13" stroke-width="5" stroke-linecap="round"></path>
+                <path d="M258 88l30 30" style="stroke:var(--acc,#C2593A)" stroke-width="2" stroke-linecap="round"></path>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+                  <path d="M116 280l12-12M120 300l14-14M128 318l14-14M142 332l12-12"></path>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Offline</span> <span style="color:var(--muted,#7A6A5C)">the steam is the signal, and it has gone cold</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+
+        <figure data-doodle="no-results" data-screen-label="No results" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A hand grinder with its crank on top and an empty catch jar, meaning the search found nothing">
+              <defs><pattern id="hs7" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-no-results">
+                <g stroke="none">
+                  <path d="M126 168c50-8 100-6 148 4l-14 128c-4 22-32 34-64 34s-58-12-62-34z" fill="#F1E8DA"></path>
+                  <path d="M126 168c50-8 100-6 148 4l-14 128c-4 22-32 34-64 34s-58-12-62-34z" fill="url(#hs7)"></path>
+                  <path d="M140 226c44-6 90-4 132 4l-4 34c-42 6-86 6-124 0z" fill="#FFFDF9"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M120 166c54-12 106-10 158 4"></path>
+                  <path d="M124 172l12 126c4 24 34 36 66 36s60-12 64-36l14-124"></path>
+                  <path d="M138 226c46-8 92-6 136 4M136 262c44 6 90 6 134 0" stroke-width="3.5" opacity=".5"></path>
+                  <path d="M200 166v-30"></path>
+                  <path d="M200 136h56" stroke-width="5"></path>
+                  <path d="M256 136v-18" stroke-width="5"></path>
+                  <circle cx="256" cy="112" r="9" fill="#F1E8DA" stroke-width="4.5"></circle>
+                  <path d="M160 190c22-6 60-6 80 0" stroke-width="4" opacity=".45"></path>
+                  <path d="M150 320c30 8 70 8 100 0" stroke-width="4" opacity=".4"></path>
+                  <path d="M60 372c96-8 192-8 286 0" stroke-width="3.5"></path>
+                </g>
+                <g stroke="#C9B9A6" stroke-width="5" stroke-linecap="round" fill="none" style="animation:k-twinkle 3s ease-in-out infinite;animation-play-state:var(--anim,running)">
+                  <path d="M300 200c8-8 20-8 28 0M310 240c10-6 22-4 30 4"></path>
+                </g>
+                <circle cx="330" cy="164" r="6" fill="#E2D3BC" style="animation:k-twinkle 3s ease-in-out 1.2s infinite;animation-play-state:var(--anim,running)"></circle>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M142 300l12-12M148 320l14-14M160 336l12-12"></path></g>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">No results</span> <span style="color:var(--muted,#7A6A5C)">crank all you like, the jar stays empty</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="empty-cart" data-screen-label="Empty cart" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="An empty paper takeaway tray with a divider down the middle and two empty cup holes">
+              <defs><pattern id="hs8" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-empty-cart">
+                <g stroke="none">
+                  <path d="M76 168c84-14 172-12 250 6l-18 130c-4 22-26 32-108 32s-104-10-108-32z" fill="#F1E8DA"></path>
+                  <path d="M76 168c84-14 172-12 250 6l-18 130c-4 22-26 32-108 32s-104-10-108-32z" fill="url(#hs8)"></path>
+                  <ellipse cx="140" cy="186" rx="38" ry="17" fill="#E2D3BC"></ellipse>
+                  <ellipse cx="256" cy="216" rx="38" ry="17" fill="#E2D3BC"></ellipse>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M70 166c86-16 178-14 262 6"></path>
+                  <path d="M76 174l16 126c4 24 30 34 108 34s102-10 106-34l18-124"></path>
+                  <path d="M102 186c0-11 17-19 38-19s38 8 38 19-17 19-38 19-38-8-38-19z"></path>
+                  <path d="M218 216c0-11 17-19 38-19s38 8 38 19-17 19-38 19-38-8-38-19z"></path>
+                  <path d="M196 176c6 44 4 90-4 132" stroke-width="4" opacity=".5"></path>
+
+                  <path d="M40 372c112-8 224-8 320 0" stroke-width="3.5"></path>
+                </g>
+                <g style="animation:k-bob 5s ease-in-out infinite;animation-play-state:var(--anim,running)">
+                  <path d="M330 108c-12-14 8-20-2-36" stroke="#C9B9A6" stroke-width="4" stroke-linecap="round" fill="none"></path>
+                  <circle cx="292" cy="96" r="6" fill="#E2D3BC"></circle>
+                </g>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M92 296l12-12M98 316l14-14M112 330l12-12"></path></g>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Empty cart</span> <span style="color:var(--muted,#7A6A5C)">the tray came back empty</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="email-sent" data-screen-label="Email sent" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A folded note stamped with a coffee bean sitting in an open envelope, meaning the email is on its way">
+              <defs><pattern id="hs9" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-email-sent">
+                <g stroke="none">
+                  <path d="M50 196c98-16 202-14 300 6l-8 128c-96 14-192 12-284-4z" fill="#F1E8DA"></path>
+                  <path d="M50 196c98-16 202-14 300 6l-8 128c-96 14-192 12-284-4z" fill="url(#hs9)"></path>
+                  <path d="M132 96c46-8 94-6 140 4l-8 116c-44 8-90 8-136 0z" fill="#FFFDF9"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M130 94c48-10 98-8 144 4"></path>
+                  <path d="M134 100l-4 118c46 8 94 8 138 0l6-116"></path>
+                  <path d="M150 132c34-6 70-4 102 4M148 162c34 6 70 6 104 0M150 192c26 4 54 4 80 2" stroke-width="4" opacity=".5"></path>
+                  <ellipse cx="232" cy="118" rx="15" ry="19" transform="rotate(-18 232 118)" fill="#3F2A1D" stroke="none"></ellipse>
+                  <path d="M226 104c8 8 8 22 2 30" stroke="#F1E8DA" stroke-width="3"></path>
+                  <path d="M44 194c102-18 210-16 310 6"></path>
+                  <path d="M50 202l-6 128c94 16 194 18 292 2l6-126"></path>
+                  <path d="M46 200c40 38 96 62 154 62 56 0 108-24 148-60" stroke-width="4"></path>
+                </g>
+                <g stroke="#C9B9A6" stroke-width="5" stroke-linecap="round" fill="none">
+                  <path d="M336 138c14-12 34-12 48 0" style="animation:k-pulse 2.4s ease-in-out infinite;animation-play-state:var(--anim,running)"></path>
+                  <path d="M328 108c20-18 50-18 70 0" stroke-dasharray="10 12" opacity=".45"></path>
+                </g>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M64 300l12-12M70 318l14-14M84 330l12-12"></path></g>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Email sent</span> <span style="color:var(--muted,#7A6A5C)">a note, stamped with a bean</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="maintenance" data-screen-label="Maintenance" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A brewer with its lid off and a wrench resting across it">
+              <defs><pattern id="hs10" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-maintenance">
+                <g stroke="none">
+                  <path d="M116 156c56-10 112-8 164 4l-12 140c-4 22-30 34-70 34s-66-12-70-34z" fill="#F1E8DA"></path>
+                  <path d="M116 156c56-10 112-8 164 4l-12 140c-4 22-30 34-70 34s-66-12-70-34z" fill="url(#hs10)"></path>
+                  <path d="M130 230c46-6 96-4 138 4l-6 62c-44 6-88 6-128 0z" style="fill:var(--acc,#C2593A)"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M110 154c60-12 118-10 176 4"></path>
+                  <path d="M114 160l12 138c4 24 32 36 72 36s66-12 70-36l14-136"></path>
+                  <path d="M128 230c48-8 98-6 142 4" stroke-width="3.5" opacity=".5"></path>
+                  <path d="M280 190c34 8 34 60 0 68" stroke-width="4"></path>
+                  <path d="M40 372c110-8 220-8 320 0" stroke-width="3.5"></path>
+                </g>
+                <g style="animation:k-wob 5s ease-in-out infinite;animation-play-state:var(--anim,running);transform-origin:200px 250px">
+                  <path d="M120 296c-12-4-16-18-8-27 7-8 19-8 26 1l106-74c8-6 20-3 25 6 5 10 0 21-11 23l-124 26z" fill="#FFFDF9" stroke="#241A13" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"></path>
+                  <circle cx="127" cy="285" r="6" fill="#241A13"></circle>
+                  <path d="M245 210c6-3 12 0 14 6" stroke="#241A13" stroke-width="4" fill="none" stroke-linecap="round"></path>
+                </g>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M126 300l12-12M132 320l14-14M146 334l12-12"></path></g>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Maintenance</span> <span style="color:var(--muted,#7A6A5C)">lid off, wrench across</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="sign-in" data-screen-label="Sign in" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A loyalty card with one stamp filled and a ripple around it, meaning sign in to keep collecting">
+              <defs><pattern id="hs11" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-sign-in">
+                <g stroke="none">
+                  <path d="M50 128c100-16 204-14 302 6l-10 156c-98 14-196 12-292-4z" fill="#FFFDF9"></path>
+                  <path d="M50 128c100-16 204-14 302 6l-10 156c-98 14-196 12-292-4z" fill="url(#hs11)"></path>
+                  <path d="M64 148c88-12 180-10 272 6l-4 34c-90 10-182 8-268-4z" fill="#F1E8DA"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M44 126c104-18 212-16 314 6"></path>
+                  <path d="M50 134l-6 156c96 16 198 18 296 2l8-154"></path>
+                  <path d="M62 148c90-14 184-12 276 6M60 188c88 12 182 12 272 0" stroke-width="3.5" opacity=".55"></path>
+                </g>
+                <g stroke="#241A13" stroke-width="4" fill="none">
+                  <circle cx="96" cy="240" r="18" stroke-dasharray="7 8"></circle>
+                  <circle cx="152" cy="244" r="18" stroke-dasharray="7 8"></circle>
+                  <circle cx="208" cy="246" r="18" stroke-dasharray="7 8"></circle>
+                  <circle cx="264" cy="244" r="18" stroke-dasharray="7 8"></circle>
+                </g>
+                <circle cx="96" cy="240" r="18" style="fill:var(--acc,#C2593A)"></circle>
+                <ellipse cx="96" cy="240" rx="6" ry="8" fill="#FBF6EE"></ellipse>
+                <g style="animation:k-pulse 2.6s ease-in-out infinite;animation-play-state:var(--anim,running)">
+                  <circle cx="96" cy="240" r="30" fill="none" stroke="#C9B9A6" stroke-width="4"></circle>
+                  <circle cx="96" cy="240" r="42" fill="none" stroke="#C9B9A6" stroke-width="3" opacity=".5"></circle>
+                </g>
+                <path d="M300 316c-18 12-40 14-60 6" stroke="#C9B9A6" stroke-width="4" fill="none" stroke-linecap="round"></path>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M64 262l12-12M70 282l14-14M84 296l12-12"></path></g>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Sign in</span> <span style="color:var(--muted,#7A6A5C)">one stamp in, keep collecting</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure data-doodle="notifications" data-screen-label="Notifications off" style="margin:0">
+          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+            <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A service bell with a bean handle and a slash through it">
+              <defs><pattern id="hs12" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+              <g id="dd-notifications">
+                <g stroke="none">
+                  <path d="M76 274c0-58 56-100 124-100s124 42 124 100z" fill="#F1E8DA"></path>
+                  <path d="M76 274c0-58 56-100 124-100s124 42 124 100z" fill="url(#hs12)"></path>
+                  <path d="M100 262c8-42 48-70 100-70s92 28 100 70z" fill="#FFFDF9"></path>
+                </g>
+                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M74 276c-2-60 56-104 126-104s128 44 126 104"></path>
+                  <path d="M56 278c94-10 190-10 288 0" stroke-width="6"></path>
+                  <path d="M98 262c10-42 50-70 102-70s92 28 102 70" stroke-width="3.5" opacity=".5"></path>
+                  <path d="M200 172v-16"></path>
+                  <path d="M156 302c8 14 24 22 44 22s36-8 44-22" stroke-width="4" opacity=".45"></path>
+                </g>
+                <ellipse cx="200" cy="146" rx="15" ry="19" fill="#3F2A1D"></ellipse>
+                <path d="M193 132c8 8 9 22 3 30" stroke="#F1E8DA" stroke-width="3" fill="none" stroke-linecap="round"></path>
+                <path d="M96 96l212 212" stroke="#241A13" stroke-width="8" stroke-linecap="round" fill="none"></path>
+                <path d="M96 96l212 212" style="stroke:var(--acc,#C2593A)" stroke-width="3" stroke-linecap="round" fill="none"></path>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M110 244l12-12M124 234l12-12M290 244l12-12"></path></g>
+              </g>
+            </svg>
+          </div>
+          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
+            <div style="font-size:14px"><span style="font-weight:600">Notifications off</span> <span style="color:var(--muted,#7A6A5C)">the bell is covered</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+    </sc-if>
+
+    <sc-if value="{{ showHead }}" hint-placeholder-val="{{ true }}">
+    <section style="margin-top:88px;padding-top:32px;border-top:1px solid var(--line,#EFE4D3);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:32px">
+      <div>
+        <h3 style="margin:0 0 8px;font-family:Newsreader,Georgia,serif;font-weight:500;font-size:20px">What changed from the first pass</h3>
+        <p style="margin:0;font-size:14px;line-height:1.6;color:var(--muted,#7A6A5C)">No perfect circles, and no cup traced twelve times. Contours wobble, fills sit a few pixels off their lines, hatching is a handful of strokes in the shade. Every scene is cropped like a photo.</p>
+      </div>
+      <div>
+        <h3 style="margin:0 0 8px;font-family:Newsreader,Georgia,serif;font-weight:500;font-size:20px">Placement rules</h3>
+        <p style="margin:0;font-size:14px;line-height:1.6;color:var(--muted,#7A6A5C)">Squares max out around 240px on a phone and 420px on desktop. The headline carries the message; the doodle sets the mood. Wide scenes bleed to a container edge or sit beside text, never boxed in a card with a border.</p>
+      </div>
+      <div>
+        <h3 style="margin:0 0 8px;font-family:Newsreader,Georgia,serif;font-weight:500;font-size:20px">Recolour, pause, print</h3>
+        <p style="margin:0;font-size:14px;line-height:1.6;color:var(--muted,#7A6A5C)">Set <code style="font:600 13px/1 ui-monospace,monospace;background:#F1E8DA;padding:2px 5px;border-radius:4px">--acc</code> on any parent to recolour the coffee; <code style="font:600 13px/1 ui-monospace,monospace;background:#F1E8DA;padding:2px 5px;border-radius:4px">--anim: paused</code> for a still. Downloads bake both in. MIT, like the icons. <a href="https://github.com/BaryoDev/Kapehan">The repo</a>.</p>
+      </div>
+    </section>
+    </sc-if>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#C2593A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#C2593A&quot;,&quot;#8A5106&quot;,&quot;#6E7A52&quot;,&quot;#3F5B6B&quot;],&quot;section&quot;:&quot;Palette&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;light&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;tsType&quot;:&quot;'light' | 'dark'&quot;,&quot;section&quot;:&quot;Palette&quot;},&quot;hatch&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Style&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Style&quot;},&quot;part&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;all&quot;,&quot;options&quot;:[&quot;all&quot;,&quot;doodles&quot;,&quot;placement&quot;],&quot;tsType&quot;:&quot;'all' | 'doodles' | 'placement'&quot;,&quot;section&quot;:&quot;Embed&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const dark = (p.theme ?? 'light') === 'dark';
+    const part = p.part ?? 'all';
+    const emb = part !== 'all';
+    return {
+      showHead: !emb, showPlace: part === 'all' || part === 'placement', showGallery: part === 'all' || part === 'doodles',
+      minH: emb ? '0' : '100vh', pad: emb ? '0 0 24px' : '64px 28px 96px', placeTop: emb ? '0' : '64px', galTop: emb ? '0' : '88px',
+      acc: p.accent ?? '#C2593A',
+      hatchOp: (p.hatch ?? true) ? '.5' : '0',
+      anim: (p.motion ?? true) ? 'running' : 'paused',
+      pageBg: dark ? '#17100B' : '#FBF6EE',
+      cardBg: dark ? '#231911' : '#FFFDF9',
+      lineCol: dark ? '#3A2B1F' : '#EFE4D3',
+      inkCol: dark ? '#FBF6EE' : '#241A13',
+      mutedCol: dark ? '#C9B9A6' : '#7A6A5C',
+      copySvg: (e) => this.grab(e, false),
+      downloadSvg: (e) => this.grab(e, true)
+    };
+  }
+
+  serialize(card) {
+    const svg = card.querySelector('svg').cloneNode(true);
+    svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    svg.removeAttribute('width');
+    const acc = this.props.accent ?? '#C2593A';
+    const hop = (this.props.hatch ?? true) ? '.5' : '0';
+    let s = new XMLSerializer().serializeToString(svg);
+    const swap = (from, to) => { s = s.split(from).join(to); };
+    swap('var(--acc, #C2593A)', acc); swap('var(--acc,#C2593A)', acc);
+    swap('var(--hatch-op, .5)', hop); swap('var(--hatch-op,.5)', hop);
+    swap('var(--anim, running)', 'running'); swap('var(--anim,running)', 'running');
+    return s;
+  }
+
+  flash(btn, word) {
+    const old = btn.textContent;
+    btn.textContent = word;
+    setTimeout(() => { btn.textContent = old; }, 1200);
+  }
+
+  grab(e, download) {
+    const btn = e.currentTarget;
+    const card = btn.closest('[data-doodle]');
+    if (!card) return;
+    const src = '<!-- Kapehan doodle: ' + card.dataset.doodle + ' (MIT) -->\n' + this.serialize(card);
+    if (!download) {
+      navigator.clipboard.writeText(src).then(() => this.flash(btn, 'Copied'), () => this.flash(btn, 'Failed'));
+      return;
+    }
+    const url = URL.createObjectURL(new Blob([src], { type: 'image/svg+xml' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'kapehan-' + card.dataset.doodle + '.svg';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    this.flash(btn, 'Saved');
+  }
+}
+
+</script>
+</body>
+</html>

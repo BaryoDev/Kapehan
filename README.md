@@ -4,7 +4,7 @@
   <p><em>Free, hand-drawn coffee icons. &#9749;</em></p>
   <p>
     <a href="https://www.npmjs.com/package/kapehan"><img src="https://img.shields.io/npm/v/kapehan?style=flat-square&color=E5901A" alt="npm" /></a>
-    <img src="https://img.shields.io/badge/icons-37-E5901A?style=flat-square" alt="37 icons" />
+    <img src="https://img.shields.io/badge/icons-42-E5901A?style=flat-square" alt="42 icons" />
     <img src="https://img.shields.io/badge/license-MIT-241A13?style=flat-square" alt="MIT" />
   </p>
   <p><a href="https://baryodev.github.io/Kapehan/"><strong>Browse the set</strong></a></p>
@@ -12,7 +12,7 @@
 
 ---
 
-**Kapehan** (Filipino for *coffee house*) is a set of 37 icons for coffee shops. A love letter to Barako. Two tracks ship from the same drawings:
+**Kapehan** (Filipino for *coffee house*) is a set of 42 icons for coffee shops. A love letter to Barako. Two tracks ship from the same drawings:
 
 | Folder | Grid | Colour | For |
 |---|---|---|---|
@@ -67,6 +67,55 @@ The raw icon data, if you want to build your own component:
 ```js
 import { icons, palette, monoOf, wrap } from "kapehan/kapehan-icons.js";
 ```
+
+## Component CSS
+
+> Ships in **0.3.0**, not yet published. `npm i kapehan` gives you 0.2.0 today, which has
+> the icons and the web component but not this.
+
+`kapehan.css` is a token-driven component sheet (`.kape-btn`, `.kape-card`, `.kape-combo`,
+`.kape-drawer` and friends). Import it once, then set the five palette roles:
+
+```css
+@import "kapehan/kapehan.css";
+
+:root {
+  --paper: #FBF6EE;
+  --surface: #FFFFFF;
+  --ink: #241A13;
+  --accent: #C2593A;
+  --pop: #E5901A;
+}
+```
+
+Everything else derives from those five with `color-mix`, so recolouring the whole kit is a
+five-line change. No component holds a hex; `npm test` fails the build if one appears outside
+`:root`. Square corners everywhere with `<html data-edges="square">`.
+
+## Theming
+
+> Ships in **0.3.0**, not yet published. `npm i kapehan` gives you 0.2.0 today, which has
+> the icons and the web component but not this.
+
+The 28 palettes ship as data, extracted from the design canvas rather than retyped:
+
+```js
+import palettes from "kapehan/palettes.json";
+
+const p = palettes.find((x) => x.key === "ube");
+// { key, name, icon, note, paper, surface, ink, accent, pop, onAccent, title, sub, use }
+```
+
+Set the five roles and every `.kape-*` component and mono icon follows:
+
+```css
+:root {
+  --paper: #F3EDF7; --surface: #FFFDF9; --ink: #2E2036;
+  --accent: #8E6BA8; --pop: #B392C9; --on-accent: #FBF6EE;
+}
+```
+
+Each palette carries a `use` badge saying what it suits: `app`, `web` or `brand`.
 
 ## The system
 
@@ -147,6 +196,16 @@ instead of a pile.
 | <img src="icons/avocado-shake.svg" width="36" height="36" alt="avocado-shake" /> | `avocado-shake` | `avocado`, `green-shake` |
 | <img src="icons/pineapple-juice.svg" width="36" height="36" alt="pineapple-juice" /> | `pineapple-juice` | `pinya`, `pineapple` |
 
+### Desserts
+
+| | Name | Aliases |
+|---|---|---|
+| <img src="icons/donut.svg" width="36" height="36" alt="donut" /> | `donut` | `doughnut`, `ring` |
+| <img src="icons/cake-slice.svg" width="36" height="36" alt="cake-slice" /> | `cake-slice` | `cake`, `slice` |
+| <img src="icons/croissant.svg" width="36" height="36" alt="croissant" /> | `croissant` | `pastry`, `crescent` |
+| <img src="icons/pandesal.svg" width="36" height="36" alt="pandesal" /> | `pandesal` | `bun`, `bread-roll` |
+| <img src="icons/ensaymada.svg" width="36" height="36" alt="ensaymada" /> | `ensaymada` | `brioche`, `cheese-bun` |
+
 ### Vessels
 
 | | Name | Aliases |
@@ -180,6 +239,14 @@ instead of a pile.
 | <img src="icons/grinder.svg" width="36" height="36" alt="grinder" /> | `grinder` | `mill`, `gilingan` |
 | <img src="icons/espresso-machine.svg" width="36" height="36" alt="espresso-machine" /> | `espresso-machine` | `machine`, `barista-bar` |
 
+## Where this is going
+
+Kapehan is a UI resource site: palettes, icons, components and doodles, browsable at
+[baryodev.github.io/Kapehan](https://baryodev.github.io/Kapehan/) and installable from npm.
+It has no backend and ships no client for any CMS. [NEXT_STEPS.md](NEXT_STEPS.md) is the
+roadmap. Today the icons and the component CSS are real; the seven-tab site and the React
+and Blazor components are not yet.
+
 ## Contributing an icon
 
 [`kapehan-icons.js`](kapehan-icons.js) is the only file you edit. Both SVG tracks, the web
@@ -191,6 +258,12 @@ npm test              # fails if anything on disk drifted from the source
 npm run test:browser  # drives the component and the site in a real browser
 npm run serve         # then open http://localhost:4173/docs/
 ```
+
+Whatever the README or the site promises must exist. `npm test` enforces it: every
+`kapehan/...` path either resolves through `exports` and is present on disk, or the build
+fails; the version shown on the site must match `package.json`; and every icon named in a
+snippet must be a real name or alias. A promise the tarball does not keep is a broken
+install, not a typo.
 
 `npm test` needs nothing installed. `npm run test:browser` needs `npm ci` and
 `npx playwright install chromium` first. CI runs both on every pull request.
