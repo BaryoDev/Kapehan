@@ -231,6 +231,12 @@ npm run test:browser  # drives the component and the site in a real browser
 npm run serve         # then open http://localhost:4173/docs/
 ```
 
+Whatever the README or the site promises must exist. `npm test` enforces it: every
+`kapehan/...` path either resolves through `exports` and is present on disk, or the build
+fails; the version shown on the site must match `package.json`; and every icon named in a
+snippet must be a real name or alias. A promise the tarball does not keep is a broken
+install, not a typo.
+
 `npm test` needs nothing installed. `npm run test:browser` needs `npm ci` and
 `npx playwright install chromium` first. CI runs both on every pull request.
 

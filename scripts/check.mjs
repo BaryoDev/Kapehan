@@ -4,6 +4,7 @@
  * A drifted icons/ folder is invisible in review and ships straight to npm, so this is the gate.
  */
 import { readFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { icons, categories, monoOf } from '../kapehan-icons.js';
@@ -67,6 +68,36 @@ for (const target of Object.values(pkg.exports ?? {})) {
   const top = rel.split('/')[0];
   if (!(pkg.files ?? []).includes(top)) fail.push(`package.json exports ${target} but files[] does not ship ${top}`);
 }
+
+// Whatever the site and the README promise must actually exist. Both are read by people
+// who then run the command, so a promise the tarball does not keep is a broken install,
+// not a typo. Checked mechanically because it is exactly the thing nobody re-reads.
+const readme = await readFile(join(root, 'README.md'), 'utf8');
+const site = await readFile(join(root, 'docs/index.html'), 'utf8');
+
+const subpathOk = (sub) =>
+  Object.keys(pkg.exports ?? {}).some(
+    (k) => k === sub || (k.includes('*') && new RegExp('^' + k.replace(/\*/g, '.*') + '$').test(sub)),
+  );
+
+for (const [where, text] of [['README.md', readme], ['docs/index.html', site]]) {
+  for (const ref of new Set(text.match(/kapehan\/[a-zA-Z0-9/._-]+/g) ?? [])) {
+    const sub = './' + ref.slice('kapehan/'.length);
+    if (!subpathOk(sub)) fail.push(`${where} promises ${ref}, which package.json exports does not resolve`);
+    else if (!existsSync(join(root, sub))) fail.push(`${where} promises ${ref}, which is exported but missing on disk`);
+  }
+}
+
+// The version shown to a visitor and the version they would install must agree.
+const shown = [...new Set(site.match(/v\d+\.\d+/g) ?? [])];
+const want = 'v' + pkg.version.split('.').slice(0, 2).join('.');
+for (const v of shown) if (v !== want) fail.push(`docs/index.html shows ${v} but package.json is ${pkg.version}`);
+
+// Every icon the docs name must be a real name or alias, or the copy-paste snippet renders nothing.
+const named = new Set([...readme.matchAll(/kape-icon name="([a-z-]+)"/g)].map((m) => m[1]));
+for (const m of site.matchAll(/kape-icon name=&quot;([a-z-]+)&quot;|kape-icon name="([a-z-]+)"/g)) named.add(m[1] ?? m[2]);
+const known = new Set(icons.flatMap((i) => [i.name, ...i.aliases]));
+for (const n of named) if (!known.has(n)) fail.push(`the docs show <kape-icon name="${n}">, which is not an icon or an alias`);
 
 if (fail.length) {
   for (const f of fail) console.error('x', f);
