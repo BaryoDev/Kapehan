@@ -31,7 +31,8 @@
     "./kapehan-icons.js": "./kapehan-icons.js",
     "./kapehan.css": "./kapehan.css",
     "./icons/*": "./icons/*",
-    "./palettes.json": "./palettes.json"
+    "./palettes.json": "./palettes.json",
+    "./kapehan-components.js": "./kapehan-components.js"
   },
   "files": [
     "icons",
@@ -40,7 +41,8 @@
     "kapehan.css",
     "LICENSE",
     "README.md",
-    "palettes.json"
+    "palettes.json",
+    "kapehan-components.js"
   ],
   "sideEffects": [
     "./kape-icon.js"

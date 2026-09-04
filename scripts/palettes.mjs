@@ -7,12 +7,7 @@
  *
  * Called by scripts/build.mjs; not run directly.
  */
-import { readFile } from 'node:fs/promises';
-import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const CANVAS = 'design/Kapehan.dc.html';
+import { readCanvas, extractLiteral, CANVAS } from './canvas.mjs';
 
 /** The palette roles every component reads. */
 const ROLES = ['paper', 'surface', 'ink', 'accent', 'pop', 'onAccent'];
@@ -72,36 +67,8 @@ function parseObjectArray(src) {
   return out;
 }
 
-/**
- * Brace-matches a literal out of the canvas. Tracks string state, because the palette
- * entries contain quoted prose with braces and apostrophes in it.
- */
-function extractLiteral(src, key, open, close) {
-  const at = src.indexOf(key);
-  if (at === -1) throw new Error(`${CANVAS} has no ${key}`);
-  const start = src.indexOf(open, at);
-  let depth = 0;
-  let quote = null;
-  let escaped = false;
-
-  for (let i = start; i < src.length; i++) {
-    const ch = src[i];
-    if (quote) {
-      if (escaped) escaped = false;
-      else if (ch === '\\') escaped = true;
-      else if (ch === quote) quote = null;
-      continue;
-    }
-    if (ch === '"' || ch === "'" || ch === '`') { quote = ch; continue; }
-    if (ch === open) depth++;
-    else if (ch === close && --depth === 0) return src.slice(start, i + 1);
-  }
-  throw new Error(`${key} in ${CANVAS} never closes, the file is probably truncated`);
-}
-
 export async function palettes() {
-  const src = await readFile(join(root, CANVAS), 'utf8');
-  const parsed = parseObjectArray(extractLiteral(src, 'static PALETTES', '[', ']'));
+  const parsed = parseObjectArray(extractLiteral(await readCanvas(), 'static PALETTES', '[', ']'));
 
   const seen = new Set();
   for (const p of parsed) {
