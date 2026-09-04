@@ -26,6 +26,10 @@ export function extractLiteral(src, key, open, close) {
   const at = src.indexOf(key);
   if (at === -1) throw new Error(`${CANVAS} has no ${key}`);
   const start = src.indexOf(open, at);
+  // Without this, a missing delimiter gives -1, the loop starts before the string and
+  // scans from 0, and it can return an unrelated balanced literal from earlier in the
+  // file rather than failing. A wrong literal that parses is worse than a crash.
+  if (start === -1) throw new Error(`${key} in ${CANVAS} is not followed by ${open}`);
   let depth = 0;
   let quote = null;
   let escaped = false;
