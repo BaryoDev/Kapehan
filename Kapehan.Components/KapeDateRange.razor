@@ -1,0 +1,141 @@
+@*
+  KapeDateRange.razor: Kapehan "Date range" (Forms).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      from*: Date | null
+      to*: Date | null
+      month: Date
+      presets: Array<{ label: string, from: Date, to: Date }>
+      onApply*: (range: { from: Date, to: Date }) => void
+
+  Accessibility contract:
+      roles: The grid is a group of buttons, one per day; the trigger is a button with aria-expanded
+      attrs: aria-label on each day button carrying the full date, since the visible text is just a number
+             aria-current="date" on today
+             aria-pressed on the two endpoints; in-range days are styling only
+             aria-current="true" on the active preset
+      keys:  Arrow keys move a day at a time, Page Up and Page Down a month
+             Enter picks the start, then the end; Escape reverts to the last applied range
+             Tab reaches presets, grid, then Cancel and Apply
+*@
+
+<div class="kape-range">
+    <button class="kape-range__trigger" aria-expanded="@_open" @onclick="() => _open = !_open">
+        <KapeIcon Name="stamp-card" Size="18" />
+        @Label
+    </button>
+
+    @if (_open)
+    {
+        <div class="kape-range__pop">
+            <ul class="kape-range__presets">
+                @foreach (var p in Presets)
+                {
+                    var preset = p;
+                    <li aria-current="@(_from == preset.From ? "true" : null)"
+                        @onclick="() => { _from = preset.From; _to = preset.To; }">@preset.Label</li>
+                }
+            </ul>
+
+            <div class="kape-cal" @onkeydown="OnKey">
+                <header>
+                    <button aria-label="Previous month" @onclick="() => Shift(-30)">&lsaquo;</button>
+                    <span>@_view.ToString("MMMM yyyy")</span>
+                    <button aria-label="Next month" @onclick="() => Shift(30)">&rsaquo;</button>
+                </header>
+                <div class="kape-cal__grid" role="group" aria-label="Days">
+                    @foreach (var d in Days)
+                    {
+                        var day = d;
+                        <button class="@ClassOf(day)" aria-label="@day.ToString("MMM d, yyyy")"
+                                tabindex="@(day == _focus ? 0 : -1)" @onclick="() => Pick(day)">@day.Day</button>
+                    }
+                </div>
+            </div>
+
+            <footer>
+                <button class="kape-btn" @onclick="Cancel">Cancel</button>
+                <button class="kape-btn kape-btn--ink" disabled="@(_from is null || _to is null)" @onclick="Apply">Apply</button>
+            </footer>
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>Start of the range.</summary>
+    /// <remarks>Canvas default: <c>null</c>.</remarks>
+    [Parameter] public DateOnly? From { get; set; }
+    /// <summary>End of the range.</summary>
+    /// <remarks>Canvas default: <c>null</c>.</remarks>
+    [Parameter] public DateOnly? To { get; set; }
+    /// <summary>Shortcut list down the left.</summary>
+    /// <remarks>Canvas default: <c>[]</c>.</remarks>
+    [Parameter] public IReadOnlyList<RangePreset> Presets { get; set; } = [];
+    /// <summary>Fired by Apply, not by each click.</summary>
+    [Parameter] public EventCallback<(DateOnly From, DateOnly To)> OnApply { get; set; }
+
+    private bool _open;
+    private DateOnly? _from, _to;
+    private DateOnly _focus = DateOnly.FromDateTime(DateTime.Today);
+    private DateOnly _view = new(DateTime.Today.Year, DateTime.Today.Month, 1);
+
+    protected override void OnParametersSet()
+    {
+        _from ??= From;
+        _to ??= To;
+    }
+
+    private string Label => _from is null ? "Pick a range" : $"{_from:MMM d, yyyy} to {_to:MMM d, yyyy}";
+
+    private IEnumerable<DateOnly> Days =>
+        Enumerable.Range(1, DateTime.DaysInMonth(_view.Year, _view.Month)).Select(i => new DateOnly(_view.Year, _view.Month, i));
+
+    private string ClassOf(DateOnly d) =>
+        d == _from ? "is-start" : d == _to ? "is-end" : _from is not null && _to is not null && d > _from && d < _to ? "in-range" : "";
+
+    private void Pick(DateOnly d)
+    {
+        if (_from is not null && _to is null && d > _from) _to = d;
+        else { _from = d; _to = null; }
+    }
+
+    private void Shift(int days)
+    {
+        _focus = _focus.AddDays(days);
+        _view = new DateOnly(_focus.Year, _focus.Month, 1);
+    }
+
+    private void OnKey(KeyboardEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case "ArrowLeft": Shift(-1); break;
+            case "ArrowRight": Shift(1); break;
+            case "ArrowUp": Shift(-7); break;
+            case "ArrowDown": Shift(7); break;
+            case "PageUp": Shift(-30); break;
+            case "PageDown": Shift(30); break;
+            case "Enter": Pick(_focus); break;
+            case "Escape": Cancel(); break;
+        }
+    }
+
+    private void Cancel()
+    {
+        _from = From;
+        _to = To;
+        _open = false;
+    }
+
+    private async Task Apply()
+    {
+        _open = false;
+        if (_from is not null && _to is not null) await OnApply.InvokeAsync((_from.Value, _to.Value));
+    }
+}

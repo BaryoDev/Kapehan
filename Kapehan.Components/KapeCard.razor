@@ -1,0 +1,46 @@
+@*
+  KapeCard.razor: Kapehan "Card" (Data).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      item*: MenuItem
+      onAdd: (item: MenuItem) => void
+      size: number
+
+  Accessibility contract:
+      roles: article for a standalone card
+      attrs: The title should be a heading when cards are a list of products
+             Drink art is decorative: aria-hidden
+      keys:  Only the Add button takes focus; the whole card is not clickable
+*@
+
+@* A consumer's first move is dropping the tag in with no attributes, and EditorRequired
+   is a warning in their project rather than an error, so a missing Item renders
+   nothing here instead of throwing through the whole render tree. *@
+@if (Item is not null)
+{
+    <article class="kape-card">
+        <KapeIcon Name="@Item.Icon" Size="@Size" Colour />
+        <p class="kape-card__title">@Item.Name</p>
+        <p class="kape-card__sub">@Item.Size &middot; @Item.Temp</p>
+        <div class="kape-card__foot">
+            <span class="kape-row__price">@Item.Price</span>
+            <button class="kape-btn kape-btn--primary" @onclick="() => OnAdd.InvokeAsync(Item)">Add</button>
+        </div>
+    </article>
+}
+
+@code {
+    /// <summary>Drink to show.</summary>
+    [Parameter, EditorRequired] public MenuItem? Item { get; set; }
+    /// <summary>Drink art size in px.</summary>
+    /// <remarks>Canvas default: <c>64</c>.</remarks>
+    [Parameter] public int Size { get; set; } = 64;
+    /// <summary>Fired by the Add button.</summary>
+    [Parameter] public EventCallback<MenuItem> OnAdd { get; set; }
+}

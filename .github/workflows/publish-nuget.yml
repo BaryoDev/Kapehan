@@ -1,0 +1,148 @@
+name: Publish to NuGet
+
+# Mirrors publish-npm.yml: same triggers, same tag-must-match-the-manifest gate, same
+# "run the whole check before publishing, not half way through it" order.
+#
+# It does not mirror the credential story, because NuGet has no equivalent of npm trusted
+# publishing yet. NUGET_API_KEY is a repository secret, scoped to Kapehan.Components only,
+# and the job that uses it is the only one that needs any secret at all.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (e.g. 0.3.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  PROJECT: Kapehan.Components/Kapehan.Components.csproj
+  TESTS: Kapehan.Components.Tests/Kapehan.Components.Tests.csproj
+  DOTNET_NOLOGO: "true"
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "true"
+
+jobs:
+  # Both frameworks, each named explicitly, each on its own runner.
+  #
+  # `dotnet build` on a multi-target project builds every TargetFramework, but a matrix that
+  # says so out loud is the thing that fails visibly when one of them stops compiling. The
+  # quiet version of this bug is a project that drops net10.0 from TargetFrameworks: the
+  # build still succeeds, the package still publishes, and the net10.0 lib folder is just
+  # missing. Naming the framework in the job means that shows up as a red X, not as silence.
+  build:
+    name: Build ${{ matrix.tfm }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        tfm: [net8.0, net10.0]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Restore
+        run: dotnet restore "$PROJECT"
+
+      - name: Build ${{ matrix.tfm }}
+        run: dotnet build "$PROJECT" --framework ${{ matrix.tfm }} --configuration Release --no-restore
+
+      # Building only proves it compiles. PrerenderTests is what proves a bare <KapeCard />
+      # renders instead of throwing, and that no component reaches for JavaScript before
+      # there is a runtime, and until now it never ran here: the package could publish with
+      # every test in the repo failing.
+      - name: Test ${{ matrix.tfm }}
+        run: dotnet test "$TESTS" --framework ${{ matrix.tfm }} --configuration Release
+
+  publish:
+    name: Pack and publish
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      # The .razor files are generated from the design canvas and committed. Publishing a
+      # tree that disagrees with the canvas would ship components nobody can reproduce.
+      - name: Check generated files are in sync
+        run: npm test
+
+      - name: Set version
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          sed -i "s|<Version>[^<]*</Version>|<Version>${{ inputs.version }}</Version>|" Directory.Build.props
+          grep -F "<Version>${{ inputs.version }}</Version>" Directory.Build.props
+
+      # A release tagged v0.3.0 that publishes 0.2.0 is the failure this catches. NuGet
+      # accepts it, and because a version can never be reused, the tag and the feed then
+      # disagree forever.
+      - name: Tag must match Directory.Build.props
+        if: github.event_name == 'release'
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          props="$(sed -n 's|.*<Version>\([^<]*\)</Version>.*|\1|p' Directory.Build.props | head -1)"
+          if [ "$tag" != "$props" ]; then
+            echo "::error::tag $GITHUB_REF_NAME does not match Directory.Build.props version $props"
+            exit 1
+          fi
+
+      # No --no-build here. Pack has to produce both lib/net8.0 and lib/net10.0, and reusing
+      # the matrix jobs' output would mean trusting artefacts that were built one framework
+      # at a time on two different runners.
+      - name: Pack
+        run: dotnet pack "$PROJECT" --configuration Release --output ./artifacts
+
+      # The pack step succeeds with one framework missing. This is the assertion that the
+      # thing on disk is actually multi-targeted.
+      - name: Package must carry both frameworks
+        run: |
+          nupkg="$(ls ./artifacts/Kapehan.Components.*.nupkg | head -1)"
+          echo "inspecting $nupkg"
+          contents="$(unzip -Z1 "$nupkg")"
+          echo "$contents"
+          for tfm in net8.0 net10.0; do
+            echo "$contents" | grep -q "^lib/$tfm/Kapehan.Components.dll$" || {
+              echo "::error::$nupkg has no lib/$tfm/Kapehan.Components.dll"
+              exit 1
+            }
+          done
+          echo "$contents" | grep -q "staticwebassets" || {
+            echo "::error::$nupkg ships no static web assets, so kapehan.css would 404"
+            exit 1
+          }
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nupkg
+          path: ./artifacts/*
+
+      - name: Publish
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [ -z "$NUGET_API_KEY" ]; then
+            echo "::error::NUGET_API_KEY is not set; add it as a repository secret scoped to Kapehan.Components"
+            exit 1
+          fi
+          dotnet nuget push "./artifacts/*.nupkg" \
+            --api-key "$NUGET_API_KEY" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate

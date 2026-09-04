@@ -1,0 +1,44 @@
+<Project>
+
+  <!--
+    Everything the NuGet package says about itself, in one file.
+
+    Version lives here and nowhere else. The npm package carries its own version in
+    package.json, and keeping the two in step is a manual job today: see the note in
+    .github/workflows/publish-nuget.yml. Two files claiming a version is exactly the
+    failure that tag-vs-package check in publish-npm.yml exists to catch, so this stays
+    the single source for the .NET side.
+  -->
+
+  <PropertyGroup>
+    <Version>0.3.0</Version>
+
+    <Authors>BaryoDev</Authors>
+    <Company>BaryoDev</Company>
+    <Copyright>Copyright (c) BaryoDev</Copyright>
+    <Product>Kapehan</Product>
+
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://baryodev.github.io/Kapehan/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/BaryoDev/Kapehan</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>blazor;razor;components;icons;svg;coffee;ui;design-system;css-variables</PackageTags>
+
+    <!--
+      Source Link. Without it a stack trace from a consumer's app points at nothing, and
+      the symbol package is worth publishing only if the sources can be found.
+    -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!--
+      Deterministic only in CI. Turning it on locally rewrites paths in the pdb and makes
+      a local build disagree with the CI one for no benefit.
+    -->
+    <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+</Project>

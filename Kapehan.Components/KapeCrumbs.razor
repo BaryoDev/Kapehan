@@ -1,0 +1,47 @@
+@*
+  KapeCrumbs.razor: Kapehan "Breadcrumb" (Navigation).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      trail*: Array<{ href: string, label: string }>
+      label: string
+
+  Accessibility contract:
+      roles: nav wrapping an ordered list
+      attrs: aria-current="page" on the last item, which is text and not a link
+             The separator is CSS content, so it is never read out
+      keys:  Tab through the ancestor links only
+*@
+
+<nav aria-label="@Label">
+    <ol class="kape-crumbs">
+        @foreach (var (t, i) in Trail.Select((t, i) => (t, i)))
+        {
+            var last = i == Trail.Count - 1;
+            <li aria-current="@(last ? "page" : null)">
+                @if (last)
+                {
+                    <span>@t.Label</span>
+                }
+                else
+                {
+                    <a href="@t.Href">@t.Label</a>
+                }
+            </li>
+        }
+    </ol>
+</nav>
+
+@code {
+    /// <summary>Path from root to here, current page last.</summary>
+    /// <remarks>Canvas default: <c>[]</c>.</remarks>
+    [Parameter] public IReadOnlyList<Crumb> Trail { get; set; } = [];
+    /// <summary>aria-label for the nav.</summary>
+    /// <remarks>Canvas default: <c>Breadcrumb</c>.</remarks>
+    [Parameter] public string Label { get; set; } = "Breadcrumb";
+}

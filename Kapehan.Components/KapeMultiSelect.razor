@@ -1,0 +1,102 @@
+@*
+  KapeMultiSelect.razor: Kapehan "Multi-select" (Forms).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      options*: Array<{ id: string, name: string }>
+      modelValue*: string[]
+      max: number | null
+      summaryLabel: (n: number) => string
+
+  Accessibility contract:
+      roles: Same combobox pattern as above, but the field is read-only: it lists chips and opens a listbox
+      attrs: aria-multiselectable on the listbox
+             aria-selected on every option, including unselected ones
+             aria-describedby pointing at the count line so the total is announced after each toggle
+             aria-disabled on options blocked by max, never removed from the list
+      keys:  Arrow keys move, Space or Enter toggles without closing
+             Escape closes, Home and End jump the list
+             Backspace removes the last chip when the field has focus
+*@
+
+<div class="kape-combo" role="combobox" aria-expanded="@_open" aria-haspopup="listbox"
+     aria-controls="kape-multi-list" aria-describedby="kape-multi-count">
+    <div class="kape-combo__field" tabindex="0" @onkeydown="OnKey" @onclick="() => _open = !_open">
+        @foreach (var id in Value)
+        {
+            var o = Options.FirstOrDefault(x => x.Id == id);
+            <span class="kape-chip">
+                @o?.Name
+                <button aria-label="Remove @o?.Name" @onclick:stopPropagation="true" @onclick="() => Toggle(id)">&times;</button>
+            </span>
+        }
+        @if (Value.Count == 0)
+        {
+            <span class="kape-combo__hint">Pick your branches</span>
+        }
+    </div>
+    @if (_open)
+    {
+        <ul id="kape-multi-list" class="kape-combo__list" role="listbox" aria-multiselectable="true">
+            @foreach (var (o, i) in Options.Select((o, i) => (o, i)))
+            {
+                var opt = o;
+                <li role="option" aria-selected="@Value.Contains(opt.Id)" aria-disabled="@Blocked(opt.Id)"
+                    class="@(i == _cursor ? "is-active" : "")" @onclick="() => Toggle(opt.Id)">@opt.Name</li>
+            }
+        </ul>
+    }
+    <p id="kape-multi-count" class="kape-sr" aria-live="polite">@Value.Count of @Options.Count selected</p>
+</div>
+
+@code {
+    /// <summary>Everything selectable.</summary>
+    /// <remarks>Canvas default: <c>[]</c>.</remarks>
+    [Parameter] public IReadOnlyList<Branch> Options { get; set; } = [];
+    /// <summary>Selected ids.</summary>
+    /// <remarks>Canvas default: <c>[]</c>.</remarks>
+    [Parameter] public IReadOnlyList<string> Value { get; set; } = [];
+    [Parameter] public EventCallback<IReadOnlyList<string>> ValueChanged { get; set; }
+    /// <summary>Ceiling on selections; further options go disabled.</summary>
+    /// <remarks>Canvas default: <c>null</c>.</remarks>
+    [Parameter] public int? Max { get; set; }
+
+    private bool _open;
+    private int _cursor;
+
+    private bool Full => Max is not null && Value.Count >= Max;
+    private bool Blocked(string id) => Full && !Value.Contains(id);
+
+    private Task Toggle(string id)
+    {
+        if (Blocked(id)) return Task.CompletedTask;
+        var next = Value.Contains(id) ? Value.Where(x => x != id).ToList() : [.. Value, id];
+        return ValueChanged.InvokeAsync(next);
+    }
+
+    private void Move(int n) => _cursor = (_cursor + n + Options.Count) % Options.Count;
+
+    private async Task OnKey(KeyboardEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case "ArrowDown": _open = true; Move(1); break;
+            case "ArrowUp": Move(-1); break;
+            case " ":
+            case "Enter":
+                if (_open) await Toggle(Options[_cursor].Id); else _open = true;
+                break;
+            case "Home": _cursor = 0; break;
+            case "End": _cursor = Options.Count - 1; break;
+            case "Escape": _open = false; break;
+            case "Backspace" when Value.Count > 0:
+                await ValueChanged.InvokeAsync(Value.Take(Value.Count - 1).ToList());
+                break;
+        }
+    }
+}

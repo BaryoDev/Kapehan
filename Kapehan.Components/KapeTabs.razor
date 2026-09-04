@@ -1,0 +1,54 @@
+@*
+  KapeTabs.razor: Kapehan "Tabs" (Navigation).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      tabs*: string[]
+      modelValue*: string
+      onChange*: (tab: string) => void
+
+  Accessibility contract:
+      roles: role="tablist" on the wrapper, role="tab" on each button, role="tabpanel" on the panel
+      attrs: aria-selected on every tab
+             aria-controls pointing at the panel id, and aria-labelledby back on the panel
+             tabindex="-1" on unselected tabs so the set is one tab stop
+      keys:  Arrow Left and Arrow Right move selection
+             Home and End jump to the first and last tab
+*@
+
+<div class="kape-tabs" role="tablist" @onkeydown="OnKey">
+    @foreach (var t in Tabs)
+    {
+        <button role="tab" aria-selected="@(Value == t)" tabindex="@(Value == t ? 0 : -1)" @onclick="() => ValueChanged.InvokeAsync(t)">@t</button>
+    }
+</div>
+
+@code {
+    /// <summary>Tab labels.</summary>
+    /// <remarks>Canvas default: <c>[]</c>.</remarks>
+    [Parameter] public string[] Tabs { get; set; } = ["Menu", "Beans", "Our shop"];
+    /// <summary>Selected tab.</summary>
+    [Parameter] public string Value { get; set; } = "Menu";
+    /// <summary>Fired with the new tab.</summary>
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+    private Task Move(int n)
+    {
+        var i = Array.IndexOf(Tabs, Value);
+        return ValueChanged.InvokeAsync(Tabs[(i + n + Tabs.Length) % Tabs.Length]);
+    }
+
+    private Task OnKey(KeyboardEventArgs e) => e.Key switch
+    {
+        "ArrowLeft" => Move(-1),
+        "ArrowRight" => Move(1),
+        "Home" => ValueChanged.InvokeAsync(Tabs[0]),
+        "End" => ValueChanged.InvokeAsync(Tabs[^1]),
+        _ => Task.CompletedTask,
+    };
+}

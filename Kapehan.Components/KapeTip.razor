@@ -1,0 +1,28 @@
+@*
+  KapeTip.razor: Kapehan "Tooltip" (Navigation).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      text*: string
+      placement: 'top' | 'bottom'
+
+  Accessibility contract:
+      roles: The tip is CSS-only, so the text must also be reachable
+      attrs: Mirror the tip into aria-describedby or a title-free aria-label
+             Never put essential information only in the tooltip
+      keys:  Shows on :focus-visible as well as hover, so keyboard users get it
+             Escape does not dismiss a CSS tooltip; keep tips non-blocking
+*@
+
+<button class="kape-btn kape-tip" data-tip="@Text">@ChildContent</button>
+
+@code {
+    /// <summary>One short phrase, no sentences.</summary>
+    [Parameter] public string Text { get; set; } = "";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

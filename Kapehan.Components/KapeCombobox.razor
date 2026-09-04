@@ -1,0 +1,101 @@
+@*
+  KapeCombobox.razor: Kapehan "Combobox" (Forms).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      options*: Array<{ id: string, name: string, price: number }>
+      modelValue*: string[]
+      placeholder: string
+      onChange*: (ids: string[]) => void
+
+  Accessibility contract:
+      roles: role="combobox" on the wrapper, role="listbox" on the popup, role="option" on each row
+      attrs: aria-expanded on the combobox
+             aria-multiselectable on the listbox and aria-selected on every option
+             aria-activedescendant on the input, pointing at the active option id — focus never leaves the input
+             aria-controls linking input to listbox
+      keys:  Arrow Down and Arrow Up move the active option
+             Enter toggles the active option and keeps the list open
+             Backspace on an empty field removes the last chip
+             Escape closes the list, Tab closes and moves on
+*@
+
+<div class="kape-combo" role="combobox" aria-expanded="@_open" aria-haspopup="listbox" aria-controls="kape-combo-list">
+    <div class="kape-combo__field">
+        @foreach (var id in Value)
+        {
+            var addon = Options.FirstOrDefault(a => a.Id == id);
+            <span class="kape-chip">
+                @addon?.Name
+                <button aria-label="Remove @addon?.Name" @onclick="() => Toggle(id)">&times;</button>
+            </span>
+        }
+        <input @bind="_query" @bind:event="oninput" placeholder="@Placeholder"
+               aria-activedescendant="@ActiveId" @onfocus="() => _open = true" @onkeydown="OnKey" />
+    </div>
+    @if (_open)
+    {
+        <ul id="kape-combo-list" class="kape-combo__list" role="listbox" aria-multiselectable="true">
+            @foreach (var (a, i) in Hits.Select((a, i) => (a, i)))
+            {
+                var addon = a;
+                <li id="kape-opt-@addon.Id" role="option" aria-selected="@Value.Contains(addon.Id)"
+                    class="@(i == _cursor ? "is-active" : "")" @onclick="() => Toggle(addon.Id)">
+                    @addon.Name <small>+@addon.Price</small>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+@code {
+    /// <summary>Everything selectable.</summary>
+    /// <remarks>Canvas default: <c>[]</c>.</remarks>
+    [Parameter] public IReadOnlyList<Addon> Options { get; set; } = [];
+    /// <summary>Selected ids.</summary>
+    /// <remarks>Canvas default: <c>[]</c>.</remarks>
+    [Parameter] public IReadOnlyList<string> Value { get; set; } = [];
+    /// <summary>Fired with the new id list.</summary>
+    [Parameter] public EventCallback<IReadOnlyList<string>> ValueChanged { get; set; }
+    /// <summary>Hint in the free-text field.</summary>
+    /// <remarks>Canvas default: <c>Add…</c>.</remarks>
+    [Parameter] public string Placeholder { get; set; } = "Add…";
+
+    private string _query = "";
+    private bool _open;
+    private int _cursor;
+
+    private List<Addon> Hits => Options.Where(a => a.Name.Contains(_query, StringComparison.OrdinalIgnoreCase)).ToList();
+    private string? ActiveId => _open && _cursor < Hits.Count ? $"kape-opt-{Hits[_cursor].Id}" : null;
+
+    private Task Toggle(string id)
+    {
+        var next = Value.Contains(id) ? Value.Where(x => x != id).ToList() : [.. Value, id];
+        return ValueChanged.InvokeAsync(next);
+    }
+
+    private void Move(int n)
+    {
+        if (Hits.Count == 0) return;
+        _cursor = (_cursor + n + Hits.Count) % Hits.Count;
+    }
+
+    private async Task OnKey(KeyboardEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case "ArrowDown": _open = true; Move(1); break;
+            case "ArrowUp": Move(-1); break;
+            case "Enter" when _open && _cursor < Hits.Count: await Toggle(Hits[_cursor].Id); break;
+            case "Escape": _open = false; break;
+            case "Backspace" when _query.Length == 0 && Value.Count > 0:
+                await ValueChanged.InvokeAsync(Value.Take(Value.Count - 1).ToList());
+                break;
+        }
+    }
+}

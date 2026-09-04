@@ -1,0 +1,4 @@
+# MSBuild output. Scoped to this project rather than added to the repo root .gitignore,
+# which is shared.
+bin/
+obj/

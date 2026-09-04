@@ -1,0 +1,151 @@
+@*
+  KapeCommandPalette.razor: Kapehan "Command palette" (Overlays).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      commands*: Array<{ id: string, label: string, group: string, run: () => void }>
+      open*: boolean
+      hotkey: string
+      placeholder: string
+
+  Accessibility contract:
+      roles: Native dialog for the shell, role="listbox" on the results, role="option" on each hit
+      attrs: aria-activedescendant on the input so focus stays in the field while the cursor moves
+             aria-expanded and aria-controls on the input
+             Group headings are presentation only: they must not be options
+             aria-live="polite" count of hits so an empty search is announced
+      keys:  Cmd K or Ctrl K opens and closes
+             Arrow Down and Arrow Up move the cursor, wrapping at the ends
+             Enter runs the active command, Escape closes and restores focus to the opener
+*@
+
+@inject IJSRuntime JS
+@implements IAsyncDisposable
+
+<dialog @ref="_el" @oncancel="OnNativeCancel" @onclose="OnNativeClose" class="kape-cmdk" aria-label="Command palette">
+    <label>
+        <KapeIcon Name="grinder" Size="18" />
+        <input @ref="_field" @bind="_query" @bind:event="oninput" placeholder="@Placeholder"
+               role="combobox" aria-expanded="true" aria-controls="kape-cmdk-list"
+               aria-activedescendant="@ActiveId" @onkeydown="OnKey" />
+        <kbd>esc</kbd>
+    </label>
+
+    <ul id="kape-cmdk-list" role="listbox">
+        @foreach (var g in Hits.Select(h => h.Group).Distinct())
+        {
+            <li class="kape-cmdk__group" role="presentation">@g</li>
+            @foreach (var c in Hits.Where(h => h.Group == g))
+            {
+                var cmd = c;
+                <li id="kape-cmd-@cmd.Id" role="option" aria-selected="@(ActiveId == $"kape-cmd-{cmd.Id}")"
+                    @onclick="() => Run(cmd)">@cmd.Label</li>
+            }
+        }
+    </ul>
+
+    <footer>
+        <kbd>&uarr;&darr;</kbd> move <kbd>&crarr;</kbd> run <kbd>esc</kbd> close
+        <span class="kape-sr" aria-live="polite">@Hits.Count results</span>
+    </footer>
+</dialog>
+
+@code {
+    /// <summary>Everything runnable.</summary>
+    /// <remarks>Canvas default: <c>[]</c>.</remarks>
+    [Parameter] public IReadOnlyList<Command> Commands { get; set; } = [];
+    /// <summary>Whether the palette is mounted and modal.</summary>
+    /// <remarks>Canvas default: <c>false</c>.</remarks>
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    /// <summary>Hint in the field.</summary>
+    /// <remarks>Canvas default: <c>Type a command or search</c>.</remarks>
+    [Parameter] public string Placeholder { get; set; } = "Type a command or search";
+
+    private ElementReference _el, _field;
+    private IJSObjectReference? _module;
+    private IJSObjectReference? _subscription;
+    private DotNetObjectReference<KapeCommandPalette>? _self;
+    private bool _interactive, _shown;
+    private string _query = "";
+    private int _cursor;
+
+    private List<Command> Hits => Commands.Where(c => c.Label.Contains(_query, StringComparison.OrdinalIgnoreCase)).ToList();
+    private string? ActiveId => _cursor < Hits.Count ? $"kape-cmd-{Hits[_cursor].Id}" : null;
+
+    // No JS during prerender: every call is behind _interactive.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _interactive = true;
+            _module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Kapehan.Components/kapehan.interop.js");
+            _self = DotNetObjectReference.Create(this);
+            _subscription = await _module.InvokeAsync<IJSObjectReference>("bindHotkey", _self, "k");
+        }
+        if (!_interactive || _module is null || Open == _shown) return;
+        _shown = Open;
+        await _module.InvokeVoidAsync(Open ? "showModal" : "closeModal", _el);
+        if (Open) await _module.InvokeVoidAsync("focus", _field);
+    }
+
+    [JSInvokable]
+    public Task Toggle() => OpenChanged.InvokeAsync(!Open);
+
+    private void Move(int n)
+    {
+        if (Hits.Count > 0) _cursor = (_cursor + n + Hits.Count) % Hits.Count;
+    }
+
+    private async Task Run(Command c)
+    {
+        await OpenChanged.InvokeAsync(false);
+        await c.Run.InvokeAsync();
+    }
+
+    private async Task OnKey(KeyboardEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case "ArrowDown": Move(1); break;
+            case "ArrowUp": Move(-1); break;
+            case "Enter" when _cursor < Hits.Count: await Run(Hits[_cursor]); break;
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        // bindHotkey listens for the life of the component, not the page, so the handle it
+        // returns has to be used. A circuit that has already gone is the ordinary way this
+        // runs, and JSDisconnectedException there is not worth throwing out of teardown.
+        try
+        {
+            if (_subscription is not null)
+            {
+                await _subscription.InvokeVoidAsync("dispose");
+                await _subscription.DisposeAsync();
+            }
+
+            if (_module is not null)
+            {
+                await _module.DisposeAsync();
+            }
+        }
+        catch (JSDisconnectedException)
+        {
+        }
+
+        _self?.Dispose();
+    }
+
+    // Escape closes the element in the DOM without telling Blazor. cancel reports that the
+    // way the close button does; close resyncs _shown, so the next Open still shows.
+    private Task OnNativeCancel() => OpenChanged.InvokeAsync(false);
+
+    private void OnNativeClose() => _shown = false;
+}

@@ -1,0 +1,46 @@
+@*
+  KapeMenuRow.razor: Kapehan "Menu row" (Data).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      items*: MenuItem[]
+      onPick: (item: MenuItem) => void
+      badge: string | null
+
+  Accessibility contract:
+      roles: A plain row is not interactive; wrap it in a button or anchor when it navigates
+      attrs: The price must stay in the same reading order as the name
+             Decorative drink art gets aria-hidden
+      keys:  Only interactive rows take focus; do not put tabindex on a static row
+*@
+
+@foreach (var d in Items)
+{
+    <div class="kape-row" @onclick="() => OnPick.InvokeAsync(d)">
+        <span class="kape-row__art"><KapeIcon Name="@d.Icon" Size="40" Colour /></span>
+        <div class="kape-row__body">
+            <p class="kape-row__title">
+                @d.Name
+                @if (d.Badge is not null)
+                {
+                    <span class="kape-badge">@d.Badge</span>
+                }
+            </p>
+            <p class="kape-row__sub">@d.Sub</p>
+        </div>
+        <span class="kape-row__price">@d.Price</span>
+    </div>
+}
+
+@code {
+    /// <summary>Rows to render; each needs id, name, sub, price, icon.</summary>
+    /// <remarks>Canvas default: <c>[]</c>.</remarks>
+    [Parameter] public IReadOnlyList<MenuItem> Items { get; set; } = [];
+    /// <summary>Fired when a row is activated.</summary>
+    [Parameter] public EventCallback<MenuItem> OnPick { get; set; }
+}

@@ -1,0 +1,28 @@
+@*
+  KapeTag.razor: Kapehan "Badge" (Data).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      label*: string
+      tone: 'default' | 'accent' | 'ink'
+
+  Accessibility contract:
+      roles: Plain span; a badge is not a status region
+      attrs: When the badge is the only carrier of state (Sold out), repeat it in the row text or add a visually hidden phrase
+      keys:  Not focusable
+*@
+
+<span class="kape-tag @(Tone == "accent" ? "kape-tag--accent" : Tone == "ink" ? "kape-tag--ink" : "")">@Label</span>
+
+@code {
+    /// <summary>Short word, one or two.</summary>
+    [Parameter] public string Label { get; set; } = "";
+    /// <summary>Fill treatment.</summary>
+    /// <remarks>Canvas default: <c>default</c>.</remarks>
+    [Parameter] public string Tone { get; set; } = "default";
+}

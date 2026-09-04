@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" role="img" aria-label="coffee cup">
+  <path d="M15 15h18l-2.4 22.6a3 3 0 0 1-3 2.7h-7.2a3 3 0 0 1-3-2.7z" fill="#F4E8D6"/>
+  <path d="M17.1 26.6h13.8l-1 11a3 3 0 0 1-3 2.7h-5.8a3 3 0 0 1-3-2.7z" fill="#DBC5A4"/>
+  <rect x="15.8" y="24.6" width="16.4" height="5.4" rx="1.6" fill="#C2593A"/>
+  <path d="M13.4 12.6h21.2l-.6 4.2a1.7 1.7 0 0 1-1.7 1.5H15.7a1.7 1.7 0 0 1-1.7-1.5z" fill="#8C5A32"/>
+  <path d="M14 11.4h20a1.6 1.6 0 0 1 1.6 1.6H12.4A1.6 1.6 0 0 1 14 11.4z" fill="#5A3520"/>
+  <g stroke="#C9A87E" stroke-width="2" stroke-linecap="round">
+    <path d="M21 4.2c-1.4 1.8 1.4 2.8 0 4.6"/>
+    <path d="M27 4.2c-1.4 1.8 1.4 2.8 0 4.6"/>
+  </g>
+</svg>

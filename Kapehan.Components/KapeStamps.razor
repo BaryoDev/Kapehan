@@ -1,0 +1,51 @@
+@*
+  KapeStamps.razor: Kapehan "Stamp card" (Feedback).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      total*: number
+      filled*: number
+      label: string
+      icon: string
+
+  Accessibility contract:
+      roles: The card is a group; each slot is a span, never a button — the user does not punch it
+      attrs: role="group" with aria-label naming the reward
+             aria-hidden on every slot, plus one visually hidden sentence carrying the real count
+             data-on marks a filled slot for CSS; do not rely on colour alone, filled slots also carry the bean glyph
+      keys:  Not focusable; it is a readout, not a control
+*@
+
+<div class="kape-stamps" role="group" aria-label="@Label">
+    @for (var i = 1; i <= Total; i++)
+    {
+        var on = i <= Filled;
+        <span data-on="@(on ? "" : null)" aria-hidden="true">
+            @if (on)
+            {
+                <KapeIcon Name="@Icon" Size="16" />
+            }
+        </span>
+    }
+</div>
+<p class="kape-sr">@Filled of @Total stamps earned</p>
+
+@code {
+    /// <summary>Punches on the card.</summary>
+    /// <remarks>Canvas default: <c>10</c>.</remarks>
+    [Parameter] public int Total { get; set; } = 10;
+    /// <summary>Punches earned.</summary>
+    /// <remarks>Canvas default: <c>0</c>.</remarks>
+    [Parameter] public int Filled { get; set; }
+    /// <summary>Accessible name for the card.</summary>
+    /// <remarks>Canvas default: <c>Loyalty card</c>.</remarks>
+    [Parameter] public string Label { get; set; } = "Loyalty card";
+    /// <summary>Glyph drawn in a filled slot.</summary>
+    /// <remarks>Canvas default: <c>coffee-bean</c>.</remarks>
+    [Parameter] public string Icon { get; set; } = "coffee-bean";
+}

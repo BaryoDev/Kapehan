@@ -1,0 +1,87 @@
+@*
+  KapeDrawer.razor: Kapehan "Drawer" (Overlays).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      open*: boolean
+      title*: string
+      lines: Array<{ id: string, qty: number, name: string, total: string }>
+      side: 'right' | 'left'
+      onClose*: () => void
+
+  Accessibility contract:
+      roles: Native dialog, so role="dialog" and aria-modal come free and the backdrop is real
+      attrs: aria-labelledby pointing at the header text
+             Focus moves to the close button on open and back to the opener on close
+             inert is unnecessary: showModal already blocks the page
+      keys:  Escape closes (native)
+             Tab cycles inside the drawer only (native)
+             The footer actions are the last two stops, in destructive-last order
+*@
+
+@inject IJSRuntime JS
+
+<dialog @ref="_el" @oncancel="OnNativeCancel" @onclose="OnNativeClose" class="kape-drawer" aria-labelledby="kape-drawer-title">
+    <header>
+        <span id="kape-drawer-title">@Title</span>
+        <button @ref="_closer" aria-label="Close" @onclick="OnClose">&times;</button>
+    </header>
+
+    <div class="kape-drawer__body">
+        @foreach (var l in Lines)
+        {
+            <div class="kape-line">
+                <span>@l.Qty &times; @l.Name</span>
+                <span class="num">@l.Total</span>
+            </div>
+        }
+        <div class="kape-line kape-line--total">
+            <span>Total</span>
+            <span class="num">@Lines.Sum(l => l.Total)</span>
+        </div>
+    </div>
+
+    <footer>
+        <button class="kape-btn kape-btn--ink" @onclick="OnReady">Mark ready</button>
+        <button class="kape-btn" @onclick="OnRefund">Refund</button>
+    </footer>
+</dialog>
+
+@code {
+    /// <summary>Whether the drawer is shown.</summary>
+    /// <remarks>Canvas default: <c>false</c>.</remarks>
+    [Parameter] public bool Open { get; set; }
+    /// <summary>What the drawer is about.</summary>
+    [Parameter] public string Title { get; set; } = "";
+    /// <summary>Order lines.</summary>
+    /// <remarks>Canvas default: <c>[]</c>.</remarks>
+    [Parameter] public IReadOnlyList<OrderLine> Lines { get; set; } = [];
+    /// <summary>Fired by the close button or by Escape.</summary>
+    [Parameter] public EventCallback OnClose { get; set; }
+    [Parameter] public EventCallback OnRefund { get; set; }
+    [Parameter] public EventCallback OnReady { get; set; }
+
+    private ElementReference _el, _closer;
+    private bool _interactive, _shown;
+
+    // Prerender has no JS runtime; the first render flips the gate.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) _interactive = true;
+        if (!_interactive || Open == _shown) return;
+        _shown = Open;
+        await JS.InvokeVoidAsync(Open ? "kapehan.dialog.show" : "kapehan.dialog.close", _el);
+        if (Open) await JS.InvokeVoidAsync("kapehan.focus", _closer);
+    }
+
+    // Escape closes the element in the DOM without telling Blazor. cancel reports that the
+    // way the close button does; close resyncs _shown, so the next Open still shows.
+    private Task OnNativeCancel() => OnClose.InvokeAsync();
+
+    private void OnNativeClose() => _shown = false;
+}

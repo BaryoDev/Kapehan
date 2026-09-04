@@ -1,0 +1,48 @@
+@*
+  KapeChoice.razor: Kapehan "Checkbox · Radio" (Forms).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      options*: string[]
+      modelValue*: string | string[]
+      mode: 'checkbox' | 'radio'
+      name*: string
+
+  Accessibility contract:
+      roles: Native inputs inside labels; wrap a radio set in a fieldset with a legend
+      attrs: name must match across a radio group
+             aria-describedby for a helper line under the set
+      keys:  Radio: arrow keys move and select within the group
+             Checkbox: Space toggles, Tab moves
+*@
+
+<fieldset>
+    <legend>@Legend</legend>
+    @foreach (var s in Options)
+    {
+        <label class="@(Mode == "radio" ? "kape-radio" : "kape-check")">
+            <input type="@Mode" name="@Name" value="@s" checked="@(Value == s)" @onchange="() => ValueChanged.InvokeAsync(s)" />
+            <span>@s</span>
+        </label>
+    }
+</fieldset>
+
+@code {
+    /// <summary>Choice labels.</summary>
+    /// <remarks>Canvas default: <c>[]</c>.</remarks>
+    [Parameter] public string[] Options { get; set; } = ["12 oz", "16 oz"];
+    /// <summary>Which control to render.</summary>
+    /// <remarks>Canvas default: <c>radio</c>.</remarks>
+    [Parameter] public string Mode { get; set; } = "radio";
+    /// <summary>Shared name for radio grouping.</summary>
+    [Parameter] public string Name { get; set; } = "size";
+    [Parameter] public string Legend { get; set; } = "Size";
+    /// <summary>Selected value, or values for checkbox mode.</summary>
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+}

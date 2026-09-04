@@ -1,0 +1,59 @@
+@*
+  KapeToast.razor: Kapehan "Toast" (Feedback).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      message*: string
+      tone: 'info' | 'warn'
+      actionLabel: string | null
+      timeout: number
+
+  Accessibility contract:
+      roles: role="status" for info, role="alert" for warn
+      attrs: aria-live is implied by the role; never set both
+             The action must be reachable before auto-dismiss, so warn toasts do not time out
+      keys:  Tab reaches the action while the toast is mounted
+*@
+
+@implements IDisposable
+
+<div class="kape-toast @(Tone == "warn" ? "kape-toast--warn" : "")" role="@(Tone == "warn" ? "alert" : "status")">
+    <KapeIcon Name="@(Tone == "warn" ? "coffee-bean" : "coffee-cup")" Size="20" />
+    <span class="kape-toast__text">@Message</span>
+    @if (ActionLabel is not null)
+    {
+        <button class="kape-toast__action" @onclick="OnAction">@ActionLabel</button>
+    }
+</div>
+
+@code {
+    /// <summary>One sentence, no title.</summary>
+    [Parameter] public string Message { get; set; } = "";
+    /// <summary>Ink fill or accent outline.</summary>
+    /// <remarks>Canvas default: <c>info</c>.</remarks>
+    [Parameter] public string Tone { get; set; } = "info";
+    /// <summary>Optional single action.</summary>
+    /// <remarks>Canvas default: <c>null</c>.</remarks>
+    [Parameter] public string? ActionLabel { get; set; }
+    /// <summary>Auto-dismiss delay in ms; 0 keeps it open.</summary>
+    /// <remarks>Canvas default: <c>6000</c>.</remarks>
+    [Parameter] public int Timeout { get; set; } = 6000;
+    [Parameter] public EventCallback OnClose { get; set; }
+    [Parameter] public EventCallback OnAction { get; set; }
+
+    private CancellationTokenSource? _cts;
+
+    protected override void OnInitialized()
+    {
+        if (Timeout <= 0 || Tone == "warn") return;
+        _cts = new CancellationTokenSource();
+        _ = Task.Delay(Timeout, _cts.Token).ContinueWith(_ => OnClose.InvokeAsync(), TaskContinuationOptions.OnlyOnRanToCompletion);
+    }
+
+    public void Dispose() => _cts?.Cancel();
+}

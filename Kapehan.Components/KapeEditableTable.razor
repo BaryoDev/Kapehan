@@ -1,0 +1,95 @@
+@*
+  KapeEditableTable.razor: Kapehan "Editable table" (Data).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      rows*: Drink[]
+      editingId: string | null
+      onSave*: (id: string, price: number) => void
+      columns: string[]
+
+  Accessibility contract:
+      roles: Real table; the edit affordance is a cell input, not a dialog
+      attrs: aria-live="polite" on a status line so a save is announced
+             The input inherits the column header via scope="col"; do not aria-label it with the value
+      keys:  Enter commits, Escape reverts and returns focus to the cell
+             F2 or double-click enters edit mode
+             Tab out commits, matching spreadsheet behaviour
+*@
+
+<table class="kape-table kape-table--edit">
+    <thead>
+        <tr><th scope="col">Drink</th><th scope="col">Size</th><th scope="col" class="num">Price</th><th scope="col" class="num">Stock</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Rows)
+        {
+            var row = d;
+            <tr class="@(_editing == row.Id ? "is-editing" : "")" @ondblclick="() => Start(row)" @onkeydown="e => OnKey(e, row)">
+                <td>@row.Name</td>
+                <td>@row.Size</td>
+                <td class="num">
+                    @if (_editing == row.Id)
+                    {
+                        <input @bind="_draft" @bind:event="oninput" inputmode="numeric" @onblur="() => Commit(row)" />
+                    }
+                    else
+                    {
+                        @row.Price
+                    }
+                </td>
+                <td class="num">
+                    @row.Stock
+                    @if (_editing == row.Id)
+                    {
+                        <button class="kape-btn kape-btn--sm" @onclick="() => Commit(row)">Save</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<p class="kape-sr" aria-live="polite">@_status</p>
+
+@code {
+    /// <summary>Rows to render.</summary>
+    /// <remarks>Canvas default: <c>[]</c>.</remarks>
+    [Parameter] public IReadOnlyList<Drink> Rows { get; set; } = [];
+    /// <summary>Fired on Enter or Save.</summary>
+    [Parameter] public EventCallback<(string Id, decimal Price)> OnSave { get; set; }
+
+    private string? _editing;
+    private string _draft = "";
+    private string _status = "";
+
+    private void Start(Drink d)
+    {
+        _editing = d.Id;
+        _draft = d.Price.ToString();
+    }
+
+    private async Task Commit(Drink d)
+    {
+        if (decimal.TryParse(_draft, out var price))
+        {
+            await OnSave.InvokeAsync((d.Id, price));
+            _status = $"{d.Name} saved at {price}";
+        }
+        _editing = null;
+    }
+
+    private async Task OnKey(KeyboardEventArgs e, Drink d)
+    {
+        switch (e.Key)
+        {
+            case "Enter": await Commit(d); break;
+            case "Escape": _editing = null; break;
+            case "F2": Start(d); break;
+        }
+    }
+}

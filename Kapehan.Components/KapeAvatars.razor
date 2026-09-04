@@ -1,0 +1,40 @@
+@*
+  KapeAvatars.razor: Kapehan "Avatar" (Navigation).
+
+  GENERATED from kapehan-components.js by scripts/generators/blazor.mjs. Do not edit by
+  hand; edit design/Kapehan.dc.html and run `npm run build`. npm test fails if this drifts.
+
+  Styling comes entirely from kapehan.css. Reference it once in the host app:
+      <link rel="stylesheet" href="_content/Kapehan.Components/kapehan.css" />
+
+  Props (* = required):
+      people*: Array<{ id: string, initials: string }>
+      max: number
+      accentIndex: number | null
+
+  Accessibility contract:
+      roles: Decorative group; the names must also appear as text nearby
+      attrs: aria-hidden on the stack when the same names are listed in the row
+             The overflow chip needs a real label, e.g. 3 more
+      keys:  Not focusable unless each avatar links to a profile
+*@
+
+<div class="kape-avatars">
+    @foreach (var c in People.Take(Max))
+    {
+        <span class="kape-avatar">@c.Initials</span>
+    }
+    @if (People.Count > Max)
+    {
+        <span class="kape-avatar" title="@(People.Count - Max) more">+@(People.Count - Max)</span>
+    }
+</div>
+
+@code {
+    /// <summary>Crew to stack.</summary>
+    /// <remarks>Canvas default: <c>[]</c>.</remarks>
+    [Parameter] public IReadOnlyList<Person> People { get; set; } = [];
+    /// <summary>How many before the overflow chip.</summary>
+    /// <remarks>Canvas default: <c>2</c>.</remarks>
+    [Parameter] public int Max { get; set; } = 2;
+}
