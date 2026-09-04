@@ -8,7 +8,7 @@
   --paper: #FBF6EE;
   --surface: #FFFFFF;
   --ink: #241A13;
-  --accent: #C2593A;
+  --accent: #A94227;
   --pop: #E5901A;
   --on-accent: var(--paper);
   --acc: var(--accent);
@@ -24,6 +24,11 @@
   --pill: 999px;
 }
 [data-edges="square"] { --radius: 0; --radius-sm: 0; --radius-xs: 0; --pill: 0; }
+
+/* Every component sizes itself, because this sheet gets dropped into projects with no
+   global reset. Without it the dialog padding (48px) and the drawer border overflow a
+   narrow viewport that width:min(440px,100%) was supposed to fit. */
+[class^="kape-"], [class*=" kape-"], [class^="kape-"] *, [class*=" kape-"] * { box-sizing: border-box; }
 
 .kape-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; font: inherit; font-size: 14px; font-weight: 600; line-height: 1; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: var(--pill); cursor: pointer; }
 .kape-btn--primary { background: var(--accent); color: var(--on-accent); border-color: transparent; }
@@ -108,6 +113,18 @@
 .kape-dialog h2 { margin: 0 0 6px; font-size: 18px; font-weight: 700; }
 .kape-dialog p { margin: 0 0 18px; font-size: 14px; line-height: 1.6; color: var(--muted); }
 .kape-dialog__actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+/* The switch input is visually hidden, and select, combo and cmdk inputs clear their own
+   outline, so focus has to be drawn on the visible wrapper instead. */
+.kape-switch:has(input:focus-visible),
+.kape-select:focus-within,
+.kape-combo__field:focus-within,
+.kape-cmdk label:focus-within,
+.kape-stepper:focus-within,
+.kape-pager button:focus-visible,
+.kape-seg button:focus-visible,
+.kape-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.kape-check input:focus-visible, .kape-radio input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .kape-tip { position: relative; }
 .kape-tip::after { content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); white-space: nowrap; padding: 6px 10px; font-size: 12.5px; color: var(--paper); background: var(--ink); border-radius: var(--radius-xs); opacity: 0; pointer-events: none; transition: opacity .12s; }

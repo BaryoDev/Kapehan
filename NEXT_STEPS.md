@@ -54,16 +54,21 @@ still missing is the theming data and the framework entries.
 
 ```
 kapehan/
-  palettes.json         all 28 palettes with the 5 roles + the `use` badge   [missing]
-  react/index.js        the components as real React                         [missing, see phase 3]
-  vue/index.js          the components as real Vue                           [missing, see phase 3]
-  package.json export   some bundlers deep-import it                         [missing]
-  types                 .d.ts for the entries                                [missing]
+  palettes.json           all 28 palettes with the 5 roles + the `use` badge   [SHIPPED]
+  react/icons, react/components   the components as real React                [missing, phase 3]
+  vue/icons,   vue/components     the components as real Vue                  [missing, phase 3]
+  package.json export     some bundlers deep-import it                        [missing]
+  types                   .d.ts for the entries                               [missing]
 ```
 
-- `palettes.json` must be generated from `Component.PALETTES` in `Kapehan.dc.html`, not
-  retyped. Write a small extractor so the canvas stays the source of truth. The icons already
-  work this way; match that.
+- `palettes.json` is **done**: `scripts/palettes.mjs` extracts it from `PALETTES` in the
+  canvas, `npm run build` emits it, and `npm test` fails if the committed file drifts. Nobody
+  retypes a hex. Copy that shape for the component and doodle extractors.
+- Framework entries use **split subpaths**: `kapehan/react/icons` and `kapehan/react/components`,
+  same for vue. One generator per file, no overwrite risk, and importing icons does not drag in
+  30 components.
+- Theming as a whole is still open: applying a palette across components and doodles, and the
+  contrast problem in the shipped palette data.
 - The doodles are **not** part of this phase. They are phase 4, which owns the motion decision.
 
 **Definition of done:** in a blank Vite app, `npm i kapehan`, import the CSS and

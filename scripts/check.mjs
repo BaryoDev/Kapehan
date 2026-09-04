@@ -60,9 +60,16 @@ try {
   // The canvas has now shipped .kape-btn--ink twice, identically, in two separate exports.
   // A duplicated rule is harmless until the two copies drift, at which point the later one
   // silently wins and nobody knows which was intended.
-  const rules = css.split('\n').map((l) => l.trim()).filter((l) => l.startsWith('.kape-') && l.endsWith('}'));
-  const dupes = new Set(rules.filter((r, i) => rules.indexOf(r) !== i));
-  for (const d of dupes) fail.push(`kapehan.css declares this rule more than once: ${d.slice(0, 70)}`);
+  // Compare the selector, not the whole line. Two rules sharing a selector with different
+  // declarations are not equal as strings, so a line-wise check passes while the later
+  // rule silently overrides the earlier one, which is the worse of the two failures.
+  const selectors = css
+    .split('\n')
+    .map((l) => l.trim())
+    .filter((l) => l.startsWith('.kape-') && l.includes('{') && l.endsWith('}'))
+    .map((l) => l.slice(0, l.indexOf('{')).trim());
+  const dupes = new Set(selectors.filter((sel, i) => selectors.indexOf(sel) !== i));
+  for (const d of dupes) fail.push(`kapehan.css declares ${d} more than once, the later rule silently wins`);
 } catch {
   fail.push('kapehan.css is missing, but package.json ships it');
 }
