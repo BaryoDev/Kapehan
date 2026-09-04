@@ -22,15 +22,13 @@
  *           not derived, because there is no way to derive it: compiling <template> needs
  *           @vue/compiler-sfc, which is a build step this package refuses to have.
  *
- * The snippets are also emitted untouched as vue/src/*.vue. They are copy material for a
- * future `npx kapehan add`, NOT for import: nothing resolves them and package consumers
- * would need a compiler. That is why they live under src/ rather than beside the modules.
- *
- * SPLIT SUBPATHS
- * --------------
- * vue/icons.js and vue/components.js are separate entry points on purpose. Someone who
- * wants three icons should not pull 30 components' render functions through their bundler,
- * and the icon data is the larger half. vue/index.js re-exports both for the lazy path.
+ * There is deliberately NO vue/src/*.vue track. It existed as copy material and was a
+ * public export, and adversarial review found it shipped every defect that had been fixed
+ * in the render functions: hardcoded ids, buttons defaulting to submit, KapeRange with no
+ * tab stops, KapeEdit's unreachable F2. Two review rounds flagged it and the second still
+ * shipped it. Publishing a subpath of known-broken source is worse than not publishing one,
+ * so the track is gone rather than half-fixed. If it comes back it needs the same gates the
+ * render functions have, not fewer.
  */
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -46,7 +44,7 @@ export const pkg = {
     './vue/index.js': './vue/index.js',
     './vue/icons.js': './vue/icons.js',
     './vue/components.js': './vue/components.js',
-    './vue/src/*': './vue/src/*',
+
   },
   files: ['vue'],
   // Every module under vue/ imports 'vue'. Without this the tarball ships a subpath that
@@ -1472,7 +1470,6 @@ export async function artifacts() {
   // here has to work when it is pasted. SFC_PATCHES carries the two snippets whose bugs
   // the render functions already fix.
   for (const c of list) {
-    out.set(`vue/src/${nameOf(c.key)}.vue`, sfcSource(c));
   }
 
   return out;
@@ -1621,7 +1618,6 @@ export async function check({ root: repo, expected }) {
   for (const c of list) {
     const pName = nameOf(c.key);
     if (!js.includes(`export const ${pName} = {`)) fail.push(`vue/components.js does not export ${pName}`);
-    if (!files.has(`vue/src/${pName}.vue`)) fail.push(`vue/src/${pName}.vue is missing, so there is nothing to copy`);
   }
   for (const block of js.split(/^export const /m).slice(1)) {
     const pName = block.slice(0, block.indexOf(' '));

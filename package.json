@@ -32,20 +32,35 @@
     "./kapehan.css": "./kapehan.css",
     "./icons/*": "./icons/*",
     "./palettes.json": "./palettes.json",
-    "./kapehan-components.js": "./kapehan-components.js"
+    "./kapehan-components.js": "./kapehan-components.js",
+    "./kape-doodle.js": "./kape-doodle.js",
+    "./doodles/*": "./doodles/*",
+    "./react": "./react/index.js",
+    "./react/index.js": "./react/index.js",
+    "./react/icons.js": "./react/icons.js",
+    "./react/components.js": "./react/components.js",
+    "./vue": "./vue/index.js",
+    "./vue/index.js": "./vue/index.js",
+    "./vue/icons.js": "./vue/icons.js",
+    "./vue/components.js": "./vue/components.js"
   },
   "files": [
-    "icons",
-    "kape-icon.js",
-    "kapehan-icons.js",
-    "kapehan.css",
     "LICENSE",
     "README.md",
+    "doodles",
+    "icons",
+    "kape-doodle.js",
+    "kape-icon.js",
+    "kapehan-components.js",
+    "kapehan-icons.js",
+    "kapehan.css",
     "palettes.json",
-    "kapehan-components.js"
+    "react",
+    "vue"
   ],
   "sideEffects": [
-    "./kape-icon.js"
+    "./kape-icon.js",
+    "./kape-doodle.js"
   ],
   "scripts": {
     "build": "node scripts/build.mjs",
@@ -71,5 +86,17 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "vue": "^3.5.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
   }
 }

@@ -54,13 +54,30 @@ export async function allArtifacts(generators) {
   return out;
 }
 
-/** What package.json must export and ship, according to the generators themselves. */
+/**
+ * What package.json must carry, according to the generators themselves.
+ *
+ * exports and files were not enough. Three generators independently needed a
+ * peerDependency (react, vue) or a sideEffects entry (kape-doodle.js exists only to call
+ * customElements.define, and a bundler will tree-shake it away without one), and could not
+ * declare either. The gate then named the four exports, stayed silent about the peer, and
+ * a consumer running `npm i kapehan` and importing kapehan/react would have hit
+ * ERR_MODULE_NOT_FOUND with no warning. A gate that names three of four missing things
+ * teaches people the list is complete.
+ */
 export function requiredPkg(generators) {
   const exports = {};
   const files = new Set();
+  const peerDependencies = {};
+  const peerDependenciesMeta = {};
+  const sideEffects = new Set();
+
   for (const g of generators) {
     Object.assign(exports, g.pkg?.exports ?? {});
     for (const f of g.pkg?.files ?? []) files.add(f);
+    Object.assign(peerDependencies, g.pkg?.peerDependencies ?? {});
+    Object.assign(peerDependenciesMeta, g.pkg?.peerDependenciesMeta ?? {});
+    for (const f of g.pkg?.sideEffects ?? []) sideEffects.add(f);
   }
-  return { exports, files: [...files] };
+  return { exports, files: [...files], peerDependencies, peerDependenciesMeta, sideEffects: [...sideEffects] };
 }

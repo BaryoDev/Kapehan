@@ -43,6 +43,17 @@ for (const [sub, target] of Object.entries(want.exports)) {
 for (const f of want.files) {
   if (!(pkg.files ?? []).includes(f)) fail.push(`package.json files is missing ${f}, which a generator declares`);
 }
+// A peer the manifest does not name is ERR_MODULE_NOT_FOUND at import time with no npm
+// warning, and sideEffects decides whether a bundler keeps a module that exists only to
+// register a custom element.
+for (const [dep, range] of Object.entries(want.peerDependencies)) {
+  if (pkg.peerDependencies?.[dep] !== range) fail.push(`package.json peerDependencies is missing ${dep}: ${range}, which a generator declares`);
+}
+for (const f of want.sideEffects) {
+  if (!(Array.isArray(pkg.sideEffects) ? pkg.sideEffects : []).includes(f)) {
+    fail.push(`package.json sideEffects is missing ${f}, which a generator declares; a bundler will tree-shake it away`);
+  }
+}
 // And nothing may be exported that the tarball does not carry.
 for (const target of Object.values(pkg.exports ?? {})) {
   const rel = target.replace(/^\.\//, '');
