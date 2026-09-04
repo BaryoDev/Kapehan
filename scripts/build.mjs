@@ -38,7 +38,11 @@ for (const i of ICONS) {
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
-class KapeIcon extends HTMLElement {
+// Evaluated at import time, so a class extending HTMLElement would throw
+// ReferenceError on a server. Anything server-rendering this package (Next, Nuxt,
+// Astro, Remix) crashes on the import alone, before a browser is ever involved.
+// ICONS stays usable there; only the element is browser-only.
+const KapeIcon = typeof HTMLElement === 'undefined' ? null : class KapeIcon extends HTMLElement {
   static get observedAttributes() { return ['name', 'size', 'mono']; }
   connectedCallback() { this.render(); }
   attributeChangedCallback() { this.render(); }
@@ -66,8 +70,11 @@ class KapeIcon extends HTMLElement {
     this.style.display = this.style.display || 'inline-flex';
     this.replaceChildren(svg);
   }
+};
+
+if (KapeIcon && typeof customElements !== 'undefined' && !customElements.get('kape-icon')) {
+  customElements.define('kape-icon', KapeIcon);
 }
-if (!customElements.get('kape-icon')) customElements.define('kape-icon', KapeIcon);
 export { ICONS, KapeIcon };
 `;
 
