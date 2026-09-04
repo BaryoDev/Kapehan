@@ -1,0 +1,216 @@
+/* kapehan.css · v0.3 · MIT
+   Paper surfaces, ink lines, one accent per screen.
+   1. Import once in your root stylesheet.
+   2. Paste a palette block from the Palettes tab into the same file.
+   3. Components never hold a hex; they read the variables below. */
+
+:root {
+  --paper: #FBF6EE;
+  --surface: #FFFFFF;
+  --ink: #241A13;
+  --accent: #C2593A;
+  --pop: #E5901A;
+  --on-accent: var(--paper);
+  --acc: var(--accent);
+
+  --line: color-mix(in oklab, var(--ink) 14%, transparent);
+  --line-strong: color-mix(in oklab, var(--ink) 28%, transparent);
+  --muted: color-mix(in oklab, var(--ink) 62%, transparent);
+  --faint: color-mix(in oklab, var(--ink) 40%, transparent);
+
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-xs: 8px;
+  --pill: 999px;
+}
+[data-edges="square"] { --radius: 0; --radius-sm: 0; --radius-xs: 0; --pill: 0; }
+
+.kape-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; font: inherit; font-size: 14px; font-weight: 600; line-height: 1; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: var(--pill); cursor: pointer; }
+.kape-btn--primary { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+.kape-btn--ink { background: var(--ink); color: var(--paper); border-color: transparent; }
+.kape-btn--ghost { background: transparent; border-color: transparent; color: var(--muted); }
+.kape-btn:disabled { opacity: .45; cursor: default; }
+
+.kape-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; font: inherit; font-size: 13px; font-weight: 500; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: var(--pill); cursor: pointer; }
+.kape-chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+.kape-input { display: flex; align-items: center; gap: 10px; padding: 11px 14px; font: inherit; font-size: 14px; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--radius-sm); }
+.kape-input:focus-within { border-color: var(--accent); }
+.kape-input input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font: inherit; color: inherit; }
+.kape-input input::placeholder { color: var(--faint); }
+
+.kape-seg { display: inline-flex; padding: 3px; gap: 2px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--pill); }
+.kape-seg button { padding: 7px 14px; font: inherit; font-size: 13px; font-weight: 500; color: var(--muted); background: none; border: 0; border-radius: var(--radius-xs); cursor: pointer; }
+.kape-seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); font-weight: 600; }
+
+.kape-toast { display: flex; align-items: center; gap: 12px; padding: 12px 14px; font-size: 13.5px; color: var(--paper); background: var(--ink); border-radius: var(--radius-sm); }
+.kape-toast--warn { color: var(--ink); background: var(--surface); border: 1.5px solid var(--accent); }
+.kape-toast > kape-icon, .kape-toast > svg { color: var(--pop); flex-shrink: 0; }
+.kape-toast--warn > kape-icon, .kape-toast--warn > svg { color: var(--accent); }
+.kape-toast__text { flex: 1; min-width: 0; }
+.kape-toast__action { font-size: 12.5px; font-weight: 600; opacity: .8; background: none; border: 0; color: inherit; cursor: pointer; }
+
+.kape-row { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--ink); }
+.kape-row:last-child { border-bottom: 0; }
+.kape-row__art { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; background: var(--surface); border-radius: var(--radius-sm); }
+.kape-row__body { flex: 1; min-width: 0; }
+.kape-row__title { margin: 0; font-size: 14.5px; font-weight: 600; }
+.kape-row__sub { margin: 2px 0 0; font-size: 12.5px; color: var(--muted); }
+.kape-row__price { font-family: ui-monospace, monospace; font-size: 13px; }
+.kape-badge { font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--on-accent); background: var(--accent); border-radius: var(--radius-xs); padding: 2px 6px; margin-left: 8px; }
+
+.kape-stepper { display: inline-flex; align-items: center; border: 1.5px solid var(--line-strong); border-radius: var(--pill); color: var(--ink); }
+.kape-stepper button { padding: 6px 10px; font: inherit; font-size: 15px; line-height: 1; background: none; border: 0; color: inherit; cursor: pointer; }
+.kape-stepper output { min-width: 16px; text-align: center; font-size: 13px; font-weight: 600; }
+
+.kape-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; color: var(--ink); }
+
+.kape-stamps { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; }
+.kape-stamps > span { aspect-ratio: 1; display: grid; place-items: center; border: 1.5px dashed var(--line-strong); border-radius: var(--pill); color: var(--faint); }
+.kape-stamps > span[data-on] { background: var(--accent); color: var(--on-accent); }
+
+.kape-switch { position: relative; display: inline-block; width: 40px; height: 24px; border-radius: var(--pill); background: var(--line-strong); cursor: pointer; vertical-align: middle; transition: background .15s; }
+.kape-switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: var(--pill); background: var(--surface); transition: left .15s; }
+.kape-switch:has(input:checked) { background: var(--accent); }
+.kape-switch:has(input:checked)::after { left: 19px; }
+.kape-switch input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+
+.kape-check, .kape-radio { display: inline-flex; align-items: center; gap: 9px; font-size: 14px; color: var(--ink); cursor: pointer; }
+.kape-check input, .kape-radio input { appearance: none; width: 18px; height: 18px; margin: 0; border: 1.5px solid var(--line-strong); border-radius: var(--radius-xs); background: var(--surface); display: grid; place-items: center; }
+.kape-radio input { border-radius: var(--pill); }
+.kape-check input:checked { background: var(--ink); border-color: var(--ink); }
+.kape-check input:checked::after { content: ""; width: 5px; height: 9px; border: solid var(--paper); border-width: 0 2px 2px 0; transform: translateY(-1px) rotate(45deg); }
+.kape-radio input:checked { border-color: var(--accent); border-width: 5px; }
+
+.kape-select { display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px; font: inherit; font-size: 14px; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--radius-sm); cursor: pointer; }
+.kape-select select { appearance: none; border: 0; outline: 0; background: none; font: inherit; color: inherit; padding-right: 18px; }
+.kape-select::after { content: ""; width: 7px; height: 7px; margin-left: -22px; border: solid var(--muted); border-width: 0 1.5px 1.5px 0; transform: translateY(-2px) rotate(45deg); pointer-events: none; }
+
+.kape-tabs { display: flex; gap: 22px; border-bottom: 1px solid var(--line); }
+.kape-tabs button { padding: 10px 0; font: inherit; font-size: 14px; font-weight: 500; color: var(--muted); background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; }
+.kape-tabs button[aria-selected="true"] { color: var(--ink); font-weight: 600; border-bottom-color: var(--accent); }
+
+.kape-card__title { margin: 0; font-size: 15px; font-weight: 600; }
+.kape-card__sub { margin: 2px 0 0; font-size: 12.5px; color: var(--muted); }
+.kape-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }
+
+.kape-tag { display: inline-flex; align-items: center; padding: 3px 9px; font-size: 12px; font-weight: 600; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--pill); }
+.kape-tag--accent { color: var(--on-accent); background: var(--accent); border-color: transparent; }
+.kape-tag--ink { color: var(--paper); background: var(--ink); border-color: transparent; }
+
+.kape-avatar { display: inline-grid; place-items: center; width: 36px; height: 36px; font-size: 13px; font-weight: 600; color: var(--paper); background: var(--ink); border: 1.5px solid var(--paper); border-radius: var(--pill); }
+.kape-avatar--accent { background: var(--accent); color: var(--on-accent); }
+.kape-avatars { display: inline-flex; }
+.kape-avatars .kape-avatar + .kape-avatar { margin-left: -10px; }
+
+.kape-dialog { width: min(440px, 100%); padding: 24px; color: var(--ink); background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: var(--radius); }
+.kape-dialog::backdrop { background: color-mix(in oklab, var(--ink) 55%, transparent); }
+.kape-dialog h2 { margin: 0 0 6px; font-size: 18px; font-weight: 700; }
+.kape-dialog p { margin: 0 0 18px; font-size: 14px; line-height: 1.6; color: var(--muted); }
+.kape-dialog__actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+.kape-tip { position: relative; }
+.kape-tip::after { content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); white-space: nowrap; padding: 6px 10px; font-size: 12.5px; color: var(--paper); background: var(--ink); border-radius: var(--radius-xs); opacity: 0; pointer-events: none; transition: opacity .12s; }
+.kape-tip:hover::after, .kape-tip:focus-visible::after { opacity: 1; }
+
+.kape-skeleton { display: block; height: 14px; border-radius: var(--radius-xs); background: repeating-linear-gradient(90deg, var(--line) 0 40%, var(--line-strong) 50%, var(--line) 60% 100%); background-size: 200% 100%; animation: kape-shimmer 1.4s linear infinite; }
+@keyframes kape-shimmer { to { background-position: -200% 0; } }
+
+.kape-progress { display: block; height: 8px; overflow: hidden; background: var(--line); border-radius: var(--pill); }
+.kape-progress > span { display: block; height: 100%; background: var(--accent); border-radius: inherit; }
+
+.kape-pager { display: inline-flex; align-items: center; gap: 4px; }
+.kape-pager button { min-width: 34px; height: 34px; padding: 0 8px; font: inherit; font-size: 13px; font-weight: 500; color: var(--muted); background: none; border: 1px solid transparent; border-radius: var(--radius-xs); cursor: pointer; }
+.kape-pager button[aria-current="page"] { color: var(--paper); background: var(--ink); }
+.kape-pager button:disabled { opacity: .35; cursor: default; }
+
+.kape-acc { border-top: 1px solid var(--line); }
+.kape-acc summary { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; font-size: 14.5px; font-weight: 600; color: var(--ink); list-style: none; cursor: pointer; }
+.kape-acc summary::after { content: "+"; font-size: 18px; font-weight: 400; color: var(--muted); }
+.kape-acc[open] summary::after { content: "−"; }
+.kape-acc p { margin: 0 0 14px; font-size: 14px; line-height: 1.6; color: var(--muted); }
+
+.kape-table { width: 100%; border-collapse: collapse; font-size: 13.5px; color: var(--ink); }
+.kape-table th { text-align: left; padding: 10px 12px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line-strong); }
+.kape-table td { padding: 12px; border-bottom: 1px solid var(--line); }
+.kape-table td.num { font-family: ui-monospace, monospace; text-align: right; }
+
+.kape-crumbs { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+.kape-crumbs a { color: inherit; text-decoration: none; }
+.kape-crumbs li { display: contents; }
+.kape-crumbs li + li::before { content: "/"; color: var(--faint); }
+.kape-crumbs [aria-current] { color: var(--ink); font-weight: 600; }
+
+/* upload */
+.kape-drop { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 26px 20px; text-align: center; font-size: 13px; color: var(--muted); background: var(--surface); border: 1.5px dashed var(--line-strong); border-radius: var(--radius); cursor: pointer; }
+.kape-drop > kape-icon { color: var(--accent); }
+.kape-drop strong { font-size: 14px; color: var(--ink); }
+.kape-drop:focus-within, .kape-drop.is-over { border-color: var(--accent); border-style: solid; }
+.kape-file { display: flex; align-items: center; gap: 12px; margin-top: 10px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); font-size: 13px; color: var(--ink); }
+.kape-file__ext { display: grid; place-items: center; width: 36px; height: 36px; font: 600 10px ui-monospace, monospace; color: var(--muted); background: var(--paper); border-radius: var(--radius-xs); }
+.kape-file__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; font-weight: 600; }
+.kape-file button { background: none; border: 0; color: var(--faint); cursor: pointer; }
+
+/* edit */
+.kape-table--edit td { cursor: text; }
+.kape-table--edit tr.is-editing td { background: color-mix(in oklab, var(--accent) 16%, transparent); padding-top: 7px; padding-bottom: 7px; }
+.kape-table--edit input { width: 80px; padding: 5px 8px; font: inherit; font-family: ui-monospace, monospace; color: var(--ink); background: var(--surface); border: 1.5px solid var(--accent); border-radius: var(--radius-xs); outline: 0; }
+.kape-btn--sm { padding: 4px 8px; font-size: 11.5px; }
+
+/* combo */
+.kape-combo { position: relative; font-size: 13.5px; color: var(--ink); }
+.kape-combo__field { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 8px 10px; background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--radius-sm); }
+.kape-combo[aria-expanded="true"] .kape-combo__field { border-color: var(--accent); border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.kape-combo__field input { flex: 1; min-width: 60px; border: 0; outline: 0; background: none; font: inherit; color: inherit; }
+.kape-combo__field .kape-chip { padding: 4px 6px 4px 10px; font-size: 12.5px; background: var(--paper); }
+.kape-combo__field .kape-chip button { border: 0; background: none; color: var(--faint); cursor: pointer; }
+.kape-combo__list { margin: 0; padding: 6px; list-style: none; background: var(--surface); border: 1.5px solid var(--line); border-top: 0; border-radius: 0 0 var(--radius-sm) var(--radius-sm); }
+.kape-combo__list li { display: flex; align-items: center; gap: 10px; padding: 8px 10px 8px 34px; border-radius: var(--radius-xs); position: relative; cursor: pointer; }
+.kape-combo__list li::before { content: ""; position: absolute; left: 10px; width: 16px; height: 16px; box-sizing: border-box; border: 1.5px solid var(--line-strong); border-radius: var(--radius-xs); }
+.kape-combo__list li[aria-selected="true"]::before { background: var(--accent); border-color: var(--accent); }
+.kape-combo__list li.is-active, .kape-combo__list li:hover { background: color-mix(in oklab, var(--accent) 16%, transparent); }
+.kape-combo__list small { margin-left: auto; font-family: ui-monospace, monospace; font-size: 11.5px; color: var(--muted); }
+
+/* range */
+.kape-range { position: relative; font-size: 13.5px; color: var(--ink); }
+.kape-range__trigger { display: inline-flex; align-items: center; gap: 10px; padding: 9px 12px; font: inherit; background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--radius-sm); cursor: pointer; }
+.kape-range__trigger > kape-icon { color: var(--faint); }
+.kape-range__pop { display: grid; grid-template-columns: 130px 1fr; margin-top: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.kape-range__presets { margin: 0; padding: 12px; list-style: none; border-right: 1px solid var(--line); font-size: 13px; }
+.kape-range__presets li { padding: 7px 10px; border-radius: var(--radius-xs); cursor: pointer; }
+.kape-range__presets li[aria-current] { background: color-mix(in oklab, var(--accent) 16%, transparent); font-weight: 600; }
+.kape-cal { padding: 14px 16px; }
+.kape-cal header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: 600; font-size: 13px; }
+.kape-cal header button { border: 0; background: none; color: var(--faint); cursor: pointer; }
+.kape-cal__grid { display: grid; grid-template-columns: repeat(7, 30px); gap: 2px; }
+.kape-cal__grid button { height: 30px; font: inherit; font-size: 12.5px; color: var(--ink); background: none; border: 0; border-radius: var(--radius-xs); cursor: pointer; }
+.kape-cal__grid .in-range { background: color-mix(in oklab, var(--accent) 16%, transparent); }
+.kape-cal__grid .is-start, .kape-cal__grid .is-end { background: var(--accent); color: var(--on-accent); font-weight: 700; }
+.kape-range__pop footer { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 8px; padding: 10px 14px; border-top: 1px solid var(--line); }
+
+/* cmdk */
+.kape-cmdk { width: min(560px, 100%); padding: 0; color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius); overflow: hidden; font-size: 13.5px; }
+.kape-cmdk::backdrop { background: color-mix(in oklab, var(--ink) 35%, transparent); }
+.kape-cmdk label { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.kape-cmdk label > kape-icon { color: var(--faint); }
+.kape-cmdk input { flex: 1; border: 0; outline: 0; background: none; font: inherit; color: inherit; }
+.kape-cmdk kbd { font: 11px ui-monospace, monospace; color: var(--faint); border: 1px solid var(--line); border-radius: var(--radius-xs); padding: 2px 6px; }
+.kape-cmdk ul { margin: 0; padding: 6px; list-style: none; }
+.kape-cmdk__group { padding: 6px 10px 4px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); }
+.kape-cmdk [role="option"] { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: var(--radius-xs); cursor: pointer; }
+.kape-cmdk [role="option"] kbd, .kape-cmdk [role="option"] span { margin-left: auto; color: var(--muted); font-size: 12px; }
+.kape-cmdk [aria-selected="true"], .kape-cmdk [role="option"]:hover { background: color-mix(in oklab, var(--accent) 16%, transparent); }
+.kape-cmdk footer { display: flex; gap: 14px; padding: 8px 14px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--faint); }
+
+/* drawer */
+.kape-drawer { position: fixed; inset: 0 0 0 auto; width: min(420px, 100%); height: 100%; max-height: none; margin: 0; padding: 0; display: flex; flex-direction: column; color: var(--ink); background: var(--paper); border: 0; border-left: 1px solid var(--line); font-size: 13.5px; }
+.kape-drawer::backdrop { background: color-mix(in oklab, var(--ink) 35%, transparent); }
+.kape-drawer header, .kape-drawer footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 16px; font-weight: 600; }
+.kape-drawer header { border-bottom: 1px solid var(--line); }
+.kape-drawer header button { border: 0; background: none; color: var(--faint); cursor: pointer; }
+.kape-drawer__body { flex: 1; overflow: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.kape-drawer footer { border-top: 1px solid var(--line); }
+.kape-drawer footer .kape-btn { flex: 1; justify-content: center; }
+.kape-line { display: flex; justify-content: space-between; }
+.kape-line .num { font-family: ui-monospace, monospace; }
+.kape-line--total { padding-top: 10px; border-top: 1px solid var(--line); font-weight: 600; }

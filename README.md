@@ -4,7 +4,7 @@
   <p><em>Free, hand-drawn coffee icons. &#9749;</em></p>
   <p>
     <a href="https://www.npmjs.com/package/kapehan"><img src="https://img.shields.io/npm/v/kapehan?style=flat-square&color=E5901A" alt="npm" /></a>
-    <img src="https://img.shields.io/badge/icons-37-E5901A?style=flat-square" alt="37 icons" />
+    <img src="https://img.shields.io/badge/icons-42-E5901A?style=flat-square" alt="42 icons" />
     <img src="https://img.shields.io/badge/license-MIT-241A13?style=flat-square" alt="MIT" />
   </p>
   <p><a href="https://baryodev.github.io/Kapehan/"><strong>Browse the set</strong></a></p>
@@ -12,7 +12,7 @@
 
 ---
 
-**Kapehan** (Filipino for *coffee house*) is a set of 37 icons for coffee shops. A love letter to Barako. Two tracks ship from the same drawings:
+**Kapehan** (Filipino for *coffee house*) is a set of 42 icons for coffee shops. A love letter to Barako. Two tracks ship from the same drawings:
 
 | Folder | Grid | Colour | For |
 |---|---|---|---|
@@ -67,6 +67,27 @@ The raw icon data, if you want to build your own component:
 ```js
 import { icons, palette, monoOf, wrap } from "kapehan/kapehan-icons.js";
 ```
+
+## Component CSS
+
+`kapehan.css` is a token-driven component sheet (`.kape-btn`, `.kape-card`, `.kape-combo`,
+`.kape-drawer` and friends). Import it once, then set the five palette roles:
+
+```css
+@import "kapehan/kapehan.css";
+
+:root {
+  --paper: #FBF6EE;
+  --surface: #FFFFFF;
+  --ink: #241A13;
+  --accent: #C2593A;
+  --pop: #E5901A;
+}
+```
+
+Everything else derives from those five with `color-mix`, so recolouring the whole kit is a
+five-line change. No component holds a hex; `npm test` fails the build if one appears outside
+`:root`. Square corners everywhere with `<html data-edges="square">`.
 
 ## The system
 
@@ -147,6 +168,16 @@ instead of a pile.
 | <img src="icons/avocado-shake.svg" width="36" height="36" alt="avocado-shake" /> | `avocado-shake` | `avocado`, `green-shake` |
 | <img src="icons/pineapple-juice.svg" width="36" height="36" alt="pineapple-juice" /> | `pineapple-juice` | `pinya`, `pineapple` |
 
+### Desserts
+
+| | Name | Aliases |
+|---|---|---|
+| <img src="icons/donut.svg" width="36" height="36" alt="donut" /> | `donut` | `doughnut`, `ring` |
+| <img src="icons/cake-slice.svg" width="36" height="36" alt="cake-slice" /> | `cake-slice` | `cake`, `slice` |
+| <img src="icons/croissant.svg" width="36" height="36" alt="croissant" /> | `croissant` | `pastry`, `crescent` |
+| <img src="icons/pandesal.svg" width="36" height="36" alt="pandesal" /> | `pandesal` | `bun`, `bread-roll` |
+| <img src="icons/ensaymada.svg" width="36" height="36" alt="ensaymada" /> | `ensaymada` | `brioche`, `cheese-bun` |
+
 ### Vessels
 
 | | Name | Aliases |
@@ -179,6 +210,13 @@ instead of a pile.
 |---|---|---|
 | <img src="icons/grinder.svg" width="36" height="36" alt="grinder" /> | `grinder` | `mill`, `gilingan` |
 | <img src="icons/espresso-machine.svg" width="36" height="36" alt="espresso-machine" /> | `espresso-machine` | `machine`, `barista-bar` |
+
+## Where this is going
+
+`kapehan` is becoming the front-end starter kit for BarakoCMS: pick a palette and a stack,
+get a front end that looks designed. [NEXT_STEPS.md](NEXT_STEPS.md) is the roadmap, in
+build order. Today the icons and the component CSS are real; the CLI and the framework
+components are not yet.
 
 ## Contributing an icon
 

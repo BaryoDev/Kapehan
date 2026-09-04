@@ -1,5 +1,5 @@
 /**
- * Kapehan v0.2 icon source.
+ * Kapehan v0.3 icon source.
  *
  * DESIGN SYSTEM
  * -------------
@@ -571,9 +571,74 @@ export const icons = [
     <path d="M27 17.8c.2-3.2-1.4-5.8-4.2-7.2.2 3.2 1.8 5.8 4.2 7.2z"/>
   </g>`,
   },
+  {
+    name: 'donut',
+    aliases: ['doughnut', 'ring'],
+    tags: ['glazed', 'sprinkles', 'pastry', 'sweet', 'dessert'],
+    category: 'Desserts',
+    body: `<ellipse cx="24" cy="42" rx="14" ry="2.4" fill="#DBC5A4" data-mono="drop"/>
+  <path fill-rule="evenodd" d="M8 27c0-8.3 7.2-14 16-14s16 5.7 16 14c0 7.4-7.2 12.6-16 12.6S8 34.4 8 27zm16-4.2c-2.6 0-4.6 1.9-4.6 4.2s2 4.2 4.6 4.2 4.6-1.9 4.6-4.2-2-4.2-4.6-4.2z" fill="#D6A164"/>
+  <path fill-rule="evenodd" d="M9.6 25.6C10.8 18.6 16.8 13 24 13c7.4 0 13.4 5.8 14.4 12.8-1.2 2.6-3.6 3.4-5.4 2.2-1.6-1-3.2-.4-4.2 1.2-1.6-1.6-3.2-2.4-4.8-2.4-1.8 0-3.4.9-4.8 2.6-1.2-1.6-3-2-4.6-.8-1.8 1.2-4 .6-5-3zm14.4-2.8c-2.6 0-4.6 1.9-4.6 4.2 0 .9.3 1.7.8 2.4 1-.9 2.3-1.4 3.8-1.4 1.4 0 2.7.5 3.8 1.5.5-.7.8-1.6.8-2.5 0-2.3-2-4.2-4.6-4.2z" fill="#C2593A" data-mono="drop"/>
+  <g stroke="#F5E9D6" stroke-width="1.8" stroke-linecap="round" data-mono="drop">
+    <path d="m14.5 21.5 2-1.4M20 17.6l.8 2.2M28 17.4l-.6 2.3M33 21.2l-2 1.2M17.4 25.8l2.2.6M30 26.2l-2.2.6"/>
+  </g>`,
+    // A glazed ring reads as a blob once flattened. The mono donut keeps the hole as
+    // negative space via evenodd so the silhouette still says "donut".
+    monoBody: `<path fill-rule="evenodd" d="M8 27c0-8.3 7.2-14 16-14s16 5.7 16 14c0 7.4-7.2 12.6-16 12.6S8 34.4 8 27zm16-4.2c-2.6 0-4.6 1.9-4.6 4.2s2 4.2 4.6 4.2 4.6-1.9 4.6-4.2-2-4.2-4.6-4.2z" fill="currentColor"/>`,
+  },
+  {
+    name: 'cake-slice',
+    aliases: ['cake', 'slice'],
+    tags: ['layer', 'frosting', 'cherry', 'sweet', 'dessert', 'birthday'],
+    category: 'Desserts',
+    body: `<ellipse cx="24" cy="42" rx="14" ry="2.4" fill="#DBC5A4" data-mono="drop"/>
+  <path d="M11 24 24 15l13 9v14a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2z" fill="#F5E9D6"/>
+  <path d="M11 24 24 15l13 9-13 7z" fill="#DE7286" data-mono="drop"/>
+  <path d="M11 30.5 24 37l13-6.5v3L24 40l-13-6.5z" fill="#C2593A" data-mono="drop"/>
+  <path d="M24 31c-4-1-7-3.5-8-6.8 3 2 6 3 8 3.4 2-.4 5-1.4 8-3.4-1 3.3-4 5.8-8 6.8z" fill="#F5E9D6" data-mono="drop"/>
+  <circle cx="24" cy="13.4" r="2.6" fill="#9E4025"/>
+  <path d="M24.4 11.2c.6-2 1.8-3 3.6-3.4" stroke="#7A9B5A" stroke-width="1.6" stroke-linecap="round" fill="none"/>`,
+  },
+  {
+    name: 'croissant',
+    aliases: ['pastry', 'crescent'],
+    tags: ['butter', 'flaky', 'french', 'breakfast', 'dessert'],
+    category: 'Desserts',
+    body: `<ellipse cx="24" cy="42" rx="15" ry="2.4" fill="#DBC5A4" data-mono="drop"/>
+  <path d="M7.4 31.6c-.8-3.4 1.2-6 4.2-6.4 2.6-4.8 7.2-7.8 12.4-7.8s9.8 3 12.4 7.8c3 .4 5 3 4.2 6.4-.6 2.4-3.2 3.4-5.2 2.4-2-3.6-6.2-6-11.4-6s-9.4 2.4-11.4 6c-2 1-4.6 0-5.2-2.4z" fill="#D6A164"/>
+  <g stroke="#8C5A32" stroke-width="1.6" stroke-linecap="round" fill="none" data-mono="drop">
+    <path d="M14.6 27.8c1-2.4 3-4.4 5.6-5.6M33.4 27.8c-1-2.4-3-4.4-5.6-5.6M19.2 30.4c1.2-1.4 3-2.2 4.8-2.2s3.6.8 4.8 2.2"/>
+  </g>
+  <path d="M20 19.6c2.4-1.2 5.6-1.2 8 0" stroke="#F5E9D6" stroke-width="1.8" stroke-linecap="round" fill="none" data-mono="drop"/>`,
+  },
+  {
+    name: 'pandesal',
+    aliases: ['bun', 'bread-roll'],
+    tags: ['bread', 'breakfast', 'filipino', 'dip', 'roll'],
+    category: 'Desserts',
+    body: `<ellipse cx="24" cy="42" rx="14" ry="2.4" fill="#DBC5A4" data-mono="drop"/>
+  <path d="M9.4 32.6c0-8.4 6.6-14.6 14.6-14.6s14.6 6.2 14.6 14.6c0 4-3.2 6.4-7 6.4H16.4c-3.8 0-7-2.4-7-6.4z" fill="#D6A164"/>
+  <path d="M12.6 29.4c1.4-5.2 6-8.4 11.4-8.4s10 3.2 11.4 8.4c-3.2-2.6-7-3.8-11.4-3.8s-8.2 1.2-11.4 3.8z" fill="#F5E9D6" data-mono="drop"/>
+  <g fill="#DBC5A4" data-mono="drop">
+    <circle cx="17" cy="33" r="1.1"/><circle cx="21.5" cy="35.6" r="1.1"/><circle cx="27" cy="34.2" r="1.1"/><circle cx="31.6" cy="32" r="1.1"/><circle cx="24" cy="31.4" r="1.1"/>
+  </g>`,
+  },
+  {
+    name: 'ensaymada',
+    aliases: ['brioche', 'cheese-bun'],
+    tags: ['butter', 'cheese', 'sugar', 'filipino', 'sweet', 'dessert'],
+    category: 'Desserts',
+    body: `<ellipse cx="24" cy="42" rx="15" ry="2.4" fill="#DBC5A4" data-mono="drop"/>
+  <path d="M8 33c0-7.6 7.2-12.6 16-12.6S40 25.4 40 33c0 3.6-2.6 6-6.4 6H14.4C10.6 39 8 36.6 8 33z" fill="#D6A164"/>
+  <path d="M12.2 31.8c1.6-4.6 6.2-7.6 11.8-7.6s10.2 3 11.8 7.6c-3.4-2.2-7.4-3.2-11.8-3.2s-8.4 1-11.8 3.2z" fill="#F5E9D6" data-mono="drop"/>
+  <path d="M15 33.4c2.6-2.4 5.8-3.6 9-3.6s6.4 1.2 9 3.6" stroke="#8C5A32" stroke-width="1.5" stroke-linecap="round" fill="none" data-mono="drop"/>
+  <g stroke="#F0B34A" stroke-width="1.6" stroke-linecap="round" data-mono="drop">
+    <path d="m17 27.6 1.4 3.2M21 25.6l.8 3.4M26.4 25.4l-.6 3.6M30.6 27.2l-1.4 3.2"/>
+  </g>`,
+  },
 ];
 
-export const categories = ['Drinks', 'Tea & more', 'Tropical', 'Vessels', 'Beans', 'Brewers', 'Equipment'];
+export const categories = ['Drinks', 'Tea & more', 'Tropical', 'Desserts', 'Vessels', 'Beans', 'Brewers', 'Equipment'];
 
 /**
  * The mono / one-colour build: drop the redundant highlight layers, then flatten every

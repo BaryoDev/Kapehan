@@ -43,6 +43,31 @@ try {
   fail.push(`kape-icon.js cannot be imported outside a browser: ${e.message}`);
 }
 
+// kapehan.css states its own contract at the top: "Components never hold a hex; they read
+// the variables below." That is only true while nobody adds one, so it is checked rather
+// than trusted. Palette roles live in :root; everything after it must use var().
+try {
+  const css = await readFile(join(root, 'kapehan.css'), 'utf8');
+  const rootEnd = css.indexOf('[data-edges="square"]');
+  if (rootEnd === -1) fail.push('kapehan.css: cannot find the end of the :root block, so the hex check cannot run');
+  else {
+    const components = css.slice(rootEnd);
+    const stray = components.match(/#[0-9A-Fa-f]{3,8}/g);
+    if (stray) fail.push(`kapehan.css: ${stray.length} hard-coded colour(s) outside :root (${stray.slice(0, 3).join(', ')}), components must read var()`);
+  }
+} catch {
+  fail.push('kapehan.css is missing, but package.json ships it');
+}
+
+// A file listed in exports but absent from files is a 404 for anyone who installs it.
+const pkg = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
+for (const target of Object.values(pkg.exports ?? {})) {
+  const rel = target.replace(/^\.\//, '');
+  if (rel.includes('*')) continue;
+  const top = rel.split('/')[0];
+  if (!(pkg.files ?? []).includes(top)) fail.push(`package.json exports ${target} but files[] does not ship ${top}`);
+}
+
 if (fail.length) {
   for (const f of fail) console.error('x', f);
   process.exit(1);

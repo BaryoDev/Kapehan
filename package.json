@@ -1,7 +1,7 @@
 {
   "name": "kapehan",
-  "version": "0.2.1",
-  "description": "Free, hand-drawn SVG icons for coffee shops: 37 coffee, tea and tropical drinks plus brewers and beans, in full colour and currentColor mono.",
+  "version": "0.3.0",
+  "description": "Free, hand-drawn SVG icons and token-driven component CSS for coffee shops: 42 coffee, tea, tropical and dessert icons in full colour and currentColor mono.",
   "keywords": [
     "icons",
     "svg",
@@ -16,7 +16,11 @@
     "tropical",
     "lucide",
     "ui",
-    "web-component"
+    "web-component",
+    "css",
+    "design-system",
+    "pandesal",
+    "ensaymada"
   ],
   "author": "BaryoDev",
   "license": "MIT",
@@ -25,12 +29,14 @@
     ".": "./kape-icon.js",
     "./kape-icon.js": "./kape-icon.js",
     "./kapehan-icons.js": "./kapehan-icons.js",
+    "./kapehan.css": "./kapehan.css",
     "./icons/*": "./icons/*"
   },
   "files": [
     "icons",
     "kape-icon.js",
     "kapehan-icons.js",
+    "kapehan.css",
     "LICENSE",
     "README.md"
   ],
