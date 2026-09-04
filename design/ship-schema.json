@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Kapehan design-source data",
+  "definitions": {
+    "ShipEntry": {
+      "type": "object",
+      "required": [
+        "label",
+        "cat",
+        "props",
+        "a11y",
+        "html",
+        "react",
+        "vue",
+        "blazor",
+        "css"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "cat": {
+          "enum": [
+            "Actions",
+            "Forms",
+            "Data",
+            "Feedback",
+            "Navigation",
+            "Overlays"
+          ]
+        },
+        "props": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "type",
+              "default",
+              "required",
+              "description"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "default": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "a11y": {
+          "type": "object",
+          "required": [
+            "roles",
+            "attrs",
+            "keys"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "attrs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "keys": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            }
+          }
+        },
+        "html": {
+          "type": "string"
+        },
+        "react": {
+          "type": "string"
+        },
+        "vue": {
+          "type": "string"
+        },
+        "blazor": {
+          "type": "string"
+        },
+        "css": {
+          "type": "string"
+        }
+      }
+    },
+    "Block": {
+      "type": "object",
+      "required": [
+        "key",
+        "label",
+        "note",
+        "cat",
+        "surface",
+        "uses",
+        "api",
+        "html"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        },
+        "cat": {
+          "type": "string"
+        },
+        "surface": {
+          "enum": [
+            "web",
+            "ios"
+          ]
+        },
+        "uses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "api": {
+          "type": "string"
+        },
+        "html": {
+          "type": "string"
+        }
+      }
+    },
+    "PlacementRule": {
+      "type": "object",
+      "required": [
+        "key",
+        "num",
+        "kicker",
+        "title",
+        "body"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "num": {
+          "type": "string",
+          "pattern": "^[0-9]{2}$"
+        },
+        "kicker": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "required": [
+    "ship",
+    "blocks",
+    "placement",
+    "doodles"
+  ],
+  "properties": {
+    "ship": {
+      "type": "object",
+      "minProperties": 30,
+      "additionalProperties": {
+        "$ref": "#/definitions/ShipEntry"
+      }
+    },
+    "blocks": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "$ref": "#/definitions/Block"
+      }
+    },
+    "placement": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "$ref": "#/definitions/PlacementRule"
+      }
+    },
+    "doodles": {
+      "type": "array",
+      "minItems": 24,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z-]*$"
+      }
+    }
+  }
+}

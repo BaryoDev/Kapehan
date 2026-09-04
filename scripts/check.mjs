@@ -56,6 +56,13 @@ try {
     const stray = components.match(/#[0-9A-Fa-f]{3,8}/g);
     if (stray) fail.push(`kapehan.css: ${stray.length} hard-coded colour(s) outside :root (${stray.slice(0, 3).join(', ')}), components must read var()`);
   }
+
+  // The canvas has now shipped .kape-btn--ink twice, identically, in two separate exports.
+  // A duplicated rule is harmless until the two copies drift, at which point the later one
+  // silently wins and nobody knows which was intended.
+  const rules = css.split('\n').map((l) => l.trim()).filter((l) => l.startsWith('.kape-') && l.endsWith('}'));
+  const dupes = new Set(rules.filter((r, i) => rules.indexOf(r) !== i));
+  for (const d of dupes) fail.push(`kapehan.css declares this rule more than once: ${d.slice(0, 70)}`);
 } catch {
   fail.push('kapehan.css is missing, but package.json ships it');
 }
