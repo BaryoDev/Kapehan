@@ -213,10 +213,11 @@ instead of a pile.
 
 ## Where this is going
 
-`kapehan` is becoming the front-end starter kit for BarakoCMS: pick a palette and a stack,
-get a front end that looks designed. [NEXT_STEPS.md](NEXT_STEPS.md) is the roadmap, in
-build order. Today the icons and the component CSS are real; the CLI and the framework
-components are not yet.
+Kapehan is a UI resource site: palettes, icons, components and doodles, browsable at
+[baryodev.github.io/Kapehan](https://baryodev.github.io/Kapehan/) and installable from npm.
+It has no backend and ships no client for any CMS. [NEXT_STEPS.md](NEXT_STEPS.md) is the
+roadmap. Today the icons and the component CSS are real; the seven-tab site and the React
+and Blazor components are not yet.
 
 ## Contributing an icon
 
