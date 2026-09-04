@@ -17,11 +17,14 @@ In priority order:
 1. **The site.** The seven-tab browser: Brew, Icons, Doodles, Palettes, Components, Blocks,
    Placement. Today `docs/index.html` is the icons-only page.
 2. **JSX.** Real React components, not markup generated from an HTML snippet.
-3. **Blazor.** The same components as `.razor`, with the state machines ported to C#.
+3. **Blazor.** The same components as `.razor`, with the state machines ported to C#. The
+   `Kapehan.Components.csproj` lives **in this repo** and ships as a NuGet package, so Kapehan
+   has two release channels: npm for the web, NuGet for .NET.
 4. **Theming.** The 28 palettes as data, so picking one retints icons, components and doodles
    together.
 
-Everything else in this file is background or later.
+Then the CLI (phase 2) and the Tailwind and Bootstrap variants (phase 5). Both are wanted;
+they are sequenced after the four, not cut.
 
 ## What exists today
 
@@ -68,7 +71,7 @@ kapehan/
 
 ## Phase 2: the CLI
 
-**Not in the current four. Build it only after the site, JSX, Blazor and theming land.**
+Sequenced after the four above, but wanted.
 
 `npx kapehan create` scaffolds a project already wired to a palette, a font pairing and an
 icon track, so someone can start from a themed page instead of an empty one.
@@ -107,6 +110,12 @@ For each of the 34 component families, state-heavy first:
 2. **Blazor**: `Kapehan.Components/*.razor`, `[Parameter]`, `EventCallback`, `@bind`,
    `IJSRuntime` only where `<dialog>.showModal()` is needed. The six state machines have to be
    ported to C#; they cannot reuse the JS ones.
+
+   **Packaging, decided:** `Kapehan.Components.csproj` is a Razor class library living in this
+   repo, published to NuGet. It ships `kapehan.css` and the SVGs under `wwwroot/`, so consumers
+   reference `_content/Kapehan.Components/kapehan.css`. That means a second release channel and
+   a `dotnet build` leg in CI, neither of which exists today. The npm and NuGet versions must be
+   driven from one place or they drift, the same problem the icons already solved.
 3. **Vue**: `<script setup>`, `defineProps`, `ref` state, `v-model`. Lowest of the three.
 
 Rules that must hold across all of them:
@@ -136,7 +145,8 @@ Doodles are one of the four things the site gives you, and they only exist as in
 
 ## Phase 5: Tailwind and Bootstrap
 
-**Not in the current four.**
+Sequenced after the four above, but wanted. Most people asking for a component kit want
+utility classes, not another stylesheet.
 
 Currently a token bridge: `@theme` and `_kapehan.scss` map the five palette roles so `.kape-*`
 works inside those stacks, but the markup is not utility classes, which is what Tailwind users
