@@ -541,10 +541,29 @@ function decodeEntities(text, where = SOURCE) {
       return String.fromCodePoint(cp);
     }
     const ch = NAMED_ENTITIES[body];
-    if (ch === undefined) throw new Error(`${where}: ${whole} is an entity this generator cannot decode`);
+    if (ch === undefined) {
+      throw new Error(
+        `${where}: ${whole} is an entity this generator cannot decode, so the build stops here. ` +
+          `Passing it through would ship the entity text as the label, which is the double-escape ` +
+          `this decoding exists to prevent. Write it as a numeric entity in the canvas, or add it ` +
+          `to NAMED_ENTITIES in scripts/generators/doodles.mjs.`,
+      );
+    }
     return ch;
   });
 }
+
+/**
+ * Where a prose attribute came from, for an error message.
+ *
+ * This throw stops `node scripts/build.mjs` for all seven generators, not just this one:
+ * the build merges every generator's artifacts and one rejection fails the lot. Stopping is
+ * still the right answer, because the alternative is shipping 24 drawings with a wrong
+ * label. What is not acceptable is a message that leaves someone grepping six other
+ * generators for it, so every error out of the decode path names this generator, the file
+ * it read, the doodle and the attribute.
+ */
+const proseSite = (doodleName, attr, where) => `${name}: ${where}: ${doodleName}: ${attr}`;
 
 /**
  * An <svg> element's own start tag and everything inside it.
@@ -569,7 +588,18 @@ function splitSvgRoot(raw, where = SOURCE) {
  * being read but yielding nothing.
  */
 export async function doodles() {
-  const src = await readSource();
+  return extractDoodles(await readSource());
+}
+
+/**
+ * The read half of the pipeline, over any canvas markup.
+ *
+ * Split out from doodles() so check() can run the real extraction over markup it wrote
+ * itself. Gating the helpers one at a time left the wiring untested: decodeEntities had its
+ * own passing gate while nothing proved doodles() still called it, and no label in the
+ * canvas contains an entity, so deleting the call changed no output the gates looked at.
+ */
+function extractDoodles(src, where = SOURCE) {
   const vars = colourVars(src);
   const { names: keyframeNames } = motionCss(src);
   const out = [];
@@ -583,22 +613,25 @@ export async function doodles() {
     const tagEnd = findTagEnd(src, m.index);
     opens.lastIndex = tagEnd + 1;
 
-    const figureAttrs = new Map(parseAttrs(src.slice(m.index + '<figure'.length, tagEnd)));
+    const figureAttrs = new Map(parseAttrs(src.slice(m.index + '<figure'.length, tagEnd), where));
     const doodleName = figureAttrs.get('data-doodle');
     if (!doodleName) continue;
-    const label = decodeEntities(figureAttrs.get('data-screen-label') || doodleName);
+    const label = decodeEntities(
+      figureAttrs.get('data-screen-label') || doodleName,
+      proseSite(doodleName, 'data-screen-label', where),
+    );
 
     const svgStart = src.indexOf('<svg', tagEnd);
     const figureEnd = skipElement(src, 'figure', tagEnd + 1);
-    if (svgStart === -1 || svgStart > figureEnd) throw new Error(`${SOURCE}: ${doodleName} has no <svg>`);
+    if (svgStart === -1 || svgStart > figureEnd) throw new Error(`${name}: ${where}: ${doodleName} has no <svg>`);
     const svgEnd = skipElement(src, 'svg', findTagEnd(src, svgStart) + 1);
-    const { open, inner } = splitSvgRoot(src.slice(svgStart, svgEnd));
+    const { open, inner } = splitSvgRoot(src.slice(svgStart, svgEnd), where);
 
-    const attrs = new Map(parseAttrs(open.slice('<svg'.length, -1)));
+    const attrs = new Map(parseAttrs(open.slice('<svg'.length, -1), where));
     const viewBox = attrs.get('viewBox');
     const aria = attrs.get('aria-label');
-    if (!viewBox) throw new Error(`${SOURCE}: ${doodleName} has no viewBox`);
-    if (!aria) throw new Error(`${SOURCE}: ${doodleName} has no aria-label`);
+    if (!viewBox) throw new Error(`${name}: ${where}: ${doodleName} has no viewBox`);
+    if (!aria) throw new Error(`${name}: ${where}: ${doodleName} has no aria-label`);
 
     const { svg: coloured, moved } = tokeniseColours(inner, vars);
     const { svg: body, used, unresolved } = bindKeyframes(coloured, keyframeNames);
@@ -607,7 +640,7 @@ export async function doodles() {
     out.push({
       name: doodleName,
       label,
-      aria: decodeEntities(aria),
+      aria: decodeEntities(aria, proseSite(doodleName, 'aria-label', where)),
       viewBox: viewBox.trim(),
       width: w,
       height: h,
@@ -730,9 +763,13 @@ export { DOODLES, KapeDoodle };
 }
 
 export async function artifacts() {
-  const src = await readSource();
+  return buildArtifacts(await readSource());
+}
+
+/** The write half, over any canvas markup, for the same reason extractDoodles() is split. */
+function buildArtifacts(src, where = SOURCE) {
   const css = motionCss(src);
-  const list = await doodles();
+  const list = extractDoodles(src, where);
   const out = new Map();
 
   for (const d of list) {
@@ -828,6 +865,25 @@ export async function check(ctx) {
   }
   fail.push(...unscopedSelectors(files.get('kape-doodle.js') ?? '', 'kape-doodle', 'kape-doodle.js'));
 
+  // Scoping those rules made the <style> depend on the root element's class attribute, and
+  // the two halves are emitted from different places: renderMotionCss() writes the selector,
+  // svgFile() writes the class. Drop the class and every rule in the file matches nothing, so
+  // the doodle renders unstyled and unanimated with the scoping gate above still green,
+  // because each selector is still correctly scoped to a class that is no longer there.
+  for (const d of list) {
+    fail.push(...styleMatchesRoot(files.get(`doodles/${d.name}.svg`) ?? '', `doodles/${d.name}.svg`));
+  }
+
+  // The element's half of the same dependency. Its CSS scopes every rule to the element name
+  // rather than to a class, so what has to hold is that the name it registers is the name its
+  // CSS talks about.
+  const js = files.get('kape-doodle.js') ?? '';
+  const defined = /customElements\.define\('([-\w]+)'/.exec(js)?.[1];
+  if (!defined) fail.push('kape-doodle.js registers no custom element, so <kape-doodle> renders nothing');
+  else if (defined !== 'kape-doodle') {
+    fail.push(`kape-doodle.js registers <${defined}> but scopes its CSS to kape-doodle, so nothing it injects matches`);
+  }
+
   // The keyframe binder, on input the canvas does not contain today. Order in the shorthand
   // is free, `steps(1,end)` holds a comma that is not an animation separator, and `none` is
   // a declaration that legitimately names no keyframe.
@@ -916,6 +972,162 @@ export async function check(ctx) {
     if (body.includes('@keyframes')) fail.push(`${path} carries @keyframes, which a still has no use for`);
   }
 
+  // The pipeline, end to end, on a canvas written here.
+  //
+  // Everything above this point reads either the real canvas or one helper in isolation, and
+  // no label in the real canvas contains an entity. So decodeEntities() had a gate, and the
+  // <title> it feeds had a gate, and deleting the call between them changed nothing either
+  // one looked at. This runs the real extract-and-emit over markup that does contain one.
+  const LABEL = 'Coffee &amp; donut';
+  const ARIA = 'A barista&#39;s cup &amp; a donut, drawn flat';
+  let emitted = null;
+  try {
+    emitted = buildArtifacts(fixtureCanvas(LABEL, ARIA), FIXTURE_WHERE);
+  } catch (e) {
+    fail.push(`${FIXTURE_WHERE} does not build: ${e.message}`);
+  }
+  if (emitted) {
+    const want = { title: '<title>Coffee &amp; donut</title>', aria: `aria-label="A barista's cup &amp; a donut, drawn flat"` };
+    for (const path of [`doodles/${FIXTURE_NAME}.svg`, `doodles/still/${FIXTURE_NAME}.svg`]) {
+      const body = emitted.get(path) ?? '';
+      if (!body) { fail.push(`${FIXTURE_WHERE} emitted no ${path}`); continue; }
+      if (!body.includes(want.title)) fail.push(`${path} (fixture): <title> is not the label the canvas means, once-escaped`);
+      if (!body.includes(want.aria)) fail.push(`${path} (fixture): aria-label is not the label the canvas means, once-escaped`);
+      if (body.includes('&amp;amp;') || body.includes('&amp;#39;')) fail.push(`${path} (fixture): an entity in prose came out escaped twice`);
+      fail.push(...styleMatchesRoot(body, `${path} (fixture)`));
+    }
+    // The element sets aria-label with setAttribute, which does not unescape, so an entity
+    // that survives into DOODLES is read out loud as "ampersand a m p semicolon".
+    const fjs = emitted.get('kape-doodle.js') ?? '';
+    if (!fjs.includes(`\"aria\":\"A barista's cup & a donut, drawn flat\"`)) {
+      fail.push('kape-doodle.js (fixture): DOODLES carries the aria-label still HTML-encoded');
+    }
+
+    // The still track is the animated one with the motion taken out, so the fixture's own
+    // animation has to have survived into the animated file, or the two gates above would
+    // pass on two identical stills.
+    const animated = emitted.get(`doodles/${FIXTURE_NAME}.svg`) ?? '';
+    if (!animated.includes('@keyframes kape-k-spin{')) fail.push(`${FIXTURE_WHERE} emitted no @keyframes, so it is not exercising the animated track`);
+  }
+
+  // An entity this generator cannot decode stops `npm run build` for all seven generators.
+  // That is the right call, and it is only bearable if the message says whose canvas and
+  // which doodle, so this asserts on the words someone would grep for. The fixture's own
+  // name shares none of them on purpose: call it "the doodles fixture" and FIXTURE_WHERE
+  // alone carries both the generator's name and the doodle's, so a message naming neither
+  // would pass this.
+  for (const [attr, doctored] of [
+    ['data-screen-label', fixtureCanvas('Coffee &copy; donut', ARIA)],
+    ['aria-label', fixtureCanvas(LABEL, 'A cup &copy; a donut, drawn flat')],
+  ]) {
+    let threw = null;
+    try { buildArtifacts(doctored, FIXTURE_WHERE); } catch (e) { threw = e.message; }
+    if (threw === null) {
+      fail.push(`an entity this generator cannot decode passes through ${attr} and ships as the label`);
+      continue;
+    }
+    // startsWith, not includes: the message ends by pointing at
+    // scripts/generators/doodles.mjs, so "does it contain the word doodles" is a question
+    // that answers itself. What has to hold is that the name leads.
+    if (!threw.startsWith(`${name}: `)) {
+      fail.push(`an undecodable ${attr} aborts the build for every generator without leading with "${name}:": "${threw}"`);
+    }
+    for (const [what, word] of [
+      ['the file it read', FIXTURE_WHERE],
+      ['the doodle', FIXTURE_NAME],
+      ['the attribute', attr],
+      ['the entity', '&copy;'],
+    ]) {
+      if (!threw.includes(word)) {
+        fail.push(`an undecodable ${attr} aborts the build for every generator without naming ${what} (${word}): "${threw}"`);
+      }
+    }
+  }
+
+  return fail;
+}
+
+const FIXTURE_NAME = 'entity-probe';
+const FIXTURE_WHERE = 'a canvas written by check()';
+
+/**
+ * A canvas holding one doodle, for the gates that need markup the real one does not contain.
+ *
+ * Small, but real input: a <style> with keyframes, the transform-box rule and the
+ * reduced-motion block motionCss() requires, a var() fallback for colourVars() to harvest,
+ * and one animated node. label and aria are substituted so a gate can put an entity in them.
+ */
+function fixtureCanvas(label, aria) {
+  return `<!doctype html><html><head><style>
+  svg [style*="animation"] { transform-box:fill-box; transform-origin:center; }
+  @keyframes k-spin { to{transform:rotate(360deg)} }
+  @media (prefers-reduced-motion: reduce) {
+    svg [style*="animation"] { animation:none !important; }
+    * { transition-duration:.01ms !important; }
+  }
+</style></head><body>
+  <figure data-doodle="${FIXTURE_NAME}" data-screen-label="${label}" style="margin:0">
+    <svg viewBox="0 0 40 40" width="40" height="40" aria-label="${aria}">
+      <circle cx="20" cy="20" r="16" style="fill:var(--acc,#C2593A)"></circle>
+      <path d="M20 8v8" fill="#C2593A" style="animation:k-spin 6s linear infinite"></path>
+    </svg>
+  </figure>
+</body></html>`;
+}
+
+/**
+ * Every rule in an emitted .svg's <style>, checked against that file's own root element.
+ *
+ * unscopedSelectors() asks whether a selector is confined to this doodle. This asks the
+ * other half: whether the thing it is confined to is there. They fail on opposite mistakes,
+ * and only the pair of them says the CSS both stays here and does anything.
+ *
+ * The root is read out of the emitted bytes, not out of svgFile(), for the same reason: the
+ * promise is kept by the file or not at all.
+ */
+function styleMatchesRoot(text, where) {
+  const at = text.indexOf('<style>');
+  if (at === -1) return [];
+  const css = text.slice(at + '<style>'.length, text.indexOf('</style>', at));
+
+  let tag;
+  let attrs;
+  try {
+    const open = text.slice(0, findTagEnd(text, 0) + 1);
+    tag = /^<([A-Za-z][-\w]*)/.exec(open)?.[1];
+    if (!tag) throw new Error('no element name');
+    attrs = new Map(parseAttrs(open.slice(tag.length + 1, -1), where));
+  } catch (e) {
+    return [`${where}: cannot read the root element to check the <style> against it: ${e.message}`];
+  }
+  const classes = new Set((attrs.get('class') ?? '').split(/\s+/).filter(Boolean));
+  const has = classes.size ? [...classes].map((c) => `"${c}"`).join(' ') : 'no class';
+
+  const fail = [];
+  // tag | .class | #id | [attr...], in a leading compound selector.
+  const PIECE = /([A-Za-z][-\w]*)|\.([-\w]+)|#([-\w]+)|\[\s*([-\w]+)[^\]]*\]/y;
+
+  const walk = (blocks) => {
+    for (const b of blocks) {
+      if (/^@keyframes/.test(b.prelude)) continue;
+      if (/^@media/.test(b.prelude)) { walk(topLevelBlocks(b.body)); continue; }
+      for (const sel of b.prelude.split(',').map((x) => x.trim()).filter(Boolean)) {
+        const head = /^[^\s>+~]+/.exec(sel)?.[0] ?? '';
+        PIECE.lastIndex = 0;
+        let m;
+        while (PIECE.lastIndex < head.length && (m = PIECE.exec(head))) {
+          if (m[1] && m[1] !== tag) fail.push(`${where}: "${sel}" starts at <${m[1]}> but this file's root is <${tag}>, so the rule matches nothing`);
+          if (m[2] && !classes.has(m[2])) fail.push(`${where}: "${sel}" needs class="${m[2]}" on the root <${tag}>, which carries ${has}, so the rule matches nothing`);
+          if (m[3] && attrs.get('id') !== m[3]) fail.push(`${where}: "${sel}" needs id="${m[3]}" on the root <${tag}>, so the rule matches nothing`);
+          if (m[4] && !attrs.has(m[4])) fail.push(`${where}: "${sel}" needs ${m[4]} on the root <${tag}>, so the rule matches nothing`);
+        }
+        if (PIECE.lastIndex < head.length) {
+          fail.push(`${where}: cannot tell whether "${head}" matches this file's root, so the <style> is unverified`);
+        }
+      }
+    }
+  };
+  walk(topLevelBlocks(css));
   return fail;
 }
 
