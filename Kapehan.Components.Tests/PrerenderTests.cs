@@ -92,6 +92,21 @@ public class PrerenderTests
     }
 
     /// <summary>
+    /// Rendering nothing is only the right answer when there is nothing to render. Named,
+    /// the icon still has to produce an svg, or "renders nothing" would pass everywhere by
+    /// rendering nothing everywhere.
+    /// </summary>
+    [Fact]
+    public async Task Icon_renders_nothing_unnamed_and_an_svg_when_named()
+    {
+        Assert.True(string.IsNullOrWhiteSpace(await Render(typeof(KapeIcon))));
+
+        var named = await Render(typeof(KapeIcon), new Dictionary<string, object?> { ["Name"] = "barako" });
+        Assert.Contains("<svg", named);
+        Assert.Contains("aria-label=\"barako\"", named);
+    }
+
+    /// <summary>
     /// The three that inject IJSRuntime, in the state where the interop would fire. Open is
     /// the parameter that makes a dialog call showModal, so rendering with Open set is the
     /// case that catches an ungated call; rendering with it unset proves nothing.
