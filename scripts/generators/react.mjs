@@ -40,9 +40,14 @@ export const pkg = {
   // Every emitted file imports react by bare specifier and nothing bundles it, so without
   // this a project that runs `npm i kapehan` and imports kapehan/react gets
   // ERR_MODULE_NOT_FOUND with no install hint and no peer warning. useId is 18, so 18 is
-  // the floor. Optional because the rest of the package (kape-icon.js, the CSS, the SVGs)
-  // is plain browser code: marking it required would make every kapehan install pull React
-  // in, and warn in every project that does not use it.
+  // the floor.
+  //
+  // Optional is about the install, not about the subpath. kapehan/react obviously cannot
+  // run without React; what optional says is that the rest of the package (kape-icon.js,
+  // the CSS, the SVGs, kapehan/vue) can, so npm should neither auto-install React nor warn
+  // in a project that never imports this half. Dropping the flag would pull React into
+  // every kapehan install. check() gates the flag against package.json, because nothing
+  // else does.
   peerDependencies: { react: '>=18' },
   peerDependenciesMeta: { react: { optional: true } },
 };
@@ -257,7 +262,7 @@ const IMPL = {
           className: cx('kape-chip', className),
           'aria-pressed': value === opt,
           onClick: () => fire(onChange, opt),
-          // One id, on the first chip. See restFor.
+          // The caller's leftover props, on the first chip only. See restFor.
           ...restFor(i === 0, rest),
         },
         opt,
@@ -374,7 +379,7 @@ const IMPL = {
                 }
               }
             : undefined,
-          // One id, on the first row. See restFor.
+          // The caller's leftover props, on the first row only. See restFor.
           ...restFor(i === 0, rest),
         },
         h('span', { className: 'kape-row__art' }, iconNode(item.icon, 40)),
@@ -747,7 +752,7 @@ const IMPL = {
     items.map((item, i) =>
       h(
         'details',
-        // One id, on the first panel. See restFor.
+        // The caller's leftover props, on the first panel only. See restFor.
         { key: item.id === undefined ? i : item.id, className: cx('kape-acc', className), open: i === 0 && openFirst ? true : undefined, ...restFor(i === 0, rest) },
         h('summary', null, item.q),
         h('p', null, item.a),
@@ -1611,23 +1616,22 @@ const range = (n) => Array.from({ length: Math.max(0, Math.floor(n) || 0) }, (_,
  * The caller's leftover props, for a component that renders a list of siblings.
  *
  * A Fragment takes no props of its own, so a spread inside the map lands on every item:
- * <KapeRow id="menu" items={three} /> emitted three elements carrying id="menu". That is
- * invalid HTML, getElementById returns an arbitrary one of them and an aria-labelledby
- * pointing at it is ambiguous. Props that name a single element go on the first sibling
- * only; everything else (className, data-*, handlers) is per-item and still reaches all of
- * them. ref is on that list because React 19 passes it through as an ordinary prop.
+ * <KapeRow id="menu" data-test="rows" onClick={f} items={three} /> emitted three elements
+ * and every one of them carried all three. The id was the loudest, being invalid HTML, but
+ * it was not the only one that was wrong: a repeated data-test breaks the selector that
+ * looks it up, a repeated aria-labelledby points at three elements instead of one, a
+ * repeated ref (React 19 passes it through as an ordinary prop) is set to the last sibling
+ * to render, and a handler that is attached three times runs three times for one click.
+ *
+ * The component cannot know what an unknown prop is supposed to mean, so it lands once, on
+ * the first sibling, exactly as it would if the component rendered a single element.
+ *
+ * className is deliberately not part of that. It is destructured by name, it is documented
+ * as the class for each item, and a class is by nature a name many elements share: putting
+ * it on the first row alone would leave the other two unstyled.
  */
-const ONCE = ['id', 'ref'];
-const restFor = (first, rest) => {
-  if (first) return rest;
-  let out = rest;
-  for (const k of ONCE) {
-    if (out[k] === undefined) continue;
-    if (out === rest) out = Object.assign({}, rest);
-    delete out[k];
-  }
-  return out;
-};
+const NO_REST = {};
+const restFor = (first, rest) => (first ? rest : NO_REST);
 
 /** An icon prop is a Kapehan icon name or any node. Icons inside a component are decorative. */
 const iconNode = (icon, size) =>
@@ -1973,14 +1977,31 @@ export async function check(ctx) {
     }
   }
 
-  // 5. A caller prop that names one element must land on one element. Components that
-  //    render a list return a Fragment, which takes no props, and the spread inside the
-  //    map used to stamp every sibling: <KapeRow id="menu"> emitted three id="menu".
+  // 5. A caller prop must land on exactly one element. Components that render a list
+  //    return a Fragment, which takes no props, and the spread inside the map used to
+  //    stamp every sibling: <KapeRow id="menu" data-test="rows"> emitted three of each.
   //    Rendering with real list data is the only way to see it, since a component called
   //    with no props renders an empty list and duplicates nothing.
-  const PROBE = 'kape-probe-id';
+  //
+  //    The probe list is written out here on purpose instead of being read from the
+  //    emitted ONCE-style constant it used to check. The previous version of this gate
+  //    probed a single key, id, while the fix claimed two: dropping ref from the fix left
+  //    check() green, so the ref half was a promise nothing tested. A gate that reads the
+  //    same list the fix reads can only ever prove the two agree with each other. These
+  //    are the shapes a caller actually passes, and each one has to survive on its own.
+  const PROBES = {
+    id: 'probe-id',
+    ref: 'probe-ref', // React 19 passes ref through as an ordinary prop
+    'data-test': 'probe-data', // no component destructures this one, so it always reaches rest
+    'aria-describedby': 'probe-aria',
+    title: 'probe-title',
+    onClick: () => {},
+    onKeyDown: () => {},
+    style: { zIndex: 4242 },
+    tabIndex: 4242,
+  };
   const sample = (c) => {
-    const out = { id: PROBE };
+    const out = Object.assign({}, PROBES);
     for (const p of c.props) {
       const t = String(p.type || '');
       if (!/\[\]|Array/.test(t)) continue;
@@ -2001,11 +2022,18 @@ export async function check(ctx) {
     }
     return out;
   };
-  const probes = (node) => {
-    if (Array.isArray(node)) return node.reduce((n, x) => n + probes(x), 0);
-    if (!node || typeof node !== 'object') return 0;
-    const here = node.props && node.props.id === PROBE ? 1 : 0;
-    return (node.children || []).reduce((n, x) => n + probes(x), here);
+  /** How many rendered elements carry each probe, by identity so a lookalike does not count. */
+  const tally = (node, hit) => {
+    if (Array.isArray(node)) {
+      for (const x of node) tally(x, hit);
+      return hit;
+    }
+    if (!node || typeof node !== 'object') return hit;
+    if (node.props) {
+      for (const k of Object.keys(PROBES)) if (node.props[k] === PROBES[k]) hit[k] = (hit[k] || 0) + 1;
+    }
+    for (const x of node.children || []) tally(x, hit);
+    return hit;
   };
 
   for (const c of components) {
@@ -2018,13 +2046,44 @@ export async function check(ctx) {
       fail.push(`react: ${componentName(c)} throws when rendered with a list of three items: ${e.message}`);
       continue;
     }
-    const n = probes(tree);
-    if (n > 1) fail.push(`react: ${componentName(c)} puts the caller's id on ${n} elements; an id names one element`);
+    const hit = tally(tree, {});
+    for (const k of Object.keys(PROBES)) {
+      const n = hit[k] || 0;
+      if (n > 1) fail.push(`react: ${componentName(c)} puts the caller's ${k} on ${n} elements; a caller prop names one element`);
+    }
+    // A component may well destructure a name of its own (dialog takes title, button takes
+    // onClick) and then that probe legitimately reaches nothing, so the count above is a
+    // ceiling and not an equality. data-test cannot be destructured by any of them, so it
+    // is the one that pins the floor: leftover props have to arrive somewhere, and a
+    // restFor that returned nothing at all would otherwise satisfy every line above.
+    const carried = hit['data-test'] || 0;
+    if (carried !== 1) {
+      fail.push(`react: ${componentName(c)} passes the caller's leftover props to ${carried} elements, expected exactly one`);
+    }
   }
 
   // 6. index.js is the single import, so it must actually carry both halves.
   for (const half of ["export * from './icons.js';", "export * from './components.js';"]) {
     if (indexSrc.indexOf(half) === -1) fail.push(`react: index.js is missing ${half}`);
+  }
+
+  // 7. peerDependenciesMeta has to reach package.json, and nothing else checks that it
+  //    does. registry.mjs collects the field into requiredPkg() and check.mjs compares
+  //    exports, files, peerDependencies and sideEffects against the manifest but not the
+  //    meta beside them, so the declaration above could be deleted from package.json and
+  //    the whole suite would stay green. It is not decoration: without the optional flag
+  //    npm 7 and up installs React into every project that runs `npm i kapehan` and warns
+  //    in every project that does not import kapehan/react, which is the opposite of what
+  //    peerDependencies says two lines earlier. Only react is checked here; the entry for
+  //    vue belongs to the generator that declares it.
+  const manifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
+  const declared = pkg.peerDependenciesMeta.react;
+  const shipped = (manifest.peerDependenciesMeta || {}).react;
+  if (JSON.stringify(shipped) !== JSON.stringify(declared)) {
+    fail.push(
+      `package.json peerDependenciesMeta.react is ${JSON.stringify(shipped)}, but ` +
+        `scripts/generators/react.mjs declares ${JSON.stringify(declared)}`,
+    );
   }
 
   return fail;

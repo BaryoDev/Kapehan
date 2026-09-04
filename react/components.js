@@ -37,23 +37,22 @@ const range = (n) => Array.from({ length: Math.max(0, Math.floor(n) || 0) }, (_,
  * The caller's leftover props, for a component that renders a list of siblings.
  *
  * A Fragment takes no props of its own, so a spread inside the map lands on every item:
- * <KapeRow id="menu" items={three} /> emitted three elements carrying id="menu". That is
- * invalid HTML, getElementById returns an arbitrary one of them and an aria-labelledby
- * pointing at it is ambiguous. Props that name a single element go on the first sibling
- * only; everything else (className, data-*, handlers) is per-item and still reaches all of
- * them. ref is on that list because React 19 passes it through as an ordinary prop.
+ * <KapeRow id="menu" data-test="rows" onClick={f} items={three} /> emitted three elements
+ * and every one of them carried all three. The id was the loudest, being invalid HTML, but
+ * it was not the only one that was wrong: a repeated data-test breaks the selector that
+ * looks it up, a repeated aria-labelledby points at three elements instead of one, a
+ * repeated ref (React 19 passes it through as an ordinary prop) is set to the last sibling
+ * to render, and a handler that is attached three times runs three times for one click.
+ *
+ * The component cannot know what an unknown prop is supposed to mean, so it lands once, on
+ * the first sibling, exactly as it would if the component rendered a single element.
+ *
+ * className is deliberately not part of that. It is destructured by name, it is documented
+ * as the class for each item, and a class is by nature a name many elements share: putting
+ * it on the first row alone would leave the other two unstyled.
  */
-const ONCE = ['id', 'ref'];
-const restFor = (first, rest) => {
-  if (first) return rest;
-  let out = rest;
-  for (const k of ONCE) {
-    if (out[k] === undefined) continue;
-    if (out === rest) out = Object.assign({}, rest);
-    delete out[k];
-  }
-  return out;
-};
+const NO_REST = {};
+const restFor = (first, rest) => (first ? rest : NO_REST);
 
 /** An icon prop is a Kapehan icon name or any node. Icons inside a component are decorative. */
 const iconNode = (icon, size) =>
@@ -171,7 +170,7 @@ export function KapeChip({ options = [], value, onChange, className, ...rest }) 
           className: cx('kape-chip', className),
           'aria-pressed': value === opt,
           onClick: () => fire(onChange, opt),
-          // One id, on the first chip. See restFor.
+          // The caller's leftover props, on the first chip only. See restFor.
           ...restFor(i === 0, rest),
         },
         opt,
@@ -331,7 +330,7 @@ export function KapeRow({ items = [], onPick, badge = null, className, ...rest }
                 }
               }
             : undefined,
-          // One id, on the first row. See restFor.
+          // The caller's leftover props, on the first row only. See restFor.
           ...restFor(i === 0, rest),
         },
         h('span', { className: 'kape-row__art' }, iconNode(item.icon, 40)),
@@ -815,7 +814,7 @@ export function KapeAcc({ items = [], openFirst = false, className, ...rest }) {
     items.map((item, i) =>
       h(
         'details',
-        // One id, on the first panel. See restFor.
+        // The caller's leftover props, on the first panel only. See restFor.
         { key: item.id === undefined ? i : item.id, className: cx('kape-acc', className), open: i === 0 && openFirst ? true : undefined, ...restFor(i === 0, rest) },
         h('summary', null, item.q),
         h('p', null, item.a),
