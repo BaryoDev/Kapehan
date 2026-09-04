@@ -80,8 +80,15 @@ const subpathOk = (sub) =>
     (k) => k === sub || (k.includes('*') && new RegExp('^' + k.replace(/\*/g, '.*') + '$').test(sub)),
   );
 
-for (const [where, text] of [['README.md', readme], ['docs/index.html', site]]) {
+// Only code counts as a promise. Prose says things like "every kapehan/... path", which is
+// not an install anyone can run, and treating it as one made this gate fail on its own
+// documentation the first time it ran.
+const codeOnly = (text) =>
+  [...(text.match(/```[\s\S]*?```/g) ?? []), ...(text.match(/`[^`\n]+`/g) ?? []), ...(text.match(/(?:src|href)="[^"]*"/g) ?? [])].join('\n');
+
+for (const [where, text] of [['README.md', codeOnly(readme)], ['docs/index.html', codeOnly(site) + site]]) {
   for (const ref of new Set(text.match(/kapehan\/[a-zA-Z0-9/._-]+/g) ?? [])) {
+    if (ref.includes('..')) continue;
     const sub = './' + ref.slice('kapehan/'.length);
     if (!subpathOk(sub)) fail.push(`${where} promises ${ref}, which package.json exports does not resolve`);
     else if (!existsSync(join(root, sub))) fail.push(`${where} promises ${ref}, which is exported but missing on disk`);
