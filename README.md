@@ -89,6 +89,28 @@ Everything else derives from those five with `color-mix`, so recolouring the who
 five-line change. No component holds a hex; `npm test` fails the build if one appears outside
 `:root`. Square corners everywhere with `<html data-edges="square">`.
 
+## Theming
+
+The 28 palettes ship as data, extracted from the design canvas rather than retyped:
+
+```js
+import palettes from "kapehan/palettes.json";
+
+const p = palettes.find((x) => x.key === "ube");
+// { key, name, icon, note, paper, surface, ink, accent, pop, onAccent, title, sub, use }
+```
+
+Set the five roles and every `.kape-*` component and mono icon follows:
+
+```css
+:root {
+  --paper: #F3EDF7; --surface: #FFFDF9; --ink: #2E2036;
+  --accent: #8E6BA8; --pop: #B392C9; --on-accent: #FBF6EE;
+}
+```
+
+Each palette carries a `use` badge saying what it suits: `app`, `web` or `brand`.
+
 ## The system
 
 Every icon draws from one palette and rests on one baseline, so a row of them reads as a family

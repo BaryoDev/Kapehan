@@ -6,6 +6,7 @@
  *   kape-icon.js            the <kape-icon> web component, icon data inlined
  *   docs/kapehan-icons.js   the site's copy of the source
  *   docs/favicon.svg        the site's tab icon
+ *   palettes.json           the 28 palettes, extracted from design/Kapehan.dc.html
  *
  * Run `npm run build` after editing kapehan-icons.js, then commit the result.
  * `npm test` re-runs this in memory and fails if anything on disk drifted.
@@ -14,6 +15,7 @@ import { mkdir, writeFile, readFile, readdir, rm } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { icons, monoOf, wrap } from '../kapehan-icons.js';
+import { palettes } from './palettes.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -97,6 +99,8 @@ export async function artifacts() {
     })),
   );
   out.set('kape-icon.js', componentSource(data));
+  // Extracted from the canvas, never retyped. The drift gate makes that stick.
+  out.set('palettes.json', JSON.stringify(await palettes(), null, 2) + '\n');
   out.set('docs/kapehan-icons.js', await readFile(join(root, 'kapehan-icons.js'), 'utf8'));
   // The site is served from docs/, which cannot reach ../icons, so the tab icon is copied in.
   out.set('docs/favicon.svg', wrap('barako', icons.find((i) => i.name === 'barako').body, 48));
