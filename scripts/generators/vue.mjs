@@ -32,9 +32,8 @@
  */
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { pathToFileURL } from 'node:url';
 import { icons, monoOf } from '../../kapehan-icons.js';
-import { components as manifest, classesOf } from '../components.mjs';
+import { components as manifest } from '../components.mjs';
 
 export const name = 'vue';
 
@@ -494,16 +493,54 @@ const RENDER = {
       ]),
     ]);`,
 
-  // placement lands as data-placement rather than a class: kapehan.css draws the bubble
-  // from .kape-tip::after with `bottom: calc(100% + 8px)` and has no below-the-button rule,
-  // so the attribute is the hook a consumer styles. Declaring it beats dropping it, which
-  // is what an undeclared prop does.
-  tip: `    return () => h('button', {
-      class: ['kape-btn', 'kape-tip'],
+  // placement="bottom" draws its own bubble instead of leaning on the stylesheet.
+  //
+  // kapehan.css has exactly one tooltip rule, .kape-tip::after with
+  // `bottom: calc(100% + 8px)`, and no below-the-button variant. So a component that only
+  // set data-placement accepted a documented prop and moved nothing: the bubble sat above
+  // the button whatever you passed. A pseudo-element cannot be repositioned from a call
+  // site either, since inline style never reaches ::after.
+  //
+  // The default keeps the CSS path exactly as it was, hover transition and all. For
+  // 'bottom' the class comes off - which is what stops ::after drawing a second, empty
+  // bubble above - and the tip is a real element this component positions below and
+  // toggles on hover and focus. No new class name, so kapehan.css stays the components
+  // generator's file and needs no edit.
+  tip: `    const shown = ref(false);
+    const below = () => props.placement === 'bottom';
+    const show = () => { shown.value = true; };
+    const hide = () => { shown.value = false; };
+
+    return () => h('button', {
+      class: below() ? 'kape-btn' : ['kape-btn', 'kape-tip'],
       type: 'button',
-      'data-tip': props.text,
       'data-placement': props.placement,
-    }, slots.default ? slots.default() : null);`,
+      ...(below()
+        ? { style: { position: 'relative' }, onMouseenter: show, onMouseleave: hide, onFocus: show, onBlur: hide }
+        : { 'data-tip': props.text }),
+    }, [
+      slots.default ? slots.default() : null,
+      below()
+        ? h('span', {
+            role: 'tooltip',
+            style: {
+              position: 'absolute',
+              left: '50%',
+              top: 'calc(100% + 8px)',
+              transform: 'translateX(-50%)',
+              whiteSpace: 'nowrap',
+              padding: '6px 10px',
+              fontSize: '12.5px',
+              color: 'var(--paper)',
+              background: 'var(--ink)',
+              borderRadius: 'var(--radius-xs)',
+              opacity: shown.value ? '1' : '0',
+              pointerEvents: 'none',
+              transition: 'opacity .12s',
+            },
+          }, props.text)
+        : null,
+    ]);`,
 
   skeleton: `    return () => h('div', { 'aria-busy': props.loading }, props.loading
       ? Array.from({ length: props.lines }, (_, i) => h('span', { key: i, class: 'kape-skeleton', style: { width: props.width } }))
@@ -893,8 +930,17 @@ const RENDER = {
 
     // Read once in setup() is read once forever. month, from and to are ordinary props a
     // parent changes after mount, and before this nothing watched any of them.
-    watch(() => props.month, () => { view.value = seedView(); focused.value = seedFocus(view.value); });
-    watch(() => [props.from, props.to], () => {
+    //
+    // Watched by VALUE, never by identity. The ordinary way to call this is
+    // <KapeRange :month="new Date(2026, 0, 1)" />, and that expression builds a new Date on
+    // every parent render, so an identity watch fired on every unrelated re-render of the
+    // parent and threw away the half-picked range and the roving focus the user was in the
+    // middle of. Same for from and to: [props.from, props.to] is a fresh array each run, so
+    // Object.is never matched and the draft was rebuilt whether or not anything changed.
+    const stamp = (d) => (d ? midnight(d).getTime() : null);
+    const monthKey = () => (props.month ? startOfMonth(props.month).getTime() : null);
+    watch(monthKey, () => { view.value = seedView(); focused.value = seedFocus(view.value); });
+    watch(() => stamp(props.from) + ':' + stamp(props.to), () => {
       draft.value = { from: props.from, to: props.to };
       if (!inMonth(focused.value, view.value)) focused.value = seedFocus(view.value);
     });
@@ -1173,79 +1219,6 @@ const RENDER = {
 };
 
 /* ------------------------------------------------------------------ *
- * The copy material
- * ------------------------------------------------------------------ */
-
-/**
- * Fixes applied to the .vue snippets before they ship as vue/src/*.vue.
- *
- * The snippets are the specification and are emitted otherwise untouched, but two of them
- * carry bugs that the render functions above already fix, and vue/src/* is a published
- * subpath: KapeEdit.vue read `v-text="status"` against a status its script never declared,
- * which throws the moment anyone pastes it, and KapeRange.vue stepped months by adding 30
- * days, which skips February and lands on the 2nd or the 3rd of the wrong month.
- *
- * Every replacement must match exactly once. A canvas edit that fixes one of these at the
- * source fails the build here rather than silently leaving a patch that does nothing.
- */
-const SFC_PATCHES = {
-  edit: [
-    ['const field = ref(null);', 'const field = ref(null);\nconst status = ref("");'],
-    [
-      `const commit = (d) => {
-  const n = Number(draft.value);
-  if (!Number.isNaN(n)) emit("save", d.id, n);
-  editing.value = null;
-};
-const cancel = () => { editing.value = null; };`,
-      `const commit = (d) => {
-  const n = Number(draft.value);
-  if (draft.value.trim() === "" || Number.isNaN(n)) {
-    status.value = "Not a number, " + d.name + " unchanged";
-  } else {
-    status.value = d.name + " saved at " + n;
-    emit("save", d.id, n);
-  }
-  editing.value = null;
-};
-const cancel = () => { editing.value = null; status.value = "Edit cancelled"; };`,
-    ],
-  ],
-  range: [
-    [
-      `const onKeydown = (e) => {`,
-      `const shiftMonth = (n) => {
-  const next = new Date(focused.value.getFullYear(), focused.value.getMonth() + n, 1);
-  const last = new Date(next.getFullYear(), next.getMonth() + 1, 0).getDate();
-  next.setDate(Math.min(focused.value.getDate(), last));
-  focused.value = next;
-  view.value = new Date(next.getFullYear(), next.getMonth(), 1);
-};
-const onKeydown = (e) => {`,
-    ],
-    ['{ shift(-30); e.preventDefault(); }', '{ shiftMonth(-1); e.preventDefault(); }'],
-    ['{ shift(30); e.preventDefault(); }', '{ shiftMonth(1); e.preventDefault(); }'],
-    ['@click="shift(-30)"', '@click="shiftMonth(-1)"'],
-    ['@click="shift(30)"', '@click="shiftMonth(1)"'],
-  ],
-};
-
-function sfcSource(c) {
-  let src = c.vue;
-  for (const [from, to] of SFC_PATCHES[c.key] ?? []) {
-    const hits = src.split(from).length - 1;
-    if (hits !== 1) {
-      throw new Error(
-        `vue/src/${nameOf(c.key)}.vue: the patch for ${JSON.stringify(from.slice(0, 40))} matched ${hits} times, not once. ` +
-          'The canvas snippet changed; re-check whether the bug it fixes is still there.',
-      );
-    }
-    src = src.replace(from, to);
-  }
-  return src.trimEnd() + '\n';
-}
-
-/* ------------------------------------------------------------------ *
  * Emitting
  * ------------------------------------------------------------------ */
 
@@ -1388,8 +1361,8 @@ function componentsSource(list, surfaces) {
  * No component fetches anything.
  *
  * Props and emits are derived from the <script setup> snippets in kapehan-components.js,
- * which are the specification. Those snippets ship untouched as vue/src/*.vue, as copy
- * material rather than as modules to import.
+ * which are the specification. The snippets themselves are not published: a .vue subpath
+ * shipped the defects the render functions had already fixed, so the track is gone.
  *
  * GENERATED by scripts/generators/vue.mjs. Do not edit by hand.
  * ${BANNER}
@@ -1410,12 +1383,20 @@ import { KapeIcon } from './icons.js';
  * back down, including nothing, when the parent validates or debounces and rejects the
  * update. Keeping a local copy and syncing it only on a prop change got that backwards:
  * the child moved to a value the parent never accepted and stayed there.
+ *
+ * Both spellings of both keys, because vnode props are raw. Vue camelizes props on the way
+ * into the component, but nothing camelizes vnode.props, so a parent writing
+ * :model-value="x" @update:model-value="..." - which is what a plain-HTML template or
+ * anything in-DOM has to write, since attributes are case-insensitive - arrived here as
+ * 'model-value' and read as unowned. The child then kept a local copy and showed a value
+ * the parent had rejected: the exact bug the camelCase path was fixed for.
  */
 const useModel = (props, emit, seed) => {
   const vm = getCurrentInstance();
   const owned = () => {
     const raw = vm && vm.vnode && vm.vnode.props;
-    return !!raw && 'modelValue' in raw
+    return !!raw
+      && ('modelValue' in raw || 'model-value' in raw)
       && ('onUpdate:modelValue' in raw || 'onUpdate:model-value' in raw);
   };
   const local = ref(props.modelValue !== undefined ? props.modelValue : seed);
@@ -1465,12 +1446,6 @@ export async function artifacts() {
   out.set('vue/icons.js', iconsSource());
   out.set('vue/components.js', componentsSource(list, surfaces));
   out.set('vue/index.js', indexSource());
-
-  // Copy material for a future `npx kapehan add`, and a published subpath, so what ships
-  // here has to work when it is pasted. SFC_PATCHES carries the two snippets whose bugs
-  // the render functions already fix.
-  for (const c of list) {
-  }
 
   return out;
 }
@@ -1589,15 +1564,11 @@ export async function check({ root: repo, expected }) {
   const get = (p) => files.get(p) ?? '';
 
   // 1. Every class an emitted component puts on an element must exist in kapehan.css.
-  //    A snippet naming a class the stylesheet does not define renders unstyled, and looks
-  //    perfectly fine in a diff. Both the modules and the .vue copy material are checked:
-  //    the .vue files are what a consumer pastes, so an unstyled class there ships too.
+  //    A component naming a class the stylesheet does not define renders unstyled, and
+  //    looks perfectly fine in a diff.
   for (const [path, body] of files) {
     if (!path.startsWith('vue/')) continue;
-    const used = path.endsWith('.vue')
-      ? classesOf({ html: '', react: '', vue: body, blazor: '' })
-      : emittedClasses(body);
-    for (const cls of used) {
+    for (const cls of emittedClasses(body)) {
       if (cls === 'kape-icon' || cls === 'kape-doodle') continue; // elements, not classes
       if (!cssClasses.has(cls)) fail.push(`${path} uses .${cls}, which kapehan.css does not define`);
     }
@@ -1671,164 +1642,339 @@ export async function check({ root: repo, expected }) {
     }
   }
 
-  // 7. The copy material must not reference a binding its own <script setup> never
-  //    declared. KapeEdit.vue shipped v-text="status" against nothing, and vue/src/* is a
-  //    published subpath, so that is a paste that throws.
-  for (const [path, body] of files) {
-    if (!path.endsWith('.vue')) continue;
-    const script = (body.match(/<script setup>([\s\S]*?)<\/script>/) ?? [, ''])[1];
-    const tpl = (body.match(/<template>([\s\S]*)<\/template>/) ?? [, ''])[1];
-    const known = new Set(['$emit', 'true', 'false', 'null', 'undefined']);
-    for (const m of script.matchAll(/(?:const|let|var|function)\s+([A-Za-z_$][\w$]*)/g)) known.add(m[1]);
-    for (const macro of ['defineProps', 'defineModel']) {
-      const arg = macroArg(script, macro);
-      if (arg && arg[0] === '{') for (const [k] of entries(arg)) known.add(k);
+  // 9. Behaviour, on the real emitted modules. Everything below runs on every machine,
+  //    installed or bare, because it runs on the small Vue-shaped runtime in
+  //    scripts/generators/vue-runtime/. It used to sit behind `try { await import('vue') }`
+  //    and nothing in this repo installs vue, so in CI every assertion here was skipped in
+  //    silence and check still said ok.
+  //
+  //    When vue IS installed the same battery is run a second time against it, and both
+  //    legs report. That is what keeps the small runtime from quietly answering differently
+  //    from the real one.
+  for (const [label, build] of [['mini-vue', miniAdapter], ['vue', realAdapter]]) {
+    let found = [];
+    try {
+      const adapter = await build(files);
+      // Only the vue leg is allowed to be absent, and only because the mini one has already
+      // run every assertion. A missing mini runtime is a failure, never a skip.
+      if (!adapter) continue;
+      found = await behaviour(adapter, list);
+    } catch (e) {
+      found = [`the behavioural gates crashed: ${e.message}`];
     }
-    // v-for="x in xs" and v-for="(x, i) in xs" bind names the script never declares.
-    for (const m of tpl.matchAll(/v-for="\(?\s*([A-Za-z_$][\w$]*)\s*(?:,\s*([A-Za-z_$][\w$]*))?/g)) {
-      known.add(m[1]);
-      if (m[2]) known.add(m[2]);
-    }
-    for (const m of tpl.matchAll(/v-text="([A-Za-z_$][\w$]*)"/g)) {
-      if (!known.has(m[1])) fail.push(`${path} renders v-text="${m[1]}", which its <script setup> never declares`);
-    }
+    for (const f of found) fail.push(`${f} (under ${label})`);
   }
 
-  // 8. The copy material must step months by months. shift(-30)/shift(30) on the month
-  //    buttons skips February and lands on the 2nd or the 3rd of the wrong month.
-  const rangeVue = get('vue/src/KapeRange.vue');
-  for (const m of rangeVue.matchAll(/shift\(\s*-?(\d+)\s*\)/g)) {
-    if (Number(m[1]) > 7) fail.push(`vue/src/KapeRange.vue steps a month with ${m[0]}; a month is not 30 days`);
-  }
+  return fail;
+}
 
-  // 9. Import them for real when vue resolves. This is the gate that would have caught a
-  //    browser global inside an object literal, which the scan above cannot see. It is
-  //    skipped rather than failed when vue is absent, because check.mjs has to run with
-  //    nothing installed (prepublishOnly and the publish workflow both call it).
-  let hasVue = true;
+/* ------------------------------------------------------------------ *
+ * Running the emitted modules
+ * ------------------------------------------------------------------ */
+
+const dataUrl = (src) => 'data:text/javascript;base64,' + Buffer.from(src, 'utf8').toString('base64');
+
+/**
+ * Load vue/icons.js and vue/components.js with their `vue` import pointed at a runtime.
+ *
+ * The source comes from the artifact map, not from disk, so a gate below goes red the
+ * moment the generator changes, with no build in between. Data URLs rather than temp
+ * files: nothing to clean up and nothing to leave behind on a failed run.
+ */
+async function loadModules(files, runtimeUrl) {
+  const bind = (src) => {
+    const bound = src.replace(/from 'vue'/g, `from '${runtimeUrl}'`);
+    // If an import ever gets written with double quotes it would slip past the rewrite and
+    // silently load whatever `vue` resolves to, which on a bare checkout is nothing and on
+    // a developer machine is the wrong instance. Neither failure would look like a failure.
+    if (/from ["']vue["']/.test(bound)) throw new Error('an emitted module imports "vue" in a form the gate cannot rebind');
+    return bound;
+  };
+  const iconsUrl = dataUrl(bind(files.get('vue/icons.js') ?? ''));
+  const componentsUrl = dataUrl(
+    bind(files.get('vue/components.js') ?? '').replace("from './icons.js'", `from '${iconsUrl}'`),
+  );
+  const indexUrl = dataUrl(
+    (files.get('vue/index.js') ?? '')
+      .replace("from './icons.js'", `from '${iconsUrl}'`)
+      .replace("from './components.js'", `from '${componentsUrl}'`),
+  );
+  return { icons: await import(iconsUrl), components: await import(componentsUrl), index: await import(indexUrl) };
+}
+
+/** The bundled runtime. Always available: it is a file in this repo. */
+async function miniAdapter(files) {
+  const runtime = new URL('./vue-runtime/mini-vue.mjs', import.meta.url).href;
+  const mini = await import(runtime);
+  const mods = await loadModules(files, runtime);
+  return {
+    ...mods,
+    mount: (Component, props, options) => mini.__mount(Component, props, options),
+    // One page holding several components. Real Vue's useId is unique per app, not per
+    // process, so "two instances on one page" has to be one app on both runtimes or the
+    // id gate reports a collision the browser would never see.
+    mountMany: (pairs) => {
+      const mounted = pairs.map(([Component, props]) => mini.__mount(Component, props));
+      return { nodes: () => mounted.flatMap((m) => m.nodes()) };
+    },
+  };
+}
+
+/**
+ * The real vue, when it resolves. This leg is the cross-check on the small runtime, not
+ * the gate itself: on a bare checkout it is absent and every assertion still runs above.
+ *
+ * window and document are stubbed for the duration, because a real mount runs onMounted and
+ * KapeCmdk binds a window keydown listener there. The module-scope-globals gate is textual
+ * and is not affected by this.
+ */
+async function realAdapter(files) {
+  let vue;
+  let vueUrl;
   try {
-    await import('vue');
+    // A data: URL has no filesystem to resolve a bare specifier against, so the emitted
+    // modules are bound to vue's own file URL. Same URL as this import, so both halves get
+    // one module instance, which real Vue's internals require.
+    vueUrl = import.meta.resolve('vue');
+    vue = await import(vueUrl);
   } catch {
-    hasVue = false;
+    return null;
   }
-  if (hasVue) {
-    try {
-      const mod = await import(pathToFileURL(join(repo, 'vue/index.js')).href);
-      if (typeof mod.KapeIcon !== 'object') fail.push('vue/index.js exports no KapeIcon component');
-      for (const c of list) {
-        const comp = mod[nameOf(c.key)];
-        if (!comp || typeof comp.setup !== 'function') fail.push(`vue/index.js exports no working ${nameOf(c.key)}`);
-      }
-    } catch (e) {
-      fail.push(`vue/index.js cannot be imported in node: ${e.message}`);
+  const { createRenderer, h: vh, ref: vref, nextTick } = vue;
+  const mods = await loadModules(files, vueUrl);
+  const node = (type) => ({ type, children: [], props: {}, parent: null });
+  const { createApp } = createRenderer({
+    createElement: (t) => node(t),
+    createText: (t) => ({ type: '#text', text: t, children: [] }),
+    createComment: () => ({ type: '#comment', children: [] }),
+    setText: (n, t) => { n.text = t; },
+    setElementText: (n, t) => { n.children = t ? [{ type: '#text', text: t, children: [] }] : []; },
+    insert: (child, parent, anchor) => {
+      if (child.parent) child.parent.children.splice(child.parent.children.indexOf(child), 1);
+      child.parent = parent;
+      const i = anchor ? parent.children.indexOf(anchor) : -1;
+      if (i === -1) parent.children.push(child);
+      else parent.children.splice(i, 0, child);
+    },
+    remove: (child) => { if (child.parent) child.parent.children.splice(child.parent.children.indexOf(child), 1); },
+    parentNode: (n) => n.parent ?? null,
+    nextSibling: (n) => (n.parent ? n.parent.children[n.parent.children.indexOf(n) + 1] ?? null : null),
+    patchProp: (n, key, prev, next) => { n.props[key] = next; },
+    querySelector: () => null,
+    setScopeId: () => {},
+  });
+
+  const flatHost = (host, parent, out) => {
+    const entry = {
+      tag: host.type,
+      props: host.props ?? {},
+      text: (host.children ?? []).filter((c) => c.type === '#text').map((c) => c.text).join(''),
+      parent,
+    };
+    out.push(entry);
+    for (const c of host.children ?? []) if (c.type !== '#text') flatHost(c, entry, out);
+    return out;
+  };
+
+  /** Everything a mount needs that node does not have: onMounted runs for real here. */
+  const withStubbedBrowser = (fn) => {
+    const stubbed = [];
+    for (const [key, value] of [
+      ['window', { addEventListener() {}, removeEventListener() {} }],
+      ['document', { activeElement: null }],
+    ]) {
+      if (!(key in globalThis)) { globalThis[key] = value; stubbed.push(key); }
     }
-
-    // 10. Behavioural gates on the real modules. Everything here needs only vue itself:
-    //     vue/server-renderer ships inside the vue package, so if vue resolves, so does it.
     try {
-      const { createSSRApp, h: vh } = await import('vue');
-      const { renderToString } = await import('vue/server-renderer');
-      const mod = await import(pathToFileURL(join(repo, 'vue/components.js')).href);
+      return fn();
+    } finally {
+      for (const key of stubbed) delete globalThis[key];
+    }
+  };
 
-      // Two of each id-bearing component in one tree. Every id has to be per instance, or
-      // the aria wiring of the second copy silently points at the first one's element.
-      const twice = [
-        ['KapeMulti', { options: [{ id: 'a', name: 'Kalayaan' }] }],
-        ['KapeDialog', { title: 'Void this order?', body: 'It cannot be undone.', confirmLabel: 'Void' }],
-        ['KapeDrawer', { title: 'Order #2381', lines: [{ id: 'l', qty: 2, name: 'Barako', total: '130' }] }],
-        ['KapeCmdk', { commands: [{ id: 'c', group: 'Orders', label: 'New order' }] }],
-      ];
-      const pairs = twice.flatMap(([n, p]) => [vh(mod[n], p), vh(mod[n], p)]);
-      const html = await renderToString(createSSRApp({ render: () => vh('div', null, pairs) }));
-      const ids = [...html.matchAll(/id="([^"]+)"/g)].map((m) => m[1]);
-      for (const dup of new Set(ids.filter((x, i) => ids.indexOf(x) !== i))) {
-        fail.push(`two instances of one component both render id="${dup}"; that is invalid HTML and every aria reference resolves to the first`);
-      }
-
-      // KapeEdit promises "F2 or double-click enters edit mode". The F2 handler is on the
-      // <tr>, and a row that is not being edited contains nothing focusable, so without a
-      // tabindex on the row the key can never be pressed and only the mouse path exists.
-      const rows = [{ id: 'a', name: 'Kapeng barako', size: '12 oz', price: 65, stock: 48 }];
-      const edit = await renderToString(createSSRApp({ render: () => vh(mod.KapeEdit, { rows }) }));
-      if (!/<tr[^>]*tabindex="0"/.test(edit)) {
-        fail.push('KapeEdit renders no focusable row, so the F2 the a11y contract promises cannot be pressed');
-      }
-
-      // v-model must mean what Vue means by it: a parent that binds the value owns it, and
-      // a child whose update the parent does not accept goes back to the parent's value.
-      // Keeping a local copy and syncing it only on a prop change showed the user a state
-      // the parent had rejected, in all nine v-model components at once.
-      //
-      // Driven through a renderer with stub node operations rather than a DOM, because
-      // check.mjs runs with nothing installed but vue.
-      const { createRenderer, ref: vref, nextTick: tick } = await import('vue');
-      const node = (type) => ({ type, children: [], props: {}, parent: null });
-      const app = createRenderer({
-        createElement: (t) => node(t),
-        createText: (t) => ({ type: '#text', text: t, children: [] }),
-        createComment: () => ({ type: '#comment', children: [] }),
-        setText: (n, t) => { n.text = t; },
-        setElementText: (n, t) => { n.children = t ? [{ type: '#text', text: t, children: [] }] : []; },
-        insert: (child, parent, anchor) => {
-          if (child.parent) child.parent.children.splice(child.parent.children.indexOf(child), 1);
-          child.parent = parent;
-          const i = anchor ? parent.children.indexOf(anchor) : -1;
-          if (i === -1) parent.children.push(child);
-          else parent.children.splice(i, 0, child);
-        },
-        remove: (child) => { if (child.parent) child.parent.children.splice(child.parent.children.indexOf(child), 1); },
-        parentNode: (n) => n.parent ?? null,
-        nextSibling: (n) => (n.parent ? n.parent.children[n.parent.children.indexOf(n) + 1] ?? null : null),
-        patchProp: (n, key, prev, next) => { n.props[key] = next; },
-        querySelector: () => null,
-        setScopeId: () => {},
+  return {
+    ...mods,
+    mountMany(pairs) {
+      const host = node('root');
+      withStubbedBrowser(() => {
+        createApp({ render: () => vh('div', null, pairs.map(([Component, props]) => vh(Component, props))) }).mount(host);
       });
-      const flat = (n, out = []) => { out.push(n); for (const c of n.children ?? []) flat(c, out); return out; };
-      const root = node('root');
-      app.createApp({
-        setup() {
-          const held = vref('Pick up');
-          // Binds the value and ignores every update, the way a parent that validates or
-          // debounces behaves when it rejects one.
-          return () => vh(mod.KapeSeg, { modelValue: held.value, 'onUpdate:modelValue': () => {} });
-        },
-      }).mount(root);
-      await tick();
-      const deliver = flat(root).find((n) => n.type === 'button' && n.children[0] && n.children[0].text === 'Deliver');
-      if (!deliver) fail.push('the v-model gate could not find KapeSeg to click; the render changed');
-      else {
-        deliver.props.onClick();
-        await tick();
-        await tick();
-        const shown = flat(root).filter((n) => n.type === 'button' && n.props['aria-pressed'] === true);
-        const labels = shown.map((n) => (n.children[0] ?? {}).text).join(', ');
-        if (labels !== 'Pick up') {
-          fail.push(`v-model is broken: the parent kept "Pick up" and ignored the update, and the child shows "${labels}"`);
-        }
-      }
-
-      // KapeRange's grid must always have exactly one tab stop, whatever month it is shown.
-      // Seeding focus from `from` while the page came from `month` left all 31 buttons at
-      // tabindex=-1, so Tab skipped the calendar entirely.
-      const walk = (n, out = []) => {
-        if (Array.isArray(n)) { for (const c of n) walk(c, out); return out; }
-        if (!n || typeof n !== 'object') return out;
-        out.push(n);
-        return walk(n.children, out);
+      return { nodes: () => (host.children ?? []).flatMap((c) => flatHost(c, null, [])) };
+    },
+    mount(Component, props) {
+      const box = vref({ ...props });
+      const host = node('root');
+      const app = withStubbedBrowser(() => {
+        const a = createApp({ render: () => vh(Component, box.value) });
+        a.mount(host);
+        return a;
+      });
+      return {
+        nodes: () => (host.children ?? []).flatMap((c) => flatHost(c, null, [])),
+        setProps: (next) => { box.value = { ...next }; },
+        tick: () => nextTick(),
+        unmount: () => app.unmount(),
       };
-      for (const month of [new Date(2026, 0, 1), new Date(), new Date(2026, 1, 1)]) {
-        const draw = mod.KapeRange.setup({ month, from: null, to: null, presets: [] }, { emit() {}, slots: {} });
-        walk(draw()).find((n) => n.props && String(n.props.class).includes('kape-range__trigger')).props.onClick();
-        const days = walk(draw()).filter((n) => n.props && 'tabindex' in n.props);
-        const stops = days.filter((d) => d.props.tabindex === 0).length;
-        if (stops !== 1) {
-          fail.push(`KapeRange with month=${month.toDateString()} draws ${days.length} days and ${stops} tab stops; a keyboard user needs exactly one`);
-        }
-      }
-    } catch (e) {
-      fail.push(`the vue behavioural gates could not run: ${e.message}`);
+    },
+  };
+}
+
+/* ------------------------------------------------------------------ *
+ * The behavioural battery
+ *
+ * One list of assertions, run once per runtime. Every one of them is a claim about what a
+ * caller sees, and every one has been shown red by breaking the thing it guards.
+ * ------------------------------------------------------------------ */
+
+async function behaviour(rt, list) {
+  const fail = [];
+  const mod = rt.components;
+  const byText = (nodes, tag, text) => nodes.find((n) => n.tag === tag && n.text === text);
+  const cls = (n) => String(n.props.class ?? '');
+
+  // (a) Everything imports and is a component. This is the gate that catches a browser
+  //     global inside an object literal, which the textual scan above cannot see.
+  if (!rt.index.KapeIcon || typeof rt.index.KapeIcon.setup !== 'function') {
+    fail.push('vue/index.js exports no KapeIcon component');
+  }
+  for (const c of list) {
+    const comp = rt.index[nameOf(c.key)];
+    if (!comp || typeof comp.setup !== 'function') fail.push(`vue/index.js exports no working ${nameOf(c.key)}`);
+  }
+
+  // (b) Element ids must be per instance. Two copies of one component in a page then emit
+  //     the same id, which is invalid HTML, and every aria reference pointing at it
+  //     resolves to whichever the browser found first.
+  const twice = [
+    ['KapeMulti', { options: [{ id: 'a', name: 'Kalayaan' }] }],
+    ['KapeDialog', { title: 'Void this order?', body: 'It cannot be undone.', confirmLabel: 'Void' }],
+    ['KapeDrawer', { title: 'Order #2381', lines: [{ id: 'l', qty: 2, name: 'Barako', total: '130' }] }],
+    ['KapeCmdk', { commands: [{ id: 'c', group: 'Orders', label: 'New order' }] }],
+  ];
+  // Two copies of each, all in one page.
+  const page = rt.mountMany(twice.flatMap(([n, p]) => [[mod[n], p], [mod[n], p]]));
+  const ids = page.nodes().filter((n) => n.props.id).map((n) => String(n.props.id));
+  for (const dup of new Set(ids.filter((x, i) => ids.indexOf(x) !== i))) {
+    fail.push(`two instances of one component both render id="${dup}"; that is invalid HTML and every aria reference resolves to the first`);
+  }
+
+  // (c) KapeEdit promises "F2 or double-click enters edit mode". The F2 handler is on the
+  //     <tr>, and a row that is not being edited contains nothing focusable, so without a
+  //     tabindex on the row the key can never be pressed and only the mouse path exists.
+  const rows = [{ id: 'a', name: 'Kapeng barako', size: '12 oz', price: 65, stock: 48 }];
+  if (!rt.mount(mod.KapeEdit, { rows }).nodes().some((n) => n.tag === 'tr' && n.props.tabindex === 0)) {
+    fail.push('KapeEdit renders no focusable row, so the F2 the a11y contract promises cannot be pressed');
+  }
+
+  // (d) v-model means what Vue means by it: a parent that binds the value owns it, and a
+  //     child whose update the parent rejects goes back to the parent's value. Keeping a
+  //     local copy and syncing it only on a prop change showed the user a state the parent
+  //     had never accepted, in all nine v-model components at once.
+  //
+  //     Both spellings. vnode props are raw, so a parent writing :model-value in kebab -
+  //     which an in-DOM template has to write, attributes being case-insensitive - reached
+  //     an ownership test that only knew the camelCase key and read as unowned. Same bug,
+  //     different spelling, and the camelCase gate could never see it.
+  for (const [style, valueKey, listenerKey] of [
+    ['camelCase', 'modelValue', 'onUpdate:modelValue'],
+    ['kebab-case', 'model-value', 'onUpdate:model-value'],
+  ]) {
+    const held = rt.mount(mod.KapeSeg, { [valueKey]: 'Pick up', [listenerKey]: () => {} });
+    const deliver = byText(held.nodes(), 'button', 'Deliver');
+    if (!deliver) {
+      fail.push(`the v-model gate could not find KapeSeg to click; the render changed`);
+      continue;
+    }
+    deliver.props.onClick();
+    await held.tick();
+    const pressed = held.nodes().filter((n) => n.tag === 'button' && n.props['aria-pressed'] === true).map((n) => n.text);
+    if (pressed.join(', ') !== 'Pick up') {
+      fail.push(
+        `v-model is broken for a ${style} binding: the parent kept "Pick up" and ignored the update, ` +
+          `and the child shows "${pressed.join(', ')}"`,
+      );
     }
   }
 
+  // And unbound still has to work: a control nobody v-models is a supported call, and the
+  // docs page renders every one of them that way.
+  const loose = rt.mount(mod.KapeSeg, {});
+  byText(loose.nodes(), 'button', 'Deliver').props.onClick();
+  await loose.tick();
+  const looseOn = loose.nodes().filter((n) => n.tag === 'button' && n.props['aria-pressed'] === true).map((n) => n.text);
+  if (looseOn.join(', ') !== 'Deliver') {
+    fail.push(`an unbound KapeSeg does not move on click; it shows "${looseOn.join(', ')}" after clicking Deliver`);
+  }
+
+  // (e) KapeRange's grid must always have exactly one tab stop, whatever month it shows.
+  //     Seeding focus from `from` while the page came from `month` left all 31 buttons at
+  //     tabindex=-1, so Tab skipped the calendar entirely.
+  for (const month of [new Date(2026, 0, 1), new Date(), new Date(2026, 1, 1)]) {
+    const cal = rt.mount(mod.KapeRange, { month, from: null, to: null, presets: [] });
+    cal.nodes().find((n) => cls(n).includes('kape-range__trigger')).props.onClick();
+    await cal.tick();
+    const days = cal.nodes().filter((n) => n.tag === 'button' && 'tabindex' in n.props);
+    const stops = days.filter((d) => d.props.tabindex === 0).length;
+    if (stops !== 1) {
+      fail.push(`KapeRange with month=${month.toDateString()} draws ${days.length} days and ${stops} tab stops; a keyboard user needs exactly one`);
+    }
+  }
+
+  // (f) A parent re-render must not throw away what the user is in the middle of.
+  //     <KapeRange :month="new Date(2026, 0, 1)" /> is the ordinary call, and that
+  //     expression builds a new Date on every render of the parent, so a watcher that
+  //     compares identity fired on every unrelated re-render: the half-picked range and the
+  //     roving focus both went back to their seeds while the calendar was open.
+  //     All three Date props are passed inline, because all three are watched: month decides
+  //     the page, from and to seed the draft, and each of them arrives as a new object.
+  const inline = () => ({ month: new Date(2026, 0, 1), from: new Date(2026, 0, 3), to: new Date(2026, 0, 8), presets: [] });
+  const live = rt.mount(mod.KapeRange, inline());
+  live.nodes().find((n) => cls(n).includes('kape-range__trigger')).props.onClick();
+  await live.tick();
+  const day = (nodes, n) => nodes.find((x) => x.tag === 'button' && 'tabindex' in x.props && x.text === String(n));
+  day(live.nodes(), 12).props.onClick();
+  await live.tick();
+  const started = (nodes) => nodes.filter((n) => cls(n).includes('is-start')).map((n) => n.text).join(',');
+  const focus = (nodes) => nodes.filter((n) => n.tag === 'button' && n.props.tabindex === 0).map((n) => n.text).join(',');
+  const before = { start: started(live.nodes()), focus: focus(live.nodes()) };
+  if (before.start !== '12') fail.push(`the KapeRange re-render gate could not start a selection; clicking day 12 marked "${before.start}"`);
+  else {
+    // The same month and the same dates, new objects: what an inline expression hands down
+    // on every render of the parent, whether or not anything about the range changed.
+    live.setProps(inline());
+    await live.tick();
+    const after = { start: started(live.nodes()), focus: focus(live.nodes()) };
+    if (after.start !== before.start || after.focus !== before.focus) {
+      fail.push(
+        `a parent re-render with inline Date props discards KapeRange's state: ` +
+          `the half-picked range went from "${before.start}" to "${after.start}" and the roving focus from ` +
+          `"${before.focus}" to "${after.focus}"`,
+      );
+    }
+  }
+
+  // (g) KapeTip's placement prop must move the bubble. It was declared, documented and
+  //     reached the DOM as data-placement, and the bubble did not move an inch: kapehan.css
+  //     draws .kape-tip::after above the button and has no below-the-button rule, and inline
+  //     style cannot reach a pseudo-element. Accepting a prop and doing nothing with it is
+  //     worse than not having it, because the docs say it works.
+  const bubbleBelow = (nodes) =>
+    nodes.find((n) => n.text === 'Batangas liberica' && String(n.props.style?.top ?? '').includes('100%'));
+  const above = rt.mount(mod.KapeTip, { text: 'Batangas liberica' }).nodes();
+  const below = rt.mount(mod.KapeTip, { text: 'Batangas liberica', placement: 'bottom' }).nodes();
+
+  const cssBubble = (nodes) => nodes.find((n) => cls(n).includes('kape-tip') && n.props['data-tip']);
+  if (!cssBubble(above)) {
+    fail.push('KapeTip with the default placement no longer draws the stylesheet bubble (.kape-tip with data-tip)');
+  }
+  if (!bubbleBelow(below)) {
+    fail.push('KapeTip placement="bottom" draws no bubble below the button, so the prop is accepted and inert');
+  }
+  if (cssBubble(below)) {
+    fail.push('KapeTip placement="bottom" still carries .kape-tip and data-tip, so kapehan.css draws a second bubble above the button');
+  }
+  if (bubbleBelow(above)) {
+    fail.push('KapeTip with the default placement draws a bubble below the button as well as above');
+  }
   return fail;
 }
