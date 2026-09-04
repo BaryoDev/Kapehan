@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="A brewer with its lid off and a wrench resting across it">
+  <title>Maintenance</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <style>
+    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes k-wob{0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(1.5deg)}}
+    @media (prefers-reduced-motion: reduce){
+      svg [style*="animation"]{animation:none !important;}
+      *{transition-duration:.01ms !important;}
+    }
+  </style>
+  <defs><pattern id="hs10" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-maintenance">
+    <g stroke="none">
+      <path d="M116 156c56-10 112-8 164 4l-12 140c-4 22-30 34-70 34s-66-12-70-34z" fill="#F1E8DA"></path>
+      <path d="M116 156c56-10 112-8 164 4l-12 140c-4 22-30 34-70 34s-66-12-70-34z" fill="url(#hs10)"></path>
+      <path d="M130 230c46-6 96-4 138 4l-6 62c-44 6-88 6-128 0z" style="fill:var(--acc,#C2593A)"></path>
+    </g>
+    <g fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M110 154c60-12 118-10 176 4"></path>
+      <path d="M114 160l12 138c4 24 32 36 72 36s66-12 70-36l14-136"></path>
+      <path d="M128 230c48-8 98-6 142 4" stroke-width="3.5" opacity=".5"></path>
+      <path d="M280 190c34 8 34 60 0 68" stroke-width="4"></path>
+      <path d="M40 372c110-8 220-8 320 0" stroke-width="3.5"></path>
+    </g>
+    <g style="animation:k-wob 5s ease-in-out infinite;animation-play-state:var(--anim,running);transform-origin:200px 250px">
+      <path d="M120 296c-12-4-16-18-8-27 7-8 19-8 26 1l106-74c8-6 20-3 25 6 5 10 0 21-11 23l-124 26z" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" style="fill:var(--card,#FFFDF9);stroke:var(--ink,#241A13)"></path>
+      <circle cx="127" cy="285" r="6" style="fill:var(--ink,#241A13)"></circle>
+      <path d="M245 210c6-3 12 0 14 6" stroke-width="4" fill="none" stroke-linecap="round" style="stroke:var(--ink,#241A13)"></path>
+    </g>
+    <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M126 300l12-12M132 320l14-14M146 334l12-12"></path></g>
+  </g>
+</svg>

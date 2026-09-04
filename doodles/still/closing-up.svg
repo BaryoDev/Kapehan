@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="Chairs turned upside down on a table, a broom leaning against it and a hanging sign flipped to closed">
+  <title>Closing up</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><pattern id="hd10" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-closing">
+    <g stroke="none">
+      <path d="M186 274c88-12 180-12 268 2l-4 24c-88 12-176 12-264 0z" fill="#F1E8DA"></path>
+      <path d="M186 274c88-12 180-12 268 2l-4 24c-88 12-176 12-264 0z" fill="url(#hd10)"></path>
+      <path d="M104 330c22-6 46-4 66 6l-8 40c-20 6-42 6-62-2z" fill="#F1E8DA"></path>
+      <path d="M104 330c22-6 46-4 66 6l-8 40c-20 6-42 6-62-2z" fill="url(#hd10)"></path>
+    </g>
+    <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M182 274c90-14 184-14 272 2"></path>
+      <path d="M186 280l-2 20c88 14 180 14 268 0l2-22"></path>
+      <path d="M206 302c-4 26-6 50-6 74M434 302c4 26 6 50 6 74" stroke-width="3.8"></path>
+      <path d="M220 214c30-8 60-8 90 2l-4 16c-28 8-56 8-84 0z" fill="#F1E8DA" stroke-width="4.5"></path>
+      <path d="M228 212l-6-64M300 214l6-64M244 210l-4-58M286 212l4-58" stroke-width="4"></path>
+      <path d="M226 170c26-6 54-6 78 2" stroke-width="3.2" opacity=".5"></path>
+      <path d="M248 232c-2 16-4 28-4 38M282 234c2 16 4 26 4 36" stroke-width="4"></path>
+      <path d="M244 270c14 4 30 4 44 0" stroke-width="3.6"></path>
+      <path d="M330 216c30-8 60-8 90 2l-4 16c-28 8-56 8-84 0z" fill="#F1E8DA" stroke-width="4.5"></path>
+      <path d="M338 214l-6-64M410 216l6-64M354 212l-4-58M396 214l4-58" stroke-width="4"></path>
+      <path d="M336 172c26-6 54-6 78 2" stroke-width="3.2" opacity=".5"></path>
+      <path d="M358 234c-2 16-4 28-4 38M392 236c2 16 4 26 4 36" stroke-width="4"></path>
+      <path d="M354 272c14 4 30 4 44 0" stroke-width="3.6"></path>
+      <path d="M148 336c-8-64-12-114-14-152" stroke-width="5"></path>
+      <path d="M104 330c22-8 48-6 68 6"></path>
+      <path d="M104 336l6 38c20 8 44 8 64 0l6-40"></path>
+      <path d="M118 344l4 30M136 346l4 30M154 344l4 28" stroke-width="2.6" opacity=".5"></path>
+      <path d="M40 380c186-8 384-8 562 2" stroke-width="3.5"></path>
+    </g>
+    <g>
+      <g fill="none" stroke-width="3.4" stroke-linecap="round" style="stroke:var(--ink,#241A13)">
+        <path d="M470 22l-4 34M502 22l4 34"></path>
+      </g>
+      <path d="M428 56c44-8 92-6 132 4l4 62c-44 10-96 10-140-2z" fill="#F1E8DA" stroke-width="4.5" stroke-linejoin="round" style="stroke:var(--ink,#241A13)"></path>
+      <path d="M428 56c44-8 92-6 132 4l4 62c-44 10-96 10-140-2z" fill="url(#hd10)" stroke="none"></path>
+      <g stroke-width="4" stroke-linecap="round" fill="none" style="stroke:var(--ink,#241A13)">
+        <path d="M446 80c22-4 46-4 68 0M446 96c26-4 54-4 80 0M446 112c16-4 34-4 48 0"></path>
+      </g>
+    </g>
+    <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+      <path d="M216 322l14-14M252 330l14-14M288 334l14-14M324 332l14-14M360 326l14-14"></path>
+    </g>
+  </g>
+</svg>

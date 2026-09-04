@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="Seen from above: a cup of coffee, a plate of pandesal and one roll being dunked, crumbs on the table">
+  <title>Cup and pandesal</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><pattern id="hd12" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-pandesal">
+    <g stroke="none">
+      <circle cx="200" cy="222" r="112" fill="#F1E8DA"></circle>
+      <circle cx="200" cy="222" r="112" fill="url(#hd12)"></circle>
+      <circle cx="200" cy="222" r="92" style="fill:var(--card,#FFFDF9)"></circle>
+      <circle cx="200" cy="222" r="78" style="fill:var(--acc,#C2593A)"></circle>
+      <circle cx="452" cy="258" r="108" style="fill:var(--card,#FFFDF9)"></circle>
+      <circle cx="452" cy="258" r="108" fill="url(#hd12)"></circle>
+      <ellipse cx="414" cy="230" rx="52" ry="36" transform="rotate(-14 414 230)" fill="#F1E8DA"></ellipse>
+      <ellipse cx="486" cy="246" rx="52" ry="36" transform="rotate(10 486 246)" fill="#F1E8DA"></ellipse>
+      <ellipse cx="448" cy="302" rx="52" ry="36" transform="rotate(-4 448 302)" fill="#F1E8DA"></ellipse>
+    </g>
+    <g fill="none" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <circle cx="200" cy="222" r="112"></circle>
+      <circle cx="200" cy="222" r="92" stroke-width="3.4" opacity=".5"></circle>
+      <circle cx="200" cy="222" r="78"></circle>
+      <path d="M310 196c34 4 40 56 4 66" stroke-width="5"></path>
+      <circle cx="452" cy="258" r="108"></circle>
+      <circle cx="452" cy="258" r="90" stroke-width="3" opacity=".4"></circle>
+      <ellipse cx="414" cy="230" rx="52" ry="36" transform="rotate(-14 414 230)" stroke-width="4"></ellipse>
+      <ellipse cx="486" cy="246" rx="52" ry="36" transform="rotate(10 486 246)" stroke-width="4"></ellipse>
+      <ellipse cx="448" cy="302" rx="52" ry="36" transform="rotate(-4 448 302)" stroke-width="4"></ellipse>
+      <path d="M392 218c14 6 30 8 46 4M464 234c14 6 30 8 46 4M426 290c14 6 30 8 46 4" stroke-width="2.8" opacity=".5"></path>
+    </g>
+    <g>
+      <ellipse cx="284" cy="90" rx="50" ry="35" transform="rotate(-26 284 90)" fill="#F1E8DA" stroke-width="4.5" style="stroke:var(--ink,#241A13)"></ellipse>
+      <path d="M262 76c14 6 30 8 46 4" stroke-width="2.8" stroke-linecap="round" fill="none" opacity=".5" style="stroke:var(--ink,#241A13)"></path>
+      <path d="M266 124c22-6 44-4 62 4" stroke-width="4" stroke-linecap="round" fill="none" style="stroke:var(--ink,#241A13)"></path>
+      <ellipse cx="290" cy="146" rx="6" ry="9" style="fill:var(--acc,#C2593A)"></ellipse>
+    </g>
+    <g fill="#3F2A1D">
+      <circle cx="306" cy="348" r="5"></circle>
+      <circle cx="334" cy="360" r="4"></circle>
+      <circle cx="278" cy="362" r="3.5"></circle>
+      <circle cx="566" cy="336" r="4.5"></circle>
+    </g>
+    <path d="M164 172c-10-14 10-20-2-34" stroke="#C9B9A6" stroke-width="3.4" stroke-linecap="round" fill="none"></path>
+    <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+      <path d="M84 300l14-14M108 320l14-14M136 336l14-14"></path>
+    </g>
+  </g>
+</svg>

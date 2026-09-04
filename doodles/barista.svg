@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="A barista leaning over an espresso machine, seen from the side, cropped at the counter">
+  <title>Barista</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <style>
+    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes k-blink{0%,45%{opacity:1} 50%,95%{opacity:0}}
+    @keyframes k-drip{0%{opacity:0;transform:translateY(0) scaleY(.6)} 15%{opacity:1;transform:translateY(4px) scaleY(1)} 70%{opacity:1;transform:translateY(52px)} 80%{opacity:0;transform:translateY(56px)} 100%{opacity:0}}
+    @keyframes k-steam{0%{opacity:0;transform:translateY(6px)} 20%{opacity:.9} 100%{opacity:0;transform:translateY(-22px) translateX(4px)}}
+    @media (prefers-reduced-motion: reduce){
+      svg [style*="animation"]{animation:none !important;}
+      *{transition-duration:.01ms !important;}
+    }
+  </style>
+  <defs><pattern id="hd2" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-barista">
+    <g stroke="none">
+      <path d="M118 128c14-38 64-44 88-14 10 12 6 30-2 40-18-16-52-14-84 4-2-10-4-20-2-30z" fill="#3F2A1D"></path>
+      <path d="M134 182c34-16 82-2 108 30 20 26 30 60 34 94l-176 6c-6-46 4-102 34-130z" fill="#F1E8DA"></path>
+      <path d="M134 182c34-16 82-2 108 30 20 26 30 60 34 94l-176 6c-6-46 4-102 34-130z" fill="url(#hd2)"></path>
+      <path d="M170 228c24-6 50-2 66 10l8 70-88 2z" style="fill:var(--acc,#C2593A)"></path>
+      <path d="M226 212c42 4 76 28 96 60l-18 22c-26-22-56-40-86-46z" fill="#F1E8DA"></path>
+      <path d="M338 128c74-10 160-8 236 2l-6 178-222 6z" fill="#F1E8DA"></path>
+      <path d="M338 128c74-10 160-8 236 2l-6 178-222 6z" fill="url(#hd2)"></path>
+      <path d="M356 146c68-8 134-6 202 0l-2 46c-70 6-134 6-204 2z" style="fill:var(--card,#FFFDF9)"></path>
+      <path d="M0 316c220-10 430-10 640 0v84H0z" fill="#E2D3BC"></path>
+    </g>
+    <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M110 138c8-40 62-50 92-24 16 14 14 42-6 56-30 20-72 8-84-14"></path>
+      <path d="M120 122c22-14 56-14 80 2"></path>
+      <path d="M156 176c-10 8-14 16-14 26"></path>
+      <path d="M128 190c34-22 88-8 116 28 22 30 30 66 32 100"></path>
+      <path d="M136 196c-30 30-38 84-32 124"></path>
+      <path d="M166 230c28-8 56-2 74 10"></path>
+      <path d="M174 238l-4 72M240 244l6 66"></path>
+      <path d="M226 212c42 4 78 28 98 60"></path>
+      <path d="M218 248c30 8 56 26 76 48"></path>
+      <path d="M318 270c14-10 32-4 34 10 2 12-12 20-26 14-8-4-12-14-8-24z"></path>
+      <path d="M336 126c78-10 162-8 240 2"></path>
+      <path d="M342 132l-4 176M574 134l-4 174"></path>
+      <path d="M354 146c70-8 138-6 206 0M356 190c68 4 136 4 204 0"></path>
+      <path d="M354 148l2 44M560 146l-2 44"></path>
+      <path d="M418 232c26-4 46-2 64 2M424 236l4 22c10 8 34 8 44 0l4-22"></path>
+      <path d="M436 260v14M470 260v14"></path>
+      <path d="M424 280c22-4 40-2 56 2l-4 26h-46z"></path>
+      <path d="M520 214c4 28 0 50-12 66"></path>
+      <path d="M0 318c220-10 430-10 640 0"></path>
+      <path d="M0 326h640" stroke-width="2" opacity=".3"></path>
+    </g>
+    <path d="M436 274v16M470 274v16" style="stroke:var(--acc,#C2593A);animation:k-drip 1.5s linear infinite;animation-play-state:var(--anim,running)" stroke-width="4" stroke-linecap="round"></path>
+    <circle cx="388" cy="168" r="8" style="fill:var(--acc,#C2593A);animation:k-blink 1.7s steps(1,end) infinite;animation-play-state:var(--anim,running)"></circle>
+    <circle cx="416" cy="168" r="8" fill="#BE7008"></circle>
+    <path d="M512 284c-10-12 8-18-2-30" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none" style="animation:k-steam 3.1s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+    <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+      <path d="M108 240l12-12M106 258l14-14M106 276l14-14M108 294l14-14"></path>
+      <path d="M540 220l12-12M542 240l14-14M544 260l14-14M546 280l14-14M548 298l12-12"></path>
+      <path d="M126 112l10-10M140 106l10-10"></path>
+    </g>
+  </g>
+</svg>

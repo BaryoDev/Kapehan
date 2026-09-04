@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="Two friends leaning towards each other over a small table, hands resting around their cups">
+  <title>Friends</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <style>
+    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes k-steam{0%{opacity:0;transform:translateY(6px)} 20%{opacity:.9} 100%{opacity:0;transform:translateY(-22px) translateX(4px)}}
+    @media (prefers-reduced-motion: reduce){
+      svg [style*="animation"]{animation:none !important;}
+      *{transition-duration:.01ms !important;}
+    }
+  </style>
+  <defs><pattern id="hd5" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-friends">
+    <g stroke="none">
+      <path d="M108 118c10-42 62-52 88-22 10 12 8 30 0 42-24-16-56-14-86 4-4-8-4-16-2-24z" fill="#3F2A1D"></path>
+      <path d="M474 110c-6-40 40-62 74-40 16 10 22 30 16 46-24-14-56-12-84 6-4-4-6-8-6-12z" fill="#5A3A24"></path>
+      <path d="M552 128c18 4 26 22 16 38-8-10-18-16-30-18 6-8 10-14 14-20z" fill="#5A3A24"></path>
+      <path d="M84 182c40-22 92-10 122 26l30 40-64 130-160 6c-4-70 18-150 72-202z" fill="#F1E8DA"></path>
+      <path d="M84 182c40-22 92-10 122 26l30 40-64 130-160 6c-4-70 18-150 72-202z" fill="url(#hd5)"></path>
+      <path d="M552 186c-40-24-92-12-124 22l-32 44 66 130 166 4c4-72-20-150-76-200z" style="fill:var(--acc,#C2593A)"></path>
+      <path d="M198 272c78-10 168-10 244 2l6 20c-80 8-176 8-256 0z" fill="#E2D3BC"></path>
+      <path d="M240 238c14-2 30-2 44 0l-4 26c-10 12-28 12-38 0z" style="fill:var(--card,#FFFDF9)"></path>
+      <path d="M362 240c14-2 30-2 44 0l-4 26c-10 12-28 12-38 0z" style="fill:var(--card,#FFFDF9)"></path>
+    </g>
+    <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M104 128c4-44 62-58 92-30 16 16 14 46-6 60-30 22-76 6-86-20"></path>
+      <path d="M110 114c22-14 56-14 80 4"></path>
+      <path d="M138 170c-6 12-6 20-2 30"></path>
+      <path d="M84 186c44-24 100-8 132 32l24 32"></path>
+      <path d="M86 192C34 244 8 320 12 388"></path>
+      <path d="M186 232c22 8 38 18 50 30"></path>
+      <path d="M232 246c-8 6-8 16-2 22 8 6 20 4 24-4" style="fill:var(--card,#FFFDF9)"></path>
+      <path d="M226 250c22 4 40 6 62 6" stroke-width="3" opacity=".45"></path>
+      <path d="M470 124c-8-42 44-70 80-46 20 14 26 44 10 62-26 28-74 20-90-10"></path>
+      <path d="M478 106c24-16 60-14 84 6"></path>
+      <path d="M554 128c18 6 24 24 14 38"></path>
+      <path d="M506 176c6 10 6 20 2 30"></path>
+      <path d="M552 190c-46-26-102-10-134 32l-22 30"></path>
+      <path d="M552 196c52 50 80 128 76 194"></path>
+      <path d="M398 250c22 26 58 40 100 42"></path>
+      <path d="M556 220c-32 6-58 20-78 40" stroke-width="4"></path>
+      <path d="M568 244c-24 6-44 18-58 32" stroke-width="4"></path>
+      <path d="M424 268c10-8 22-8 28 0 6 8 2 20-8 22-10 2-20-4-20-12" style="fill:var(--card,#FFFDF9)"></path>
+      <path d="M430 262c14 2 26 2 40 0" stroke-width="3" opacity=".45"></path>
+      <path d="M196 272c80-12 170-12 250 2M198 276l-4 22c84 8 172 8 256 0l-6-24"></path>
+      <path d="M300 300l-6 88M340 300l6 88M270 388h108"></path>
+      <path d="M236 234c18-4 36-4 54 0l-4 30c-8 14-34 14-42 0z"></path>
+      <path d="M288 244c14 2 16 18 2 24"></path>
+      <path d="M358 236c18-4 36-4 54 0l-4 30c-8 14-34 14-42 0z"></path>
+      <path d="M410 246c14 2 16 18 2 24"></path>
+    </g>
+    <path d="M258 214c-8-12 6-16-2-28" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:k-steam 3.5s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+    <path d="M384 216c-8-12 6-16-2-28" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:k-steam 3.5s ease-out 1.6s infinite;animation-play-state:var(--anim,running)"></path>
+    <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+      <path d="M40 320l14-14M36 342l16-16M34 364l16-16M36 382l12-12"></path>
+      <path d="M588 312l12-12M594 334l14-14M600 356l14-14M606 378l12-12" stroke="#7A3A28"></path>
+      <path d="M206 290l10-10M222 294l10-10"></path>
+    </g>
+  </g>
+</svg>

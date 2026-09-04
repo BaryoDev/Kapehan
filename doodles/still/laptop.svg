@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="Someone seen from behind at a laptop with a bean logo on the lid, one hand clicking beside the keyboard, a mug and a plant on the table">
+  <title>Laptop</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><pattern id="hd6" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-laptop">
+    <g stroke="none">
+      <path d="M188 112c4-46 60-64 96-40 26 16 34 50 20 78-40-6-84-4-118 12-6-16-4-34 2-50z" fill="#3F2A1D"></path>
+      <path d="M258 46c14-6 30 2 32 16 2 12-8 22-22 22-12 0-22-10-22-22 0-6 4-12 12-16z" fill="#3F2A1D"></path>
+      <path d="M178 176c44-30 110-22 146 14 30 30 40 72 40 112H130c-4-46 12-96 48-126z" fill="#F1E8DA"></path>
+      <path d="M178 176c44-30 110-22 146 14 30 30 40 72 40 112H130c-4-46 12-96 48-126z" fill="url(#hd6)"></path>
+      <path d="M0 300c220-8 430-8 640 0v100H0z" fill="#E2D3BC"></path>
+      <path d="M170 238c10 20 18 34 24 48M200 228c8 18 14 32 18 46" fill="none" stroke-width="4" stroke-linecap="round" style="stroke:var(--ink,#241A13)"></path>
+      <path d="M492 220c22-2 42-2 60 2l-6 50c-14 8-36 8-50 0z" style="fill:var(--acc,#C2593A)"></path>
+      <path d="M572 236c14-2 26-2 36 2l-6 52h-28z" fill="#E2D3BC"></path>
+      <path d="M590 236c-6-26-22-34-36-32 4 20 16 28 36 32zM590 236c4-28 22-38 38-34-6 22-18 30-38 34z" fill="#8FA07A"></path>
+    </g>
+    <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M182 118c0-50 62-72 100-46 30 20 36 60 14 86-34 40-96 24-114-16"></path>
+      <path d="M188 106c30-18 70-16 100 8"></path>
+      <path d="M254 48c16-8 32 0 34 14 2 14-10 24-24 22-12-2-20-12-18-24"></path>
+      <path d="M228 160c-4 10-6 20-4 30"></path>
+      <path d="M174 182c14-10 28-16 44-18M322 218c8 10 14 20 18 30"></path>
+      <path d="M180 186c-42 34-56 88-52 126"></path>
+      <path d="M184 224c-22 12-40 34-46 62"></path>
+      <path d="M0 302c220-8 430-8 640 0"></path>
+      <path d="M0 312h640" stroke-width="2" opacity=".3"></path>
+      <path d="M208 152c74-6 150-4 226 4l-10 128-224 4z" fill="#F1E8DA" stroke="none"></path>
+      <path d="M206 150c76-6 154-4 232 4"></path>
+      <path d="M208 154l-8 130M438 156l6 128"></path>
+      <path d="M188 286c86-6 178-6 266 2"></path>
+      <path d="M196 290l-10 14c96 6 190 6 284 0l-10-16" stroke-width="3.5"></path>
+      <path d="M488 218c24-4 46-2 66 2M490 222l6 46c14 8 40 8 54 0l6-46"></path>
+      <path d="M556 236c22 2 26 32 2 38"></path>
+      <path d="M570 236c16-2 28-2 40 2l-6 52h-30z"></path>
+      <path d="M590 236c-6-26-22-34-36-32 4 20 16 28 36 32zM590 236c4-28 22-38 38-34-6 22-18 30-38 34z" stroke-width="3"></path>
+      <path d="M590 236v-28" stroke-width="2.5"></path>
+    </g>
+    <g style="transform-origin:452px 250px">
+      <path d="M448 252c6 16 4 30-4 42" fill="none" stroke-width="4.5" stroke-linecap="round" style="stroke:var(--ink,#241A13)"></path>
+      <path d="M432 296c-6-16 6-28 24-28 18 0 28 12 24 28z" stroke-width="4.5" stroke-linejoin="round" style="fill:var(--card,#FFFDF9);stroke:var(--ink,#241A13)"></path>
+      <path d="M442 274v22M456 270v26M468 276v20" stroke-width="3.5" fill="none" stroke-linecap="round" opacity=".5" style="stroke:var(--ink,#241A13)"></path>
+    </g>
+    <g>
+      <ellipse cx="322" cy="216" rx="13" ry="19" transform="rotate(-24 322 216)" fill="#8C5A32"></ellipse>
+      <path d="M315 201c8 8 9 22 3 30" fill="none" stroke="#F1E8DA" stroke-width="3" stroke-linecap="round"></path>
+    </g>
+    <path d="M506 204c-10-12 8-18-2-30" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+    <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+      <path d="M136 260l12-12M134 280l14-14M136 298l12-12"></path>
+      <path d="M412 176l12-12M416 196l14-14M420 216l14-14M424 236l14-14M428 256l14-14"></path>
+      <path d="M576 264l10-10M578 280l12-12"></path>
+    </g>
+  </g>
+</svg>

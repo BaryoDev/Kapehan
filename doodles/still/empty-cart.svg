@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="An empty paper takeaway tray with a divider down the middle and two empty cup holes">
+  <title>Empty cart</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><pattern id="hs8" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-empty-cart">
+    <g stroke="none">
+      <path d="M76 168c84-14 172-12 250 6l-18 130c-4 22-26 32-108 32s-104-10-108-32z" fill="#F1E8DA"></path>
+      <path d="M76 168c84-14 172-12 250 6l-18 130c-4 22-26 32-108 32s-104-10-108-32z" fill="url(#hs8)"></path>
+      <ellipse cx="140" cy="186" rx="38" ry="17" fill="#E2D3BC"></ellipse>
+      <ellipse cx="256" cy="216" rx="38" ry="17" fill="#E2D3BC"></ellipse>
+    </g>
+    <g fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M70 166c86-16 178-14 262 6"></path>
+      <path d="M76 174l16 126c4 24 30 34 108 34s102-10 106-34l18-124"></path>
+      <path d="M102 186c0-11 17-19 38-19s38 8 38 19-17 19-38 19-38-8-38-19z"></path>
+      <path d="M218 216c0-11 17-19 38-19s38 8 38 19-17 19-38 19-38-8-38-19z"></path>
+      <path d="M196 176c6 44 4 90-4 132" stroke-width="4" opacity=".5"></path>
+
+      <path d="M40 372c112-8 224-8 320 0" stroke-width="3.5"></path>
+    </g>
+    <g>
+      <path d="M330 108c-12-14 8-20-2-36" stroke="#C9B9A6" stroke-width="4" stroke-linecap="round" fill="none"></path>
+      <circle cx="292" cy="96" r="6" fill="#E2D3BC"></circle>
+    </g>
+    <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M92 296l12-12M98 316l14-14M112 330l12-12"></path></g>
+  </g>
+</svg>

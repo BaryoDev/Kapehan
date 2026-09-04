@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="A cup gone cold: the steam above it is shaped like wifi arcs, and the top arc is faded out">
+  <title>Offline</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <style>
+    svg [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes k-pulse{0%,100%{opacity:.35} 50%{opacity:1}}
+    @media (prefers-reduced-motion: reduce){
+      svg [style*="animation"]{animation:none !important;}
+      *{transition-duration:.01ms !important;}
+    }
+  </style>
+  <defs><pattern id="hs6" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-offline">
+    <g stroke="none">
+      <path d="M104 208c60-10 130-8 194 4l-12 108c-4 22-30 32-84 32s-78-10-82-32z" fill="#F1E8DA"></path>
+      <path d="M104 208c60-10 130-8 194 4l-12 108c-4 22-30 32-84 32s-78-10-82-32z" fill="url(#hs6)"></path>
+      <path d="M118 236c58-6 118-6 174 2l-4 34c-56 6-112 6-166 0z" style="fill:var(--acc,#C2593A)" opacity=".5"></path>
+    </g>
+    <g fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M98 206c66-12 136-10 204 2"></path>
+      <path d="M102 212l10 104c4 24 32 36 86 36s84-12 88-36l12-104"></path>
+      <path d="M302 232c34 8 36 60 0 70"></path>
+      <path d="M116 234c58-8 118-6 176 4" stroke-width="3" opacity=".4"></path>
+      <path d="M40 372c110-8 220-8 330 0" stroke-width="3.5"></path>
+    </g>
+    <g fill="none" stroke="#C9B9A6" stroke-width="5" stroke-linecap="round">
+      <path d="M170 176c16-14 44-14 60 0"></path>
+      <path d="M146 146c30-26 78-26 108 0" style="animation:k-pulse 2.8s ease-in-out infinite;animation-play-state:var(--anim,running)"></path>
+      <path d="M122 116c44-40 112-40 156 0" stroke-dasharray="10 12" opacity=".4"></path>
+    </g>
+    <path d="M198 196c0-2 4-2 4 0s-4 2-4 0" stroke="#C9B9A6" stroke-width="5" stroke-linecap="round" fill="none"></path>
+    <path d="M258 88l30 30" stroke-width="5" stroke-linecap="round" style="stroke:var(--ink,#241A13)"></path>
+    <path d="M258 88l30 30" style="stroke:var(--acc,#C2593A)" stroke-width="2" stroke-linecap="round"></path>
+    <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+      <path d="M116 280l12-12M120 300l14-14M128 318l14-14M142 332l12-12"></path>
+    </g>
+  </g>
+</svg>

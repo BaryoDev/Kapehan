@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="A loyalty card with one stamp filled and a ripple around it, meaning sign in to keep collecting">
+  <title>Sign in</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><pattern id="hs11" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-sign-in">
+    <g stroke="none">
+      <path d="M50 128c100-16 204-14 302 6l-10 156c-98 14-196 12-292-4z" style="fill:var(--card,#FFFDF9)"></path>
+      <path d="M50 128c100-16 204-14 302 6l-10 156c-98 14-196 12-292-4z" fill="url(#hs11)"></path>
+      <path d="M64 148c88-12 180-10 272 6l-4 34c-90 10-182 8-268-4z" fill="#F1E8DA"></path>
+    </g>
+    <g fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M44 126c104-18 212-16 314 6"></path>
+      <path d="M50 134l-6 156c96 16 198 18 296 2l8-154"></path>
+      <path d="M62 148c90-14 184-12 276 6M60 188c88 12 182 12 272 0" stroke-width="3.5" opacity=".55"></path>
+    </g>
+    <g stroke-width="4" fill="none" style="stroke:var(--ink,#241A13)">
+      <circle cx="96" cy="240" r="18" stroke-dasharray="7 8"></circle>
+      <circle cx="152" cy="244" r="18" stroke-dasharray="7 8"></circle>
+      <circle cx="208" cy="246" r="18" stroke-dasharray="7 8"></circle>
+      <circle cx="264" cy="244" r="18" stroke-dasharray="7 8"></circle>
+    </g>
+    <circle cx="96" cy="240" r="18" style="fill:var(--acc,#C2593A)"></circle>
+    <ellipse cx="96" cy="240" rx="6" ry="8" style="fill:var(--bg,#FBF6EE)"></ellipse>
+    <g>
+      <circle cx="96" cy="240" r="30" fill="none" stroke="#C9B9A6" stroke-width="4"></circle>
+      <circle cx="96" cy="240" r="42" fill="none" stroke="#C9B9A6" stroke-width="3" opacity=".5"></circle>
+    </g>
+    <path d="M300 316c-18 12-40 14-60 6" stroke="#C9B9A6" stroke-width="4" fill="none" stroke-linecap="round"></path>
+    <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M64 262l12-12M70 282l14-14M84 296l12-12"></path></g>
+  </g>
+</svg>
