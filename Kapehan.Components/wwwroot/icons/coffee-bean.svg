@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" role="img" aria-label="coffee bean">
-  <g transform="rotate(-32 24 24)">
-    <ellipse cx="24" cy="24" rx="10" ry="14" fill="#5A3520"/>
-    <path d="M24 11.6c-3.2 3.4-3.2 21.4 0 24.8" stroke="#241A13" stroke-width="2.6" stroke-linecap="round" fill="none"/>
-    <path d="M17.8 16.6c2.6 2.2 2.6 12.6 0 14.8" stroke="#8C5A32" stroke-width="2" stroke-linecap="round" fill="none"/>
-  </g>
-</svg>

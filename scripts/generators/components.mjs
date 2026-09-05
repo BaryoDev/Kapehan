@@ -15,7 +15,12 @@ export const pkg = {
 };
 
 export async function artifacts() {
-  return new Map([['kapehan-components.js', moduleSource(await components())]]);
+  // The manifest ships only the stacks the package actually has a generator for. The canvas
+  // still carries vue and blazor markup for all 30, and it stays there, but publishing a
+  // .blazor field advertises a track that does not exist. Whatever the package promises
+  // must exist, and a field a consumer can read is a promise.
+  const shipped = (await components()).map(({ vue, blazor, ...rest }) => rest);
+  return new Map([['kapehan-components.js', moduleSource(shipped)]]);
 }
 
 export async function check() {

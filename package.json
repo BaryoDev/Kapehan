@@ -38,11 +38,7 @@
     "./react": "./react/index.js",
     "./react/index.js": "./react/index.js",
     "./react/icons.js": "./react/icons.js",
-    "./react/components.js": "./react/components.js",
-    "./vue": "./vue/index.js",
-    "./vue/index.js": "./vue/index.js",
-    "./vue/icons.js": "./vue/icons.js",
-    "./vue/components.js": "./vue/components.js"
+    "./react/components.js": "./react/components.js"
   },
   "files": [
     "LICENSE",
@@ -55,8 +51,7 @@
     "kapehan-icons.js",
     "kapehan.css",
     "palettes.json",
-    "react",
-    "vue"
+    "react"
   ],
   "sideEffects": [
     "./kape-icon.js",
@@ -88,14 +83,10 @@
     "@playwright/test": "^1.62.1"
   },
   "peerDependencies": {
-    "react": ">=18",
-    "vue": "^3.5.0"
+    "react": ">=18"
   },
   "peerDependenciesMeta": {
     "react": {
-      "optional": true
-    },
-    "vue": {
       "optional": true
     }
   }

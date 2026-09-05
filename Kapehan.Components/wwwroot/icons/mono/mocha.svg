@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48" fill="none" role="img" aria-label="mocha">
-  <ellipse cx="24" cy="39.4" rx="13.5" ry="3" fill="currentColor"/>
-  <path d="M32.5 24c5.2 0 5.2 7 0 7" stroke="currentColor" stroke-width="3.3" stroke-linecap="round" fill="none"/>
-  <path d="M15 21.5h18v7a9 7.5 0 0 1-18 0z" fill="currentColor"/>
-  <path d="M16.8 21c1.8-1.6 3.6-1.6 5.4 0s3.6 1.6 5.4 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-</svg>
