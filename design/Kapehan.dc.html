@@ -53,7 +53,7 @@
 
     <div style="max-width:1120px;margin:0 auto;padding:72px 0 84px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:56px;align-items:center">
       <div>
-        <p style="margin:0 0 18px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:{{ accent }}">The front-end starter for BarakoCMS</p>
+        <p style="margin:0 0 18px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:{{ accent }}">Free coffee icons, doodles and parts</p>
         <h1 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(40px,6vw,68px);line-height:1.02;letter-spacing:-.025em;text-wrap:balance">Brew a front end<br />in a <span style="color:{{ accent }}">roaster's</span> palette.</h1>
         <p style="margin:24px 0 0;max-width:46ch;font-size:17px;line-height:1.6;color:{{ heroMuted }};text-wrap:pretty">Barako is the headless CMS; Kapehan is what you put in front of it. Icons, doodles, drink palettes, primitives and whole screens that all follow one hand, so you can pick a palette and an edge and have a front end that looks designed without hiring a designer. Ships as plain CSS, Tailwind or Bootstrap, in HTML, React, Vue or Blazor. Kapehan is Filipino for coffee house. I just love coffee, that’s all.</p>
         <div style="display:flex;gap:12px;margin-top:32px;flex-wrap:wrap">
@@ -1719,7 +1719,7 @@ class Component extends DCLogic {
   }
 
   static CSS_OPTS = { kapehan: 'Plain CSS', tailwind: 'Tailwind', bootstrap: 'Bootstrap' };
-  static FW_OPTS = { html: 'HTML', react: 'React', vue: 'Vue', blazor: 'Blazor' };
+  static FW_OPTS = { html: 'HTML', react: 'React' };
 
   stack() {
     let css = this.state.stackCss, fw = this.state.stackFw;
@@ -1748,7 +1748,7 @@ class Component extends DCLogic {
       const zip = new window.JSZip();
       const root = 'kapehan-starter-' + st.fw + '/';
       const menuHtml = Component.SHIP.row.html;
-      const readme = '# Kapehan starter (' + st.label + ')\n\nPalette: ' + p.name + '. Brewed at the Kapehan site.\n\n1. Install: ' + this.installFor(st).cmd + '\n2. Set BARAKO_API_URL to your BarakoCMS endpoint.\n3. Run it. The menu page fetches /api/menu and renders Kapehan rows.\n\nAll parts are MIT. Change the palette by editing ' + styleFile + '.\n';
+      const readme = '# Kapehan starter (' + st.label + ')\n\nPalette: ' + p.name + '. Brewed at the Kapehan site.\n\n1. Install: ' + this.installFor(st).cmd + '\n2. Run it. The menu page fetches /api/menu and renders Kapehan rows.\n\nAll parts are MIT. Change the palette by editing ' + styleFile + '.\n';
       zip.file(root + 'README.md', readme);
       zip.file(root + 'kapehan.json', snips.json.code);
       if (st.fw === 'html') {
@@ -1756,9 +1756,8 @@ class Component extends DCLogic {
         zip.file(root + 'kapehan.css', css); zip.file(root + styleFile, styles); zip.file(root + 'kape-icon.js', iconJs);
       } else if (st.fw === 'react') {
         zip.file(root + 'package.json', JSON.stringify({ name: 'kapehan-starter', private: true, scripts: { dev: 'next dev', build: 'next build', start: 'next start' }, dependencies: { next: '^15.0.0', react: '^19.0.0', 'react-dom': '^19.0.0', ...(st.css === 'tailwind' ? { tailwindcss: '^4.0.0', '@tailwindcss/postcss': '^4.0.0' } : {}), ...(st.css === 'bootstrap' ? { bootstrap: '^5.3.0', sass: '^1.80.0' } : {}) } }, null, 2));
-        zip.file(root + '.env.example', 'BARAKO_API_URL=https://your-barako-host/api\n');
         zip.file(root + 'app/layout.jsx', "import './kapehan.css';\nimport './" + styleFile + "';\nimport Script from 'next/script';\n\nexport const metadata = { title: 'Tindahan' };\n\nexport default function RootLayout({ children }) {\n  return (\n    <html lang=\"en\" data-palette=\"" + p.key + "\" data-edges=\"" + (this.squareEdges() ? 'square' : 'rounded') + "\">\n      <body>{children}<Script src=\"/kape-icon.js\" type=\"module\" /></body>\n    </html>\n  );\n}\n");
-        zip.file(root + 'app/page.jsx', "async function getMenu() {\n  const res = await fetch(process.env.BARAKO_API_URL + '/menu', { next: { revalidate: 60 } });\n  return res.ok ? res.json() : [];\n}\n\nexport default async function Page() {\n  const items = await getMenu();\n  return (\n    <main className=\"kape-shell\">\n      <h1>Menu</h1>\n      {items.map((d) => (\n" + Component.SHIP.row.react.split('\n').map((l) => '        ' + l).join('\n') + "\n      ))}\n    </main>\n  );\n}\n");
+        zip.file(root + 'app/page.jsx', "const items = [\n  { id: 'barako', name: 'Barako', price: 120 },\n  { id: 'latte', name: 'Latte', price: 150 },\n  { id: 'ube-latte', name: 'Ube latte', price: 165 },\n];\n\nexport default function Page() {\n  return (\n    <main className=\"kape-shell\">\n      <h1>Menu</h1>\n      {items.map((d) => (\n" + Component.SHIP.row.react.split('\n').map((l) => '        ' + l).join('\n') + "\n      ))}\n    </main>\n  );\n}\n");
         zip.file(root + 'app/kapehan.css', css); zip.file(root + 'app/' + styleFile, styles); zip.file(root + 'public/kape-icon.js', iconJs);
         if (st.css === 'tailwind') zip.file(root + 'postcss.config.mjs', "export default { plugins: { '@tailwindcss/postcss': {} } };\n");
       } else if (st.fw === 'vue') {
