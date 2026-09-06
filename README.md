@@ -54,7 +54,23 @@ Web component, no build step. Aliases work, so `cup-cold` finds `cold-brew`:
 <kape-icon name="cup-cold" mono></kape-icon>
 ```
 
-React, via your bundler's SVGR:
+React, from `kapehan/react`. All 42 icons and 30 components are real components with props
+and keyboard handling, generated from the same sources as everything else:
+
+```tsx
+import { Latte, KapeButton } from "kapehan/react";
+// or split, when you only want one half:
+// import { Latte } from "kapehan/react/icons.js";
+// import { KapeButton } from "kapehan/react/components.js";
+import "kapehan/kapehan.css";
+
+<Latte size={20} mono />;
+<KapeButton label="Order now" variant="primary" icon="coffee-cup" onClick={order} />;
+```
+
+`react` is a peer dependency, so it resolves to whatever version your app already has.
+
+There is also the SVGR route, if you would rather your bundler own the SVG:
 
 ```tsx
 import Latte from "kapehan/icons/mono/latte.svg";
@@ -119,8 +135,13 @@ Each palette carries a `use` badge saying what it suits: `app`, `web` or `brand`
 
 ## Components
 
-`kapehan.css` styles 34 component families. The manifest describes 30 of them as data, with
-the markup for four stacks, a props table and the accessibility contract:
+`kapehan.css` styles 34 component families. The manifest describes 30 components, with the
+markup for two stacks, a props table and the accessibility contract.
+
+Those two numbers differ without anything being missing. Every family belongs to a
+component, and 13 components compose more than one: `card` styles `kape-card`, `kape-row`
+and `kape-btn`; `drawer` styles `kape-drawer`, `kape-line`, `kape-tag` and `kape-btn`.
+`npm test` asserts both counts and fails if either side gains an orphan.
 
 ```js
 import { components, get, byCategory } from "kapehan/kapehan-components.js";
@@ -262,8 +283,8 @@ instead of a pile.
 Kapehan is a UI resource site: palettes, icons, components and doodles, browsable at
 [baryodev.github.io/Kapehan](https://baryodev.github.io/Kapehan/) and installable from npm.
 It has no backend and ships no client for any CMS. [NEXT_STEPS.md](NEXT_STEPS.md) is the
-roadmap. Today the icons, the doodles, the palettes and the component CSS are real. The
-seven-tab site and the React components are in progress.
+roadmap. Today the icons, the doodles, the palettes, the component CSS and the React
+components are all real and shipped. The seven-tab site is in progress.
 
 ## Contributing an icon
 
