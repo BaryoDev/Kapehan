@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" class="kape-doodle-latte-art" aria-label="Overhead close crop of a pitcher pouring a rosetta into a wide cup, the milk stream still connected">
+  <title>Latte art pour</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><pattern id="hd9" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-latte-art">
+    <g stroke="none">
+      <circle cx="240" cy="216" r="140" fill="#F1E8DA"></circle>
+      <circle cx="240" cy="216" r="140" fill="url(#hd9)"></circle>
+      <circle cx="240" cy="216" r="116" style="fill:var(--card,#FFFDF9)"></circle>
+      <circle cx="240" cy="216" r="102" style="fill:var(--acc,#C2593A)"></circle>
+      <path d="M240 124c10 14 14 30 14 46 14-14 30-22 46-22-6 18-20 32-38 40 18 2 32 10 42 22-18 6-38 4-52-4 12 12 18 26 18 42-16-6-28-18-34-32-6 16-18 28-34 34 0-16 6-30 18-42-14 8-34 10-52 4 10-12 24-20 42-22-18-8-32-22-38-40 16 0 32 8 46 22 0-16 4-32 14-46z" opacity="0" style="fill:var(--card,#FFFDF9)"></path>
+      <path d="M236 130c8 16 10 30 8 44-10-12-22-20-36-24 12 20 26 34 42 42-14-4-30-4-46 2 18 12 36 16 52 14-12 2-26 10-38 22 20 6 40 4 56-6-10 6-20 18-28 34 22-2 40-14 52-32 4 22 0 42-10 60 18-14 28-34 30-58 8 18 10 36 6 54 12-20 14-42 6-64 14 14 22 30 26 48 4-24-4-46-22-64 18 8 32 20 42 36-6-24-24-42-50-52 18 0 34 4 48 14-16-18-38-26-64-24 14-8 30-12 46-10-20-12-42-12-64 2 8-14 20-24 34-30-24-2-44 8-60 28 2-16 8-30 18-42-20 10-32 28-38 54-2-14-4-28-2-42z" opacity="0" style="fill:var(--card,#FFFDF9)"></path>
+      <g style="fill:var(--card,#FFFDF9)">
+        <path d="M240 302c-30-8-46-24-48-44 16 10 32 18 48 22 16-4 32-12 48-22-2 20-18 36-48 44z"></path>
+        <path d="M240 264c-26-8-40-22-42-40 14 10 28 16 42 20 14-4 28-10 42-20-2 18-16 32-42 40z"></path>
+        <path d="M240 228c-22-8-34-20-36-36 12 8 24 14 36 18 12-4 24-10 36-18-2 16-14 28-36 36z"></path>
+        <path d="M240 194c-18-6-28-16-30-30 10 6 20 12 30 15 10-3 20-9 30-15-2 14-12 24-30 30z"></path>
+        <path d="M240 162c-13-5-20-12-22-22 8 5 15 9 22 11 7-2 14-6 22-11-2 10-9 17-22 22z"></path>
+      </g>
+      <path d="M234 142h12l-2 168h-8z" style="fill:var(--card,#FFFDF9)"></path>
+    </g>
+    <g fill="none" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <circle cx="240" cy="216" r="140"></circle>
+      <circle cx="240" cy="216" r="116" stroke-width="3.4" opacity=".5"></circle>
+      <circle cx="240" cy="216" r="102"></circle>
+    </g>
+    <g>
+      <g stroke="none">
+        <path d="M452 78c40-12 88-8 112 8l-16 106c-4 22-28 32-52 32s-44-10-46-32z" fill="#F1E8DA"></path>
+        <path d="M452 78c40-12 88-8 112 8l-16 106c-4 22-28 32-52 32s-44-10-46-32z" fill="url(#hd9)"></path>
+        <path d="M452 80c-24 6-40 18-48 34 20-6 38-14 52-24z" fill="#F1E8DA"></path>
+      </g>
+      <g fill="none" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+        <path d="M448 78c42-14 92-10 118 8"></path>
+        <path d="M452 84l14 104c2 24 26 34 50 34s46-12 50-34l14-106"></path>
+        <path d="M566 106c30 8 34 54 4 72" stroke-width="4"></path>
+        <path d="M448 78c-26 6-44 20-52 38 22-6 42-16 56-26" stroke-width="4"></path>
+        <path d="M470 118c-30 16-48 34-56 56" stroke-width="3" opacity=".4"></path>
+      </g>
+    </g>
+    <path d="M400 124c-22 26-48 48-76 62" style="stroke:var(--acc,#C2593A)" stroke-width="7" stroke-linecap="round" fill="none"></path>
+    <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+      <path d="M84 320l14-14M106 340l16-16M132 354l14-14"></path>
+    </g>
+    <path d="M40 384c176-8 366-8 548 2" stroke-width="3.5" stroke-linecap="round" fill="none" style="stroke:var(--ink,#241A13)"></path>
+  </g>
+</svg>

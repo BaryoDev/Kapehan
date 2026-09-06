@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" class="kape-doodle-empty" aria-label="A coffee ring stain on a napkin where a cup used to be, a spoon left beside it">
+  <title>Empty</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <style>
+    svg.kape-doodle-empty [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-bob{0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-4px) rotate(-1deg)}}
+    @media (prefers-reduced-motion: reduce){
+      svg.kape-doodle-empty [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-empty *{transition-duration:.01ms !important;}
+    }
+  </style>
+  <defs><pattern id="hs3" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-empty">
+    <g stroke="none">
+      <path d="M68 84c86-14 174-12 262 6l-6 224c-88 12-176 10-262-4z" fill="#F1E8DA"></path>
+      <path d="M68 84c86-14 174-12 262 6l-6 224c-88 12-176 10-262-4z" fill="url(#hs3)"></path>
+      <path d="M118 196c-4-40 34-72 76-70 40 2 74 34 72 74-2 40-36 70-76 68-40-2-72-32-72-72zM134 198c0 30 28 54 58 54 32 0 58-24 58-56 0-30-28-54-58-54-32 0-58 24-58 56z" style="fill:var(--acc,#C2593A)" fill-rule="evenodd" opacity=".55"></path>
+    </g>
+    <g fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M62 82c86-16 178-14 268 4"></path>
+      <path d="M64 88l4 222M330 90l-6 218"></path>
+      <path d="M70 312c86 12 176 10 260-4"></path>
+      <path d="M196 108l6 194" stroke-width="2.5" opacity=".3"></path>
+    </g>
+    <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".7" style="stroke:var(--ink,#241A13)">
+      <path d="M124 214c-8-40 24-76 66-76 40 0 72 32 70 72 0 20-8 36-20 48"></path>
+      <path d="M146 262c-8-8-14-18-16-30"></path>
+    </g>
+    <g style="animation:kape-k-bob 5.2s ease-in-out infinite;animation-play-state:var(--anim,running)">
+      <path d="M262 258c12-12 30-10 38 2 6 10 2 24-10 30-12 4-26-2-30-14z" stroke="none" style="fill:var(--card,#FFFDF9)"></path>
+      <path d="M262 258c12-12 30-10 38 2 6 10 2 24-10 30-12 4-26-2-30-14z" fill="none" stroke-width="4.5" stroke-linecap="round" style="stroke:var(--ink,#241A13)"></path>
+      <path d="M296 262c22-22 44-44 66-66" stroke-width="5" stroke-linecap="round" style="stroke:var(--ink,#241A13)"></path>
+    </g>
+    <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+      <path d="M80 270l12-12M84 290l14-14M96 300l12-12"></path>
+      <path d="M270 110l12-12M286 114l14-14M302 118l14-14"></path>
+    </g>
+    <circle cx="110" cy="130" r="3" fill="#A08F7D"></circle>
+    <circle cx="96" cy="150" r="2" fill="#A08F7D"></circle>
+    <path d="M226 128c-3-4 3-6-1-10M208 122c-2-3 2-5-1-8" stroke="#A08F7D" stroke-width="2" stroke-linecap="round" fill="none"></path>
+  </g>
+</svg>

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" class="kape-doodle-beans-roasting" aria-label="A drum roaster in profile with beans tumbling behind the glass door and heat rising off the chimney">
+  <title>Beans roasting</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <style>
+    svg.kape-doodle-beans-roasting [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-spin{to{transform:rotate(360deg)}}
+    @keyframes kape-k-steam{0%{opacity:0;transform:translateY(6px)} 20%{opacity:.9} 100%{opacity:0;transform:translateY(-22px) translateX(4px)}}
+    @media (prefers-reduced-motion: reduce){
+      svg.kape-doodle-beans-roasting [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-beans-roasting *{transition-duration:.01ms !important;}
+    }
+  </style>
+  <defs><pattern id="hd11" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-roasting">
+    <g stroke="none">
+      <path d="M338 56c34-6 74-4 106 4l-8 96c-32 8-70 8-102-2z" fill="#F1E8DA"></path>
+      <path d="M164 148c96-16 200-14 292 4l-6 148c-96 16-192 16-282 0z" fill="#F1E8DA"></path>
+      <path d="M164 148c96-16 200-14 292 4l-6 148c-96 16-192 16-282 0z" fill="url(#hd11)"></path>
+      <circle cx="272" cy="226" r="72" fill="#3F2A1D"></circle>
+      <circle cx="272" cy="226" r="58" style="fill:var(--acc,#C2593A)"></circle>
+    </g>
+    <g fill="none" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M334 54c36-8 78-6 112 6"></path>
+      <path d="M338 60l-4 96M442 62l-6 94"></path>
+      <path d="M354 100c26 6 56 6 82 0" stroke-width="3" opacity=".45"></path>
+      <path d="M160 146c98-18 204-16 298 6"></path>
+      <path d="M164 154l4 148c94 18 194 18 288 0l4-152"></path>
+      <circle cx="272" cy="226" r="72"></circle>
+      <circle cx="272" cy="226" r="58" stroke-width="3.4" opacity=".5"></circle>
+      <path d="M378 202c26-6 54-4 78 2M378 240c26-6 54-4 78 2" stroke-width="3.4" opacity=".5"></path>
+      <circle cx="416" cy="280" r="12" stroke-width="4" style="fill:var(--card,#FFFDF9)"></circle>
+      <path d="M192 306l-8 62M430 306l8 62" stroke-width="5"></path>
+      <path d="M40 378c186-8 384-8 562 2" stroke-width="3.5"></path>
+    </g>
+    <g style="animation:kape-k-spin 11s linear infinite;animation-play-state:var(--anim,running)">
+      <g fill="#3F2A1D" stroke-width="2.6" style="stroke:var(--ink,#241A13)">
+        <ellipse cx="272" cy="182" rx="15" ry="11" transform="rotate(-18 272 182)"></ellipse>
+        <ellipse cx="308" cy="212" rx="15" ry="11" transform="rotate(24 308 212)"></ellipse>
+        <ellipse cx="290" cy="260" rx="15" ry="11" transform="rotate(-8 290 260)"></ellipse>
+        <ellipse cx="242" cy="262" rx="15" ry="11" transform="rotate(38 242 262)"></ellipse>
+        <ellipse cx="230" cy="206" rx="15" ry="11" transform="rotate(-32 230 206)"></ellipse>
+      </g>
+      <g stroke="#F1E8DA" stroke-width="2.4" stroke-linecap="round" fill="none">
+        <path d="M266 178c6 2 10 4 12 8M302 208c6 2 10 4 12 8M284 256c6 2 10 4 12 8M236 258c6 2 10 4 12 8M224 202c6 2 10 4 12 8"></path>
+      </g>
+    </g>
+    <g stroke="#C9B9A6" stroke-width="3.6" stroke-linecap="round" fill="none">
+      <path d="M368 38c-12-16 12-24-2-38" style="animation:kape-k-steam 4.4s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+      <path d="M410 34c-10-14 10-20-2-30" style="animation:kape-k-steam 4.4s ease-out 1.8s infinite;animation-play-state:var(--anim,running)"></path>
+    </g>
+    <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+      <path d="M184 176l12-12M188 200l14-14M192 224l14-14M194 250l14-14M470 200l12-12M474 226l14-14M476 252l14-14"></path>
+    </g>
+  </g>
+</svg>

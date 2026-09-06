@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" class="kape-doodle-pour-over" aria-label="Close crop of a gooseneck kettle pouring into a pour-over cone on a glass carafe">
+  <title>Pour-over</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><pattern id="hd1" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-pour">
+    <g stroke="none">
+      <path d="M262 322c22-6 100-6 128 2l-6 44c-4 20-30 26-58 26s-54-6-58-26z" style="fill:var(--acc,#C2593A)"></path>
+      <path d="M216 150c70-10 150-8 224 0l-54 84c-40 4-78 4-118 0z" fill="#F1E8DA"></path>
+      <path d="M474 98c46-14 96-10 128 4l8 62c-42 16-98 16-132 2z" fill="#F1E8DA"></path>
+      <path d="M474 98c46-14 96-10 128 4l8 62c-42 16-98 16-132 2z" fill="url(#hd1)"></path>
+      <path d="M118 340c-8-16 8-30 22-28 16 2 22 20 12 32-10 10-28 8-34-4z" fill="#3F2A1D"></path>
+      <path d="M160 358c-4-14 12-24 24-20 14 4 16 20 6 30s-26 4-30-10z" fill="#3F2A1D"></path>
+    </g>
+    <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M244 224c50-6 110-4 156 2"></path>
+      <path d="M246 232l12 128c2 22 26 32 62 32 34 0 58-10 62-30l10-130"></path>
+      <path d="M400 250c40 6 42 52 6 62"></path>
+      <path d="M212 146c72-10 156-10 230-2"></path>
+      <path d="M228 152l52 86c34 6 74 6 108 0l50-88"></path>
+      <path d="M262 200c30 6 84 6 118-2" stroke-width="3" opacity=".5"></path>
+      <path d="M470 100c40-14 100-12 136 4"></path>
+      <path d="M472 104l10 60c40 14 92 12 130-4"></path>
+      <path d="M474 130c-46 4-100 26-134 60"></path>
+      <path d="M482 156c-48 12-94 34-126 62"></path>
+      <path d="M492 94c12-30 66-38 92-14"></path>
+      <path d="M540 80l4-16M530 62c8-4 18-4 26 0"></path>
+      <path d="M526 70c-4-22 20-36 40-26 12 6 16 20 8 30"></path>
+      <path d="M566 44c24-16 50-22 74-22"></path>
+      <path d="M574 74c22-6 44-8 66-8"></path>
+      <path d="M118 340c-8-16 8-30 22-28 16 2 22 20 12 32-10 10-28 8-34-4z" stroke-width="3"></path>
+      <path d="M160 358c-4-14 12-24 24-20 14 4 16 20 6 30s-26 4-30-10z" stroke-width="3"></path>
+      <path d="M126 322c8 8 12 20 10 30" stroke="#F1E8DA" stroke-width="2.5"></path>
+      <path d="M172 342c6 6 10 14 8 24" stroke="#F1E8DA" stroke-width="2.5"></path>
+      <path d="M40 386c180-10 380-8 560 2" stroke-width="3.5"></path>
+    </g>
+    <path d="M350 192c-6 12-10 26-12 40" style="stroke:var(--acc,#C2593A)" stroke-width="5" stroke-linecap="round" fill="none"></path>
+    <ellipse cx="322" cy="252" rx="5" ry="7" style="fill:var(--acc,#C2593A)"></ellipse>
+    <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+      <path d="M256 170l10-10M264 182l12-12M272 196l12-12M282 210l12-12"></path>
+      <path d="M262 300l14-14M266 318l16-16M272 336l16-16M282 352l14-14"></path>
+      <path d="M496 152l10-10M512 156l12-12M530 158l12-12M548 158l12-12"></path>
+    </g>
+    <path d="M300 120c-12-14 10-22-2-38" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+    <path d="M336 108c-8-10 6-16-2-28" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none"></path>
+  </g>
+</svg>

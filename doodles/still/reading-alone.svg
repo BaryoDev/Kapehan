@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" class="kape-doodle-reading-alone" aria-label="Someone sunk into an armchair in profile with an open book, a cup steaming on the side table beside them">
+  <title>Reading alone</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><pattern id="hd8" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-reading">
+    <g stroke="none">
+      <path d="M148 158c34-10 60 2 64 30 4 34 4 76 0 108-24 8-46 8-66 0-2-46 0-100 2-138z" fill="#F1E8DA"></path>
+      <path d="M148 158c34-10 60 2 64 30 4 34 4 76 0 108-24 8-46 8-66 0-2-46 0-100 2-138z" fill="url(#hd8)"></path>
+      <path d="M204 268c74-14 150-12 214 4l4 42c-76 12-156 12-224 0z" fill="#F1E8DA"></path>
+      <path d="M204 268c74-14 150-12 214 4l4 42c-76 12-156 12-224 0z" fill="url(#hd8)"></path>
+      <path d="M252 190c26-32 78-30 100 6 12 22 12 50 6 76-40 10-84 10-122-2 0-32 4-60 16-80z" fill="#F1E8DA"></path>
+      <circle cx="288" cy="146" r="31" fill="#F1E8DA"></circle>
+      <path d="M292 220l50 30v36l-50-28z" style="fill:var(--card,#FFFDF9)"></path>
+      <path d="M394 226l-52 24v36l52-26z" style="fill:var(--card,#FFFDF9)"></path>
+    </g>
+    <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M146 158c36-12 62 2 66 32 4 34 4 76 0 108"></path>
+      <path d="M146 160c-2 44-4 96-2 136"></path>
+      <path d="M200 266c76-16 154-14 220 6"></path>
+      <path d="M204 274l4 40c72 14 154 14 226 0l-4-42"></path>
+      <path d="M212 316c-2 22-4 40-4 56M430 320c2 22 4 38 4 54" stroke-width="3.6"></path>
+      <path d="M252 192c28-34 80-32 102 6 12 22 12 50 6 76"></path>
+      <path d="M244 272c-2-32 2-60 14-80"></path>
+      <circle cx="288" cy="146" r="31"></circle>
+      <path d="M292 220l50 30 52-24" stroke-width="4"></path>
+      <path d="M292 220v28l50 28v-26M394 226v30l-52 26" stroke-width="4"></path>
+      <path d="M342 250v36" stroke-width="4"></path>
+      <path d="M300 228l38 22M386 232l-38 18M300 238l38 22M386 242l-38 18" stroke-width="2.2" opacity=".4"></path>
+      <ellipse cx="292" cy="250" rx="13" ry="10" fill="#F1E8DA" stroke-width="3.6"></ellipse>
+      <ellipse cx="396" cy="254" rx="13" ry="10" fill="#F1E8DA" stroke-width="3.6"></ellipse>
+      <path d="M480 264c34-8 70-8 104 2" stroke-width="4.5"></path>
+      <path d="M484 270c34 8 70 8 100 0" stroke-width="3.2" opacity=".5"></path>
+      <path d="M500 278l-6 78M566 278l6 78M478 360c40 8 84 8 122 0" stroke-width="4.5"></path>
+    </g>
+    <g stroke="none">
+      <path d="M494 208c26.599999999999998 -10.66 49.400000000000006 -8.200000000000001 76 3.2800000000000002l-9.12 63.96c-2 14.76 -15.200000000000001 19.68 -28.88 19.68s-27.36 -4.92 -30.400000000000002 -19.68z" style="fill:var(--acc,#C2593A)"></path>
+    </g>
+    <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M490 206c28.5 -11.48 53.2 -9.84 84 4.1000000000000005"></path>
+      <path d="M494 212l7.6000000000000005 62.32c2 16.400000000000002 15.200000000000001 21.32 30.400000000000002 21.32 15.200000000000001 0 28.88 -4.92 30.400000000000002 -21.32l7.6000000000000005 -63.96"></path>
+      <path d="M572 227.68c22.8 4.92 22.8 32.800000000000004 2 37.72" stroke-width="3.6"></path>
+      <path d="M500 232.6c16.72 4.92 38 4.92 57.76 0" stroke-width="3" opacity=".45"></path>
+    </g>
+    <g stroke="#C9B9A6" stroke-width="3.4" stroke-linecap="round" fill="none">
+      <path d="M518 190c-10-14 10-20-2-34"></path>
+      <path d="M548 184c-8-10 8-16-2-26"></path>
+    </g>
+    <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+      <path d="M226 300l14-14M256 306l14-14M286 310l14-14M394 306l14-14"></path>
+      <path d="M268 198l12-12M278 216l12-12"></path>
+    </g>
+    <path d="M56 378c180-8 372-8 550 2" stroke-width="3.5" stroke-linecap="round" fill="none" style="stroke:var(--ink,#241A13)"></path>
+  </g>
+</svg>

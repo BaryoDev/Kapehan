@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" class="kape-doodle-notifications" aria-label="A service bell with a bean handle and a slash through it">
+  <title>Notifications off</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><pattern id="hs12" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-notifications">
+    <g stroke="none">
+      <path d="M76 274c0-58 56-100 124-100s124 42 124 100z" fill="#F1E8DA"></path>
+      <path d="M76 274c0-58 56-100 124-100s124 42 124 100z" fill="url(#hs12)"></path>
+      <path d="M100 262c8-42 48-70 100-70s92 28 100 70z" style="fill:var(--card,#FFFDF9)"></path>
+    </g>
+    <g fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M74 276c-2-60 56-104 126-104s128 44 126 104"></path>
+      <path d="M56 278c94-10 190-10 288 0" stroke-width="6"></path>
+      <path d="M98 262c10-42 50-70 102-70s92 28 102 70" stroke-width="3.5" opacity=".5"></path>
+      <path d="M200 172v-16"></path>
+      <path d="M156 302c8 14 24 22 44 22s36-8 44-22" stroke-width="4" opacity=".45"></path>
+    </g>
+    <ellipse cx="200" cy="146" rx="15" ry="19" fill="#3F2A1D"></ellipse>
+    <path d="M193 132c8 8 9 22 3 30" stroke="#F1E8DA" stroke-width="3" fill="none" stroke-linecap="round"></path>
+    <path d="M96 96l212 212" stroke-width="8" stroke-linecap="round" fill="none" style="stroke:var(--ink,#241A13)"></path>
+    <path d="M96 96l212 212" style="stroke:var(--acc,#C2593A)" stroke-width="3" stroke-linecap="round" fill="none"></path>
+    <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M110 244l12-12M124 234l12-12M290 244l12-12"></path></g>
+  </g>
+</svg>

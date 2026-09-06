@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" class="kape-doodle-cashier" aria-label="A cashier behind a counter turning a card terminal towards you, a receipt curling out of the till and a cup waiting on the counter">
+  <title>Cashier</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><pattern id="hd7" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-cashier">
+    <g stroke="none">
+      <path d="M96 288c150-10 300-10 452 2l-4 42c-150 10-296 10-444 0z" fill="#F1E8DA"></path>
+      <path d="M96 288c150-10 300-10 452 2l-4 42c-150 10-296 10-444 0z" fill="url(#hd7)"></path>
+      <path d="M366 160c22-30 84-32 108-2 14 18 16 60 10 126-40 8-88 8-128 0-6-62-4-106 10-124z" fill="#F1E8DA"></path>
+      <circle cx="420" cy="112" r="34" fill="#F1E8DA"></circle>
+      <path d="M246 206c34-8 74-6 104 4l-6 70c-32 8-66 8-96 0z" fill="#3F2A1D"></path>
+      <path d="M256 218c26-6 58-4 82 2l-4 48c-24 6-52 6-74 0z" style="fill:var(--card,#FFFDF9)"></path>
+    </g>
+    <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M92 288c152-12 306-12 458 2"></path>
+      <path d="M96 292l-2 40c150 12 298 12 448 0l2-38"></path>
+      <path d="M366 160c22-30 84-32 108-2 14 18 16 60 10 126"></path>
+      <path d="M356 284c-6-64-4-106 10-124"></path>
+      <circle cx="420" cy="112" r="34"></circle>
+      <path d="M370 176c-26 18-38 50-40 78" stroke-width="3.6"></path>
+      <path d="M242 202c38-10 80-8 112 4"></path>
+      <path d="M246 210l-2 70c32 10 68 10 100 0l6-72"></path>
+      <path d="M254 220c28-8 62-6 86 2" stroke-width="3" opacity=".5"></path>
+    </g>
+    <g>
+      <path d="M330 280c-20 4-32 0-38-8-6-10 2-18 14-16 10 2 18 8 24 16z" fill="#F1E8DA" stroke-width="3.6" stroke-linejoin="round" style="stroke:var(--ink,#241A13)"></path>
+      <path d="M306 264c-6-4-10-10-10-16" stroke-width="3" stroke-linecap="round" fill="none" opacity=".6" style="stroke:var(--ink,#241A13)"></path>
+    </g>
+    <g stroke="none">
+      <path d="M118 234c29.4 -12.48 54.6 -9.600000000000001 84 3.84l-10.08 74.88c-2 17.28 -16.8 23.04 -31.92 23.04s-30.24 -5.76 -33.6 -23.04z" style="fill:var(--acc,#C2593A)"></path>
+    </g>
+    <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M114 232c31.5 -13.440000000000001 58.8 -11.52 92 4.800000000000001"></path>
+      <path d="M118 238l8.4 72.96000000000001c2 19.200000000000003 16.8 24.96 33.6 24.96 16.8 0 31.92 -5.76 33.6 -24.96l8.4 -74.88"></path>
+      <path d="M204 257.04c25.2 5.76 25.2 38.400000000000006 2 44.160000000000004" stroke-width="3.6"></path>
+      <path d="M124 262.8c18.48 5.76 42 5.76 63.84 0" stroke-width="3" opacity=".45"></path>
+    </g>
+    <g>
+      <path d="M266 330c22-4 46-4 66 2l-4 56c-22 6-44 6-64 0z" stroke-width="3.4" stroke-linejoin="round" style="fill:var(--card,#FFFDF9);stroke:var(--ink,#241A13)"></path>
+      <path d="M276 348c16-4 34-2 48 2M276 362c14-4 32-2 46 2M276 376c12-4 28-2 40 2" stroke="#A08F7D" stroke-width="2.4" stroke-linecap="round" fill="none"></path>
+    </g>
+    <path d="M176 216c-10-12 8-18-2-32" stroke="#C9B9A6" stroke-width="3.4" stroke-linecap="round" fill="none"></path>
+    <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+      <path d="M124 316l14-14M152 320l14-14M384 214l12-12M392 238l14-14M400 262l14-14"></path>
+    </g>
+    <path d="M40 376c186-10 386-8 562 2" stroke-width="3.5" stroke-linecap="round" fill="none" style="stroke:var(--ink,#241A13)"></path>
+  </g>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" class="kape-doodle-email-sent" aria-label="A folded note stamped with a coffee bean sitting in an open envelope, meaning the email is on its way">
+  <title>Email sent</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <style>
+    svg.kape-doodle-email-sent [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-pulse{0%,100%{opacity:.35} 50%{opacity:1}}
+    @media (prefers-reduced-motion: reduce){
+      svg.kape-doodle-email-sent [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-email-sent *{transition-duration:.01ms !important;}
+    }
+  </style>
+  <defs><pattern id="hs9" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-email-sent">
+    <g stroke="none">
+      <path d="M50 196c98-16 202-14 300 6l-8 128c-96 14-192 12-284-4z" fill="#F1E8DA"></path>
+      <path d="M50 196c98-16 202-14 300 6l-8 128c-96 14-192 12-284-4z" fill="url(#hs9)"></path>
+      <path d="M132 96c46-8 94-6 140 4l-8 116c-44 8-90 8-136 0z" style="fill:var(--card,#FFFDF9)"></path>
+    </g>
+    <g fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M130 94c48-10 98-8 144 4"></path>
+      <path d="M134 100l-4 118c46 8 94 8 138 0l6-116"></path>
+      <path d="M150 132c34-6 70-4 102 4M148 162c34 6 70 6 104 0M150 192c26 4 54 4 80 2" stroke-width="4" opacity=".5"></path>
+      <ellipse cx="232" cy="118" rx="15" ry="19" transform="rotate(-18 232 118)" fill="#3F2A1D" stroke="none"></ellipse>
+      <path d="M226 104c8 8 8 22 2 30" stroke="#F1E8DA" stroke-width="3"></path>
+      <path d="M44 194c102-18 210-16 310 6"></path>
+      <path d="M50 202l-6 128c94 16 194 18 292 2l6-126"></path>
+      <path d="M46 200c40 38 96 62 154 62 56 0 108-24 148-60" stroke-width="4"></path>
+    </g>
+    <g stroke="#C9B9A6" stroke-width="5" stroke-linecap="round" fill="none">
+      <path d="M336 138c14-12 34-12 48 0" style="animation:kape-k-pulse 2.4s ease-in-out infinite;animation-play-state:var(--anim,running)"></path>
+      <path d="M328 108c20-18 50-18 70 0" stroke-dasharray="10 12" opacity=".45"></path>
+    </g>
+    <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M64 300l12-12M70 318l14-14M84 330l12-12"></path></g>
+  </g>
+</svg>

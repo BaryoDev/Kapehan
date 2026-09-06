@@ -2,3 +2,8 @@ node_modules/
 .DS_Store
 test-results/
 playwright-report/
+
+# .NET build output. dotnet build writes 18MB of these; none of it belongs in git.
+bin/
+obj/
+*.user

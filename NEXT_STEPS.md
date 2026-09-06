@@ -10,6 +10,19 @@ does not ship a client for any CMS, and it does not care what you build with it.
 The design canvas (`Kapehan.dc.html`) is the source of truth for the look and the content.
 Everything below is the engineering that turns it into a real, installable resource.
 
+## Parked
+
+Vue and Blazor are **out of scope for now**. Both were built and both failed adversarial
+review; the work is preserved on `parked/vue` and `parked/blazor` rather than deleted.
+Nothing published mentions either: not the site, not the README, not the package exports,
+and not the component manifest, which now ships `html` and `react` only.
+
+The canvas still carries `vue` and `blazor` markup for all 30 components, and that stays.
+It is the source; publishing a field a consumer can read is what makes it a promise.
+
+`FW_OPTS` in the canvas still offers all four stacks, so the Brew tab would advertise them.
+Trim it to `{ html, react }` there, or the site will promise what the package does not have.
+
 ## What we are building next
 
 In priority order:

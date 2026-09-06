@@ -128,7 +128,6 @@ import { components, get, byCategory } from "kapehan/kapehan-components.js";
 get("combo").props;        // [{ name, type, default, required, description }, ...]
 get("combo").a11y.keys;    // ["ArrowDown opens and moves", "Enter toggles", ...]
 get("combo").react;        // the JSX
-get("combo").blazor;       // the .razor
 byCategory("Overlays");    // dialog, drawer
 ```
 
@@ -263,8 +262,8 @@ instead of a pile.
 Kapehan is a UI resource site: palettes, icons, components and doodles, browsable at
 [baryodev.github.io/Kapehan](https://baryodev.github.io/Kapehan/) and installable from npm.
 It has no backend and ships no client for any CMS. [NEXT_STEPS.md](NEXT_STEPS.md) is the
-roadmap. Today the icons and the component CSS are real; the seven-tab site and the React
-and Blazor components are not yet.
+roadmap. Today the icons, the doodles, the palettes and the component CSS are real. The
+seven-tab site and the React components are in progress.
 
 ## Contributing an icon
 

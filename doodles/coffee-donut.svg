@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" class="kape-doodle-coffee-donut" aria-label="Top-down view of a round table with a cup of coffee, a bitten donut on a plate and a folded napkin">
+  <title>Coffee and donut</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <style>
+    svg.kape-doodle-coffee-donut [style*="animation"]{transform-box:fill-box; transform-origin:center;}
+    @keyframes kape-k-bob{0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-4px) rotate(-1deg)}}
+    @keyframes kape-k-steam{0%{opacity:0;transform:translateY(6px)} 20%{opacity:.9} 100%{opacity:0;transform:translateY(-22px) translateX(4px)}}
+    @media (prefers-reduced-motion: reduce){
+      svg.kape-doodle-coffee-donut [style*="animation"]{animation:none !important;}
+      svg.kape-doodle-coffee-donut *{transition-duration:.01ms !important;}
+    }
+  </style>
+  <defs><pattern id="hd4" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-donut">
+    <g stroke="none">
+      <path d="M60 40c160-70 400-70 560 10 60 130 40 260-30 350H80C0 300-10 160 60 40z" fill="#F1E8DA"></path>
+      <path d="M60 40c160-70 400-70 560 10 60 130 40 260-30 350H80C0 300-10 160 60 40z" fill="url(#hd4)"></path>
+      <path d="M74 234c28-6 58-6 86 0l4 106c-30 6-62 6-92 0z" style="fill:var(--card,#FFFDF9)"></path>
+      <ellipse cx="214" cy="192" rx="66" ry="64" style="fill:var(--card,#FFFDF9)"></ellipse>
+      <ellipse cx="216" cy="194" rx="50" ry="48" style="fill:var(--acc,#C2593A)"></ellipse>
+      <ellipse cx="452" cy="216" rx="122" ry="114" style="fill:var(--card,#FFFDF9)"></ellipse>
+      <path d="M448 130c50-4 92 34 92 82 0 46-40 84-90 84-48 0-88-36-86-84 0-46 38-80 84-82zM452 180c-20 0-32 16-32 34 0 20 14 34 32 34s32-14 32-34c0-18-14-34-32-34z" style="fill:var(--acc,#C2593A)" fill-rule="evenodd"></path>
+      <circle cx="524" cy="154" r="27" style="fill:var(--card,#FFFDF9)"></circle>
+    </g>
+    <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M40 60c180-70 400-64 560 30"></path>
+      <path d="M598 92c50 120 34 240-38 316M44 62C-10 190 8 300 90 388"></path>
+      <path d="M144 192c0-42 30-72 70-72 38 0 68 30 68 70 0 40-30 70-70 70-38 0-68-30-68-68z"></path>
+      <path d="M166 192c0-30 22-52 50-52 26 0 48 22 48 50 0 28-22 50-50 50-26 0-48-22-48-48"></path>
+      <path d="M282 178c26 2 34 30 12 44"></path>
+      <path d="M200 176c14-8 30-6 38 6-4 12-16 18-28 14" stroke="#F1E8DA" stroke-width="3"></path>
+      <path d="M330 210c0-64 54-116 122-116 66 0 120 52 120 118 0 64-54 116-120 116-68 0-122-52-122-118"></path>
+      <path d="M362 214c0-46 40-84 88-84 50 0 90 38 90 86 0 46-40 84-90 84-48 0-88-38-88-86z"></path>
+      <path d="M420 214c0-18 14-32 32-32 16 0 30 14 30 32 0 16-14 30-30 30-18 0-32-14-32-30z"></path>
+      <path d="M500 140c-8 12-4 30 10 38 12 6 26 4 36-6"></path>
+      <path d="M506 152l-6 4M512 168l-6 6M528 176l-2 8" stroke-width="3"></path>
+      <path d="M70 232c30-8 60-8 90-2M160 230l4 108M70 232l2 110M72 342c30 6 62 6 92 0"></path>
+      <path d="M88 254c20-2 40-2 60 0" stroke-width="2.5" opacity=".45"></path>
+    </g>
+    <g style="animation:kape-k-bob 4.8s ease-in-out infinite;animation-play-state:var(--anim,running)">
+      <path d="M392 160l8 10M420 146l4 12M456 144l-2 12M382 200l12 2M512 196l-12 4M400 256l10-8M500 250l-10-6" stroke-width="5" stroke-linecap="round" style="stroke:var(--bg,#FBF6EE)"></path>
+    </g>
+    <path d="M304 236c-10-12 8-18-2-30" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none" style="animation:kape-k-steam 3.6s ease-out infinite;animation-play-state:var(--anim,running)"></path>
+    <path d="M270 120c-8-10 6-16-2-26" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none" style="animation:kape-k-steam 3.6s ease-out 1.5s infinite;animation-play-state:var(--anim,running)"></path>
+    <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+      <path d="M150 226l12-12M158 240l14-14M170 250l12-12"></path>
+      <path d="M352 270l12-12M366 286l14-14M384 298l14-14M404 306l12-12"></path>
+      <path d="M80 300l10-10M82 318l12-12"></path>
+    </g>
+    <circle cx="316" cy="300" r="3" fill="#A08F7D"></circle>
+    <circle cx="336" cy="318" r="4" fill="#A08F7D"></circle>
+    <circle cx="290" cy="328" r="2.5" fill="#A08F7D"></circle>
+  </g>
+</svg>

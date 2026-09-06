@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" class="kape-doodle-latte-sip" aria-label="Close-up of someone with shoulders raised, lifting a wide latte cup with both hands">
+  <title>Latte sip</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><pattern id="hd3" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-latte">
+    <g stroke="none">
+      <path d="M232 108c20-70 110-92 168-52 30 20 40 50 34 82-58-30-136-28-202 8-6-12-4-26 0-38z" fill="#3F2A1D"></path>
+      <path d="M262 220c-70 10-130 50-160 110l-10 74 456-4-6-70c-30-60-100-100-170-110z" fill="#F1E8DA"></path>
+      <path d="M262 220c-70 10-130 50-160 110l-10 74 456-4-6-70c-30-60-100-100-170-110z" fill="url(#hd3)"></path>
+      <path d="M262 224c40 24 90 24 130-2l-10 40c-36 20-76 20-112 0z" style="fill:var(--acc,#C2593A)"></path>
+    </g>
+    <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M230 128c6-64 74-102 136-82 46 14 76 56 68 106"></path>
+      <path d="M236 96c50-32 130-26 190 18"></path>
+      <path d="M228 150c-6 40 14 76 46 92"></path>
+      <path d="M430 156c4 34-12 68-40 88"></path>
+      <path d="M274 208c-4 14-6 24-4 34"></path>
+      <path d="M262 224c-80 16-150 66-176 148"></path>
+      <path d="M392 226c70 12 134 60 166 132"></path>
+      <path d="M0 386c200-10 420-10 640 0" stroke-width="3.5"></path>
+    </g>
+    <g>
+      <path d="M232 250c70-8 140-8 210 0l-10 46c-14 40-46 60-96 60s-80-20-94-60z" stroke="none" style="fill:var(--card,#FFFDF9)"></path>
+      <path d="M246 268c60-8 122-8 182 0l-6 20c-10 30-40 44-84 44s-72-14-84-44z" style="fill:var(--acc,#C2593A)" stroke="none"></path>
+      <path d="M296 282c22-10 50-8 66 6-10 12-30 16-48 10-8-4-14-10-18-16z" stroke="none" style="fill:var(--card,#FFFDF9)"></path>
+      <path d="M234 296c-22-8-48 2-54 22-6 22 12 40 40 38l12-2 10-56z" stroke="none" style="fill:var(--card,#FFFDF9)"></path>
+      <path d="M440 300c22-10 48-2 56 18 6 22-12 40-44 36l-6-2-12-50z" stroke="none" style="fill:var(--card,#FFFDF9)"></path>
+      <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+        <path d="M228 248c74-10 148-10 222 0"></path>
+        <path d="M232 254l10 40c14 40 46 62 96 62s80-22 94-62l12-42"></path>
+        <path d="M446 266c36 6 36 48 2 58"></path>
+        <path d="M232 296c-22-8-46 2-52 20-6 22 12 40 40 38l10-2"></path>
+        <path d="M180 316c8-10 22-14 36-10M182 330c10-6 22-8 34-6"></path>
+        <path d="M440 300c22-10 48-2 54 18 6 22-12 40-42 36"></path>
+        <path d="M492 320c-8-10-22-14-36-10M490 334c-10-6-22-8-34-6"></path>
+      </g>
+      <path d="M290 232c-10-12 8-18-2-30" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
+      <path d="M380 236c-10-12 8-18-2-30" stroke="#C9B9A6" stroke-width="3" stroke-linecap="round" fill="none"></path>
+      <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+        <path d="M250 300l12-12M260 318l14-14M272 336l14-14M288 350l12-12"></path>
+      </g>
+    </g>
+    <g stroke="#A08F7D" stroke-width="2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
+      <path d="M120 330l14-14M116 350l16-16M116 370l16-16"></path>
+      <path d="M512 340l14-14M516 360l14-14M522 378l12-12"></path>
+    </g>
+  </g>
+</svg>

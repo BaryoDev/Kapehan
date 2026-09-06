@@ -103,8 +103,8 @@ export function moduleSource(list) {
  * GENERATED from design/Kapehan.dc.html by scripts/components.mjs. Do not edit by hand;
  * edit the canvas and run \`npm run build\`. npm test fails if this drifts.
  *
- * Each entry carries the markup for four stacks plus the props table and the accessibility
- * contract, so the React, Vue, Blazor, Tailwind and docs generators all read one source.
+ * Each entry carries the markup the package actually ships, plus the props table and the
+ * accessibility contract, so every generator and the docs read one source.
  *
  * MIT (c) BaryoDev. https://github.com/BaryoDev/Kapehan
  */

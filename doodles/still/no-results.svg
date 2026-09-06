@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" class="kape-doodle-no-results" aria-label="A hand grinder with its crank on top and an empty catch jar, meaning the search found nothing">
+  <title>No results</title>
+  <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><pattern id="hs7" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
+  <g id="dd-no-results">
+    <g stroke="none">
+      <path d="M126 168c50-8 100-6 148 4l-14 128c-4 22-32 34-64 34s-58-12-62-34z" fill="#F1E8DA"></path>
+      <path d="M126 168c50-8 100-6 148 4l-14 128c-4 22-32 34-64 34s-58-12-62-34z" fill="url(#hs7)"></path>
+      <path d="M140 226c44-6 90-4 132 4l-4 34c-42 6-86 6-124 0z" style="fill:var(--card,#FFFDF9)"></path>
+    </g>
+    <g fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <path d="M120 166c54-12 106-10 158 4"></path>
+      <path d="M124 172l12 126c4 24 34 36 66 36s60-12 64-36l14-124"></path>
+      <path d="M138 226c46-8 92-6 136 4M136 262c44 6 90 6 134 0" stroke-width="3.5" opacity=".5"></path>
+      <path d="M200 166v-30"></path>
+      <path d="M200 136h56" stroke-width="5"></path>
+      <path d="M256 136v-18" stroke-width="5"></path>
+      <circle cx="256" cy="112" r="9" fill="#F1E8DA" stroke-width="4.5"></circle>
+      <path d="M160 190c22-6 60-6 80 0" stroke-width="4" opacity=".45"></path>
+      <path d="M150 320c30 8 70 8 100 0" stroke-width="4" opacity=".4"></path>
+      <path d="M60 372c96-8 192-8 286 0" stroke-width="3.5"></path>
+    </g>
+    <g stroke="#C9B9A6" stroke-width="5" stroke-linecap="round" fill="none">
+      <path d="M300 200c8-8 20-8 28 0M310 240c10-6 22-4 30 4"></path>
+    </g>
+    <circle cx="330" cy="164" r="6" fill="#E2D3BC"></circle>
+    <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M142 300l12-12M148 320l14-14M160 336l12-12"></path></g>
+  </g>
+</svg>
