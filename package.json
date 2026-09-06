@@ -27,18 +27,42 @@
   "type": "module",
   "exports": {
     ".": "./kape-icon.js",
-    "./kape-icon.js": "./kape-icon.js",
-    "./kapehan-icons.js": "./kapehan-icons.js",
+    "./kape-icon.js": {
+      "types": "./kape-icon.d.ts",
+      "default": "./kape-icon.js"
+    },
+    "./kapehan-icons.js": {
+      "types": "./kapehan-icons.d.ts",
+      "default": "./kapehan-icons.js"
+    },
     "./kapehan.css": "./kapehan.css",
     "./icons/*": "./icons/*",
     "./palettes.json": "./palettes.json",
-    "./kapehan-components.js": "./kapehan-components.js",
-    "./kape-doodle.js": "./kape-doodle.js",
+    "./kapehan-components.js": {
+      "types": "./kapehan-components.d.ts",
+      "default": "./kapehan-components.js"
+    },
+    "./kape-doodle.js": {
+      "types": "./kape-doodle.d.ts",
+      "default": "./kape-doodle.js"
+    },
     "./doodles/*": "./doodles/*",
-    "./react": "./react/index.js",
-    "./react/index.js": "./react/index.js",
-    "./react/icons.js": "./react/icons.js",
-    "./react/components.js": "./react/components.js"
+    "./react": {
+      "types": "./react/index.d.ts",
+      "default": "./react/index.js"
+    },
+    "./react/index.js": {
+      "types": "./react/index.d.ts",
+      "default": "./react/index.js"
+    },
+    "./react/icons.js": {
+      "types": "./react/icons.d.ts",
+      "default": "./react/icons.js"
+    },
+    "./react/components.js": {
+      "types": "./react/components.d.ts",
+      "default": "./react/components.js"
+    }
   },
   "files": [
     "LICENSE",
@@ -51,7 +75,11 @@
     "kapehan-icons.js",
     "kapehan.css",
     "palettes.json",
-    "react"
+    "react",
+    "kapehan-icons.d.ts",
+    "kapehan-components.d.ts",
+    "kape-icon.d.ts",
+    "kape-doodle.d.ts"
   ],
   "sideEffects": [
     "./kape-icon.js",
@@ -60,6 +88,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "node scripts/check.mjs",
+    "check:published": "node scripts/published.mjs",
     "test:browser": "playwright test",
     "serve": "node scripts/serve.mjs",
     "prepublishOnly": "npm test",
