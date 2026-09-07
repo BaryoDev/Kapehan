@@ -365,6 +365,103 @@ sub(
     "html lang, description, og tags, reduced-motion, focus-visible, touch targets",
 )
 
+# The export still said thirty-seven, five icons behind, in the one place it states a count.
+sub(
+    "Thirty-seven drinks, brewers and beans",
+    "Forty-two drinks, brewers and beans",
+    "the set section states the real icon count",
+)
+
+# Strip the parked stacks out of the shipped component data.
+#
+# FW_OPTS no longer offers Vue or Blazor, so these 60 fields are inert: nothing renders them.
+# They are still bytes a reader can open and copy, and the rule is that publishing a field a
+# consumer can read is what makes it a promise. The npm manifest is built the same way, in
+# scripts/generators/components.mjs, which strips exactly these two keys.
+#
+# Matched as JS string literals, escape-aware, so a \" inside a snippet does not end the match.
+import re as _re
+for _key in ('vue', 'blazor'):
+    _pat = _re.compile(r'\n      ' + _key + r': "(?:[^"\\]|\\.)*",?')
+    _n = len(_pat.findall(t))
+    assert _n == 30, 'expected 30 %s fields in SHIP, found %d' % (_key, _n)
+    t = _pat.sub('', t)
+    applied.append('SHIP drops its 30 %s snippets, which nothing renders' % _key)
+
+# And the CLI preview branch that names the parked .NET package.
+sub(
+    "(st.fw === 'blazor' ? ' and Kapehan.Components' : st.fw === 'react' ? ' and co",
+    "(st.fw === 'react' ? ' and co",
+    "cli preview drops its Blazor branch",
+)
+
+# ------------------------------------------------------- the primary CTA's contrast
+# "Brew yours" was #FBF6EE on the raw accent: 4.08:1, under the 4.5 AA floor, in BOTH
+# themes. The hero is dark either way, so this was never a dark-mode-only bug.
+#
+# No single text colour fixes it, because the accent is one of six the visitor picks and
+# three of them fail against light AND dark text at full strength:
+#
+#   barako #E5901A  paper 2.34  ink 6.77     roast  #8C5A32  paper 5.39  ink 2.94
+#   clay   #C2593A  paper 4.08  ink 3.88     pandan #6E8B5E  paper 3.54  ink 4.48
+#   ube    #8E6BA8  paper 4.05  ink 3.91     melon  #DE7286  paper 2.85  ink 5.57
+#
+# So the button background is darkened just enough that the off-white text clears AA, which
+# keeps the light-on-colour look every accent was designed for. Roast needs nothing; clay
+# and ube need 6-7%; barako, the default, needs the most at 31%.
+sub(
+    "  rgba(hex, a) {",
+    """  /** WCAG relative luminance of a hex. */
+  static lum(hex) {
+    const h = hex.replace('#', '');
+    const n = parseInt(h.length === 3 ? h.replace(/./g, (c) => c + c) : h, 16);
+    const f = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((v) => {
+      v /= 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * f[0] + 0.7152 * f[1] + 0.0722 * f[2];
+  }
+
+  static contrast(a, b) {
+    const x = Component.lum(a), y = Component.lum(b);
+    return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+  }
+
+  static shade(hex, f) {
+    const h = hex.replace('#', '');
+    const n = parseInt(h.length === 3 ? h.replace(/./g, (c) => c + c) : h, 16);
+    return '#' + [(n >> 16) & 255, (n >> 8) & 255, n & 255]
+      .map((v) => Math.round(v * f).toString(16).padStart(2, '0')).join('');
+  }
+
+  /**
+   * The accent, darkened only as far as it takes for #FBF6EE text on it to clear WCAG AA.
+   * Returns the accent untouched when it already passes, so roast and the darker palettes
+   * look exactly as drawn.
+   */
+  static onPaper(hex) {
+    const PAPER = '#FBF6EE';
+    let f = 1;
+    while (f > 0.3 && Component.contrast(PAPER, Component.shade(hex, f)) < 4.5) f -= 0.01;
+    return Component.shade(hex, f);
+  }
+
+  rgba(hex, a) {""",
+    "an accent-aware background that keeps the CTA text above AA",
+)
+
+sub(
+    "      tabs, tabIcons: tab === 'icons'",
+    "      ctaBg: Component.onPaper(accent),\n      tabs, tabIcons: tab === 'icons'",
+    "ctaBg reaches the template",
+)
+
+sub(
+    'sc-camel-on-click="{{ goBrew }}" style="background:{{ accent }};color:#FBF6EE;',
+    'sc-camel-on-click="{{ goBrew }}" style="background:{{ ctaBg }};color:#FBF6EE;',
+    "the CTA uses the AA-safe background",
+)
+
 # ------------------------------------------- the doodles sub-canvas (manifest)
 # The Cafe moments grid rendered 2 up for the first five doodles and then one per row from
 # "Cashier" on. The grid was never at fault: the laptop <figure> is closed at the very end
@@ -406,6 +503,24 @@ doodles = doodles.replace(
     1,
 )
 
+# The doodles are drawn "cropped tight", so about half of them fill their 640x400 frame
+# edge to edge. The card behind them has a radius and a bottom shadow but no border, so on
+# those the frame disappears completely and the drawing reads as cut off at the card edge,
+# while the centred ones sit in a clean white card. Same card, two different looks.
+#
+# An inset ring rather than a border: it follows the existing border-radius, paints over
+# artwork that reaches the edge, and adds nothing to the box, so every card keeps its exact
+# 504x319 geometry and the SVG is not resized.
+_CARD = 'background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)'
+_CARD_RINGED = (
+    'background:#FFFDF9;border-radius:6px;overflow:hidden;'
+    'box-shadow:inset 0 0 0 1px var(--line,#EFE4D3),0 1px 0 var(--line,#EFE4D3)'
+)
+_n_cards = doodles.count(_CARD)
+assert _n_cards == 24, "expected 24 doodle cards, found %d" % _n_cards
+doodles = doodles.replace(_CARD, _CARD_RINGED)
+applied.append("every doodle card keeps a visible frame, even where the drawing bleeds")
+
 # Prove the nesting is gone: every figure in the file must now close before the next opens.
 order = [m.group(0) for m in re.finditer(r"<figure\b|</figure>", doodles)]
 depth = 0
@@ -430,12 +545,52 @@ applied.append("laptop figure closes before cashier, so all 12 cafe doodles sit 
 encoded = json.dumps(t).replace("<\\/", "<\\u002F").replace("</", "<\\u002F")
 assert "</" not in encoded, "payload still contains a raw </ which would close the script tag"
 lines[TPL_LINE] = encoded
-open(OUT, "w", encoding="utf-8").write("\n".join(lines))
+# --------------------------------------------------------- the no-JS fallback
+# The page is a React bundle that compiles its own JSX in the browser, so with JS off, a
+# blocked CDN or a failed compile there is nothing at all. The runtime's own fallback is one
+# sentence saying JavaScript is required, and that is what a crawler would index.
+#
+# This patches the OUTER wrapper, not the template. The template is inert text inside a
+# <script> tag until the runtime parses it, so a <noscript> placed there never renders with
+# JS off. Worse, the runtime parses the template with DOMParser, which has scripting
+# disabled and therefore treats <noscript> contents as real elements: a <style> in there
+# became a live stylesheet and its display:none hid the whole page.
+OUTER_NOSCRIPT = """<noscript>
+    <style>#__bundler_loading, #__bundler_thumbnail { display: none !important; }</style>
+    <div style="position:fixed;inset:0;overflow:auto;background:#FBF6EE;color:#241A13;z-index:10001">
+      <main style="max-width:44rem;margin:0 auto;padding:12vh 6vw;font:16px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+        <h1 style="font-size:2.2rem;line-height:1.1;margin:0 0 .6em">Kapehan: free coffee icons</h1>
+        <p style="margin:0 0 1em">Icons, doodles, drink palettes and UI parts that all follow one hand. Plain CSS, in HTML or React. MIT, free for tees, stickers, apps, anything.</p>
+        <p style="margin:0 0 1em"><code style="background:#F0E6D8;padding:.2em .5em;border-radius:4px">npm i kapehan</code></p>
+        <p style="margin:0 0 1em">Browsing the set needs JavaScript. Everything is on GitHub either way.</p>
+        <p style="margin:0"><a href="https://github.com/BaryoDev/Kapehan" style="color:#A94227">github.com/BaryoDev/Kapehan</a></p>
+      </main>
+    </div>
+  </noscript>"""
+
+_old_ns = (
+    '<noscript>\n    <style>#__bundler_loading { display: none; }</style>\n'
+    '    <div style="position:fixed;bottom:12px;left:12px;font:13px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;'
+    'color:#999;background:rgba(255,255,255,0.9);padding:6px 12px;border-radius:6px;'
+    'box-shadow:0 1px 4px rgba(0,0,0,0.08);z-index:10000;">\n'
+    '      This page requires JavaScript to display.\n    </div>\n  </noscript>'
+)
+_joined = "\n".join(lines)
+assert _joined.count(_old_ns) == 1, "the wrapper's own noscript block was not found verbatim"
+_joined = _joined.replace(_old_ns, OUTER_NOSCRIPT, 1)
+applied.append("a no-JS visitor gets the pitch, the install and the link")
+
+open(OUT, "w", encoding="utf-8").write(_joined)
+lines = _joined.split("\n")
 
 # Prove the file we just wrote decodes back to exactly the template we built. The first
 # attempt at this shipped a payload that closed its own script tag and the page died on
 # load, which looked nothing like an encoding bug from the outside.
-check = open(OUT, encoding="utf-8").read().split("\n")[TPL_LINE]
+#
+# The line is found again rather than reused: the no-JS fallback above is taller than the
+# block it replaces, so TPL_LINE no longer points at the payload once it lands.
+_written = open(OUT, encoding="utf-8").read().split("\n")
+check = next(l for l in _written if l.startswith('"<!DOCTYPE html>'))
 assert json.loads(check) == t, "round trip failed: the written payload does not decode to the patched template"
 
 print("template %d -> %d bytes" % (orig_len, len(t)))

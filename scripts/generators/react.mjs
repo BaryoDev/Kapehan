@@ -58,7 +58,7 @@ const INDEX_FILE = 'react/index.js';
 
 /* ------------------------------------------------------------------ names */
 
-const pascal = (s) =>
+export const pascal = (s) =>
   String(s)
     .split(/[^A-Za-z0-9]+/)
     .filter(Boolean)
@@ -66,19 +66,19 @@ const pascal = (s) =>
     .join('');
 
 /** Kape + the manifest key, so the export name is derivable from the key and vice versa. */
-const componentName = (c) => 'Kape' + pascal(c.key);
+export const componentName = (c) => 'Kape' + pascal(c.key);
 
 /**
  * A second, readable name taken from the canvas label, because KapeAcc and KapeCmdk are
  * not names anyone guesses. Generated, never typed: a renamed label renames the alias.
  * Dropped when it would duplicate another export.
  */
-const componentAlias = (c) => {
+export const componentAlias = (c) => {
   const alias = 'Kape' + pascal(c.label);
   return alias === componentName(c) ? null : alias;
 };
 
-const iconName = (icon) => pascal(icon.name);
+export const iconName = (icon) => pascal(icon.name);
 
 /* ------------------------------------------- props, straight from the manifest */
 
