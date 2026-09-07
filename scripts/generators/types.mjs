@@ -30,6 +30,10 @@ export const pkg = {
   // condition at all resolveJsonModule reads the real file and types it exactly. Measured
   // both ways with tsc 5.6 before removing it.
   types: {
+    // The bare specifier resolves to kape-icon.js, so it takes the same declaration.
+    // Without this, `import 'kapehan'` was the one entry point with no types at all,
+    // while the longer `kapehan/kape-icon.js` had them.
+    '.': './kape-icon.d.ts',
     './kapehan-icons.js': './kapehan-icons.d.ts',
     './kapehan-components.js': './kapehan-components.d.ts',
     './kape-icon.js': './kape-icon.d.ts',
