@@ -263,7 +263,7 @@ function reactIconsDts() {
   return (
     HEAD(`The ${icons.length} icons as React components.`) +
     `
-import type { SVGProps } from 'react';
+import type { JSX, SVGProps } from 'react';
 import type { IconLookup } from '../kapehan-icons.js';
 
 export interface KapeIconProps extends Omit<SVGProps<SVGSVGElement>, 'name'> {
@@ -273,8 +273,11 @@ export interface KapeIconProps extends Omit<SVGProps<SVGSVGElement>, 'name'> {
   mono?: boolean;
   /** Accepted and ignored; recolour with CSS instead. */
   colour?: string;
-  /** An accessible name. Without it the icon is aria-hidden. */
-  label?: string;
+  /**
+   * An accessible name. Omit it and the icon names itself after its own name; pass null to
+   * mark it decorative, which sets role="presentation" and aria-hidden.
+   */
+  label?: string | null;
 }
 
 export type KapeIconComponent = (props: KapeIconProps) => JSX.Element;
@@ -299,7 +302,7 @@ export declare function ${n}(props: KapeComponentProps): JSX.Element;`);
   return (
     HEAD(`The ${comps.length} components as React components.`) +
     `
-import type { HTMLAttributes } from 'react';
+import type { HTMLAttributes, JSX } from 'react';
 
 /**
  * Every component takes its own props plus whatever is left over, which lands on the root

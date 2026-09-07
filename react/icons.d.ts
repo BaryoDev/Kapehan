@@ -7,7 +7,7 @@
  * MIT (c) BaryoDev. https://github.com/BaryoDev/Kapehan
  */
 
-import type { SVGProps } from 'react';
+import type { JSX, SVGProps } from 'react';
 import type { IconLookup } from '../kapehan-icons.js';
 
 export interface KapeIconProps extends Omit<SVGProps<SVGSVGElement>, 'name'> {
@@ -17,8 +17,11 @@ export interface KapeIconProps extends Omit<SVGProps<SVGSVGElement>, 'name'> {
   mono?: boolean;
   /** Accepted and ignored; recolour with CSS instead. */
   colour?: string;
-  /** An accessible name. Without it the icon is aria-hidden. */
-  label?: string;
+  /**
+   * An accessible name. Omit it and the icon names itself after its own name; pass null to
+   * mark it decorative, which sets role="presentation" and aria-hidden.
+   */
+  label?: string | null;
 }
 
 export type KapeIconComponent = (props: KapeIconProps) => JSX.Element;

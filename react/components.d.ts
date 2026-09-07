@@ -7,7 +7,7 @@
  * MIT (c) BaryoDev. https://github.com/BaryoDev/Kapehan
  */
 
-import type { HTMLAttributes } from 'react';
+import type { HTMLAttributes, JSX } from 'react';
 
 /**
  * Every component takes its own props plus whatever is left over, which lands on the root

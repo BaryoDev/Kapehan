@@ -217,6 +217,52 @@ for (const [where, text] of [['README.md', readme], ['docs/index.html', site]]) 
 for (const parked of ['Vue', 'Blazor']) {
   if (new RegExp(`\\b${parked}\\b`).test(readme)) fail.push(`README.md mentions ${parked}, which is parked`);
 }
+// 8. The canvas is the source for look and copy, so what it says leaks into whatever is
+//    generated or exported from it next. It is checked here rather than trusted, because a
+//    hand-run grep for "BarakoCMS" returned zero while the hero read "Barako is the headless
+//    CMS" one line below, and the sentence shipped looking fixed.
+const canvas = await readFile(join(root, 'design/Kapehan.dc.html'), 'utf8');
+
+const BANNED_COPY = [
+  'BarakoCMS',
+  'headless CMS',
+  'front-end starter for',
+  'Tailwind or Bootstrap',
+  'Vue or Blazor',
+];
+for (const phrase of BANNED_COPY) {
+  if (canvas.includes(phrase)) {
+    fail.push(`design/Kapehan.dc.html says "${phrase}"; Kapehan has no backend and ships neither stack`);
+  }
+}
+
+// The stack picker decides which starter branches a visitor can reach. Vue and Blazor are
+// parked, and their branches still carry the CMS wiring, so this is what keeps that wiring
+// unreachable rather than merely unused.
+const fwOpts = canvas.match(/static FW_OPTS = \{([^}]*)\}/);
+if (!fwOpts) fail.push('design/Kapehan.dc.html no longer declares FW_OPTS, so the offered stacks cannot be checked');
+else {
+  const offered = [...fwOpts[1].matchAll(/(\w+)\s*:/g)].map((m) => m[1]).sort();
+  if (offered.join(',') !== 'html,react') {
+    fail.push(`design/Kapehan.dc.html offers stacks [${offered.join(', ')}]; only html and react ship`);
+  }
+}
+
+// And the branches a visitor CAN reach must not phone a CMS. The vue marker is searched
+// FROM the html branch: the string also appears in the stack-picker code 168k characters
+// earlier, and anchoring on its first occurrence gave a negative-length slice, so this
+// checked an empty string and passed on a starter that did fetch a Barako host.
+const startsAt = canvas.indexOf("st.fw === 'html'");
+const endsAt = canvas.indexOf("st.fw === 'vue'", startsAt);
+if (startsAt === -1 || endsAt === -1) {
+  fail.push('cannot find the starter branches in design/Kapehan.dc.html, so they cannot be checked');
+} else if (/barako[-_]?(?:host|api)|BARAKO_API/i.test(canvas.slice(startsAt, endsAt))) {
+  // The endpoint, not the word. "barako" on its own is the coffee: the React starter's own
+  // sample data ships { id: 'barako', name: 'Barako' }, and matching the bare word failed
+  // the build on the drink this whole project is named after.
+  fail.push('the html or react starter in design/Kapehan.dc.html still references a Barako CMS host');
+}
+
 const manifestSrc = await readFile(join(root, 'kapehan-components.js'), 'utf8');
 for (const parked of ['vue', 'blazor']) {
   if (new RegExp(`"${parked}"\\s*:`).test(manifestSrc)) {

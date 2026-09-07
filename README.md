@@ -55,7 +55,10 @@ Web component, no build step. Aliases work, so `cup-cold` finds `cold-brew`:
 ```
 
 React, from `kapehan/react`. All 42 icons and 30 components are real components with props
-and keyboard handling, generated from the same sources as everything else:
+and keyboard handling, generated from the same sources as everything else.
+
+> Ships in **0.3.0**, not yet published. `npm i kapehan` gives you 0.2.0 today, which has no
+> `react` entry. Until then this works from a checkout of `master`.
 
 ```tsx
 import { Latte, KapeButton } from "kapehan/react";
@@ -283,8 +286,9 @@ instead of a pile.
 Kapehan is a UI resource site: palettes, icons, components and doodles, browsable at
 [baryodev.github.io/Kapehan](https://baryodev.github.io/Kapehan/) and installable from npm.
 It has no backend and ships no client for any CMS. [NEXT_STEPS.md](NEXT_STEPS.md) is the
-roadmap. Today the icons, the doodles, the palettes, the component CSS and the React
-components are all real and shipped. The seven-tab site is in progress.
+roadmap. The icons, the doodles, the palettes, the component CSS and the React components
+are all real and on `master`. npm still serves 0.2.0, so some of that reaches you only when
+0.3.0 is published. The seven-tab site is in progress.
 
 ## Contributing an icon
 
