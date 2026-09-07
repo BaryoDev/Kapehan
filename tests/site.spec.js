@@ -1,293 +1,207 @@
 import { test, expect } from '@playwright/test';
-import { icons, categories } from '../kapehan-icons.js';
-
-// Counts come from the generator, never a literal. These assertions used to hardcode 37
-// and every one of them broke the day the Desserts group landed.
-const ICON_COUNT = icons.length;
-const GROUP_COUNT = categories.length;
-const TROPICAL = icons.filter((i) => i.category === 'Tropical').length;
+import { icons } from '../kapehan-icons.js';
+import { components } from '../scripts/components.mjs';
 
 /**
- * The published site in docs/. It is the shop window for the package, so a broken
- * search or a recolour that stops propagating is a shipping bug, not a cosmetic one.
+ * The published site in docs/: the seven-tab browser for icons, doodles, palettes,
+ * components, blocks, placement and the starter. It is the shop window for the package, so
+ * a tab that does not switch or a panel that pushes the page sideways is a shipping bug.
+ *
+ * The page is a React bundle that compiles its own JSX in the browser, so nothing exists
+ * until that finishes. Every test waits on the tablist rather than on a timeout.
  */
+const ICON_COUNT = icons.length;
+
+/** Tab key to panel id, which is also what the nav wires aria-controls to. */
+const PANELS = {
+  icons: 'sec-icons',
+  doodles: 'sec-doodles',
+  place: 'sec-place',
+  ui: 'sec-ui',
+  create: 'sec-create',
+  blocks: 'sec-blocks',
+  palettes: 'sec-palettes',
+};
+
+const tablist = (page) => page.locator('#kapehan-tablist');
+const tabs = (page) => page.locator('#kapehan-tablist [role="tab"]');
+const tab = (page, label) => tabs(page).filter({ hasText: new RegExp('^' + label) }).first();
+
+/** Which panels are in the DOM. Real tabs render one; the old build rendered all seven. */
+const livePanels = (page) =>
+  page.evaluate((ids) => ids.filter((id) => document.getElementById(id)), Object.values(PANELS));
+
+async function open(page, hash = '') {
+  await page.goto('/docs/' + hash);
+  await expect(tablist(page)).toBeVisible({ timeout: 20000 });
+  await expect(tabs(page)).toHaveCount(7);
+}
+
 test.beforeEach(async ({ page }) => {
-  // The header fetches a live star count on every page load. Unstubbed, a 36-test run makes
-  // 36 calls against GitHub's 60-per-hour-per-IP budget, so the API starts answering 403 and
-  // the browser logs it. That made the console-error test fail 2 runs in 3, and would flake
-  // harder in CI where runners share an IP. Tests that care about the real failure path
-  // override this route themselves.
+  // The header fetches a live star count. Unstubbed, a full run spends the GitHub 60/hr
+  // per-IP budget, starts collecting 403s and logs them, which made the console-error test
+  // fail two runs in three and would flake harder on a shared CI runner.
   await page.route('https://api.github.com/**', (route) =>
     route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ stargazers_count: 7 }) }));
-  await page.addInitScript(() => { try { localStorage.removeItem('kapehan.stars'); } catch (e) {} });
-  await page.goto('/docs/');
-  await expect(page.locator('.hov-card')).toHaveCount(ICON_COUNT);
+  // Only the star cache. addInitScript runs before EVERY document, so clearing all of
+  // localStorage here also wipes it on reload, which quietly broke the one test whose whole
+  // subject is what survives a reload. Each test gets a fresh context anyway.
+  await page.addInitScript(() => {
+    try { localStorage.removeItem('kapehan.stars'); } catch (e) {}
+  });
 });
 
-const search = (page) => page.locator('input.search');
-const cardNames = (page) => page.locator('.hov-card p.mono');
-
-test('renders every icon and names the groups', async ({ page }) => {
-  await expect(page.getByText(`${ICON_COUNT} icons · ${GROUP_COUNT} groups`)).toBeVisible();
-  await expect(page.locator('.hov-card svg')).toHaveCount(ICON_COUNT);
+test('opens on Icons with only that panel rendered', async ({ page }) => {
+  await open(page);
+  await expect(tab(page, 'Icons')).toHaveAttribute('aria-selected', 'true');
+  expect(await livePanels(page)).toEqual(['sec-icons']);
 });
 
-test('search finds an icon by tag and by alias', async ({ page }) => {
-  await search(page).fill('palayok');
-  await expect(cardNames(page)).toHaveText(['barako-pot']);
-
-  await search(page).fill('cup-cold');
-  await expect(cardNames(page)).toHaveText(['cold-brew']);
+test('every tab carries its own count, derived not typed', async ({ page }) => {
+  await open(page);
+  const comps = await components();
+  await expect(tab(page, 'Icons')).toContainText(String(ICON_COUNT));
+  await expect(tab(page, 'Components')).toContainText(String(comps.length));
 });
 
-test('a search with no hits shows the empty state', async ({ page }) => {
-  await search(page).fill('zzzz');
-  await expect(page.locator('.hov-card')).toHaveCount(0);
-  await expect(page.getByText('Nothing brewing under that name.')).toBeVisible();
+test('picking a tab swaps the panel rather than scrolling to it', async ({ page }) => {
+  await open(page);
+  await tab(page, 'Palettes').click();
+  await expect(tab(page, 'Palettes')).toHaveAttribute('aria-selected', 'true');
+  expect(await livePanels(page)).toEqual(['sec-palettes']);
+  // The whole point of real tabs: the other six are gone, not merely scrolled past.
+  await expect(page.locator('#sec-icons')).toHaveCount(0);
 });
 
-test('a category filters the grid', async ({ page }) => {
-  await page.getByRole('button', { name: 'Tropical', exact: true }).click();
-  await expect(page.locator('.hov-card')).toHaveCount(TROPICAL);
+test('a tab is a link you can send someone', async ({ page }) => {
+  await open(page, '#doodles');
+  await expect(tab(page, 'Doodles')).toHaveAttribute('aria-selected', 'true');
+  expect(await livePanels(page)).toEqual(['sec-doodles']);
 });
 
-test('the Desserts group filters to its own icons', async ({ page }) => {
-  const desserts = icons.filter((i) => i.category === 'Desserts');
-  expect(desserts.length).toBeGreaterThan(0);
-  await page.getByRole('button', { name: 'Desserts', exact: true }).click();
-  await expect(page.locator('.hov-card')).toHaveCount(desserts.length);
-  await expect(page.locator('.hov-card p.mono')).toHaveText(desserts.map((i) => i.name));
+test('back and forward walk the tabs', async ({ page }) => {
+  await open(page, '#doodles');
+  await tab(page, 'Brew').click();
+  await expect(page).toHaveURL(/#create$/);
+
+  await page.goBack();
+  await expect(tab(page, 'Doodles')).toHaveAttribute('aria-selected', 'true');
+  await page.goForward();
+  await expect(tab(page, 'Brew')).toHaveAttribute('aria-selected', 'true');
 });
 
-test('a Filipino pastry is findable by its own name', async ({ page }) => {
-  for (const [term, expected] of [['pandesal', 'pandesal'], ['brioche', 'ensaymada'], ['doughnut', 'donut']]) {
-    await search(page).fill(term);
-    await expect(cardNames(page)).toHaveText([expected]);
+test('arrow keys move between tabs and focus follows', async ({ page }) => {
+  await open(page);
+  await tab(page, 'Icons').focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(tab(page, 'Doodles')).toHaveAttribute('aria-selected', 'true');
+  await expect(tab(page, 'Doodles')).toBeFocused();
+
+  await page.keyboard.press('ArrowLeft');
+  await expect(tab(page, 'Icons')).toHaveAttribute('aria-selected', 'true');
+
+  await page.keyboard.press('End');
+  await expect(tab(page, 'Palettes')).toHaveAttribute('aria-selected', 'true');
+});
+
+test('the tablist is wired for a screen reader', async ({ page }) => {
+  await open(page);
+  await expect(tablist(page)).toHaveAttribute('role', 'tablist');
+  const selected = tab(page, 'Icons');
+  await expect(selected).toHaveAttribute('aria-controls', 'sec-icons');
+  await expect(selected).toHaveAttribute('tabindex', '0');
+  // Roving tabindex: one stop for the whole group, not seven.
+  await expect(tab(page, 'Doodles')).toHaveAttribute('tabindex', '-1');
+  await expect(page.locator('#sec-icons')).toHaveAttribute('role', 'tabpanel');
+});
+
+test('switching tabs does not throw the reader back above the hero', async ({ page }) => {
+  await open(page);
+  await page.mouse.wheel(0, 2500);
+  const before = await page.evaluate(() => window.scrollY);
+  expect(before).toBeGreaterThan(0);
+
+  await tab(page, 'Palettes').click();
+  // Lands at the top of the new panel, just under the sticky nav, not at the document top.
+  const panelTop = await page.evaluate(() =>
+    Math.round(document.getElementById('sec-palettes').getBoundingClientRect().top));
+  expect(panelTop).toBeGreaterThan(0);
+  expect(panelTop).toBeLessThan(120);
+});
+
+test.describe('responsive', () => {
+  for (const [label, width] of [['phone', 390], ['tablet', 768], ['desktop', 1280]]) {
+    test(`no horizontal overflow on any tab at ${width}px (${label})`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await open(page);
+      for (const key of Object.keys(PANELS)) {
+        await page.evaluate((k) => { window.location.hash = k; }, key);
+        await expect(page.locator('#' + PANELS[key])).toHaveCount(1);
+        const over = await page.evaluate(() =>
+          document.documentElement.scrollWidth - document.documentElement.clientWidth);
+        expect(over, `${key} tab at ${width}px`).toBe(0);
+      }
+    });
   }
 });
 
-test('one colour leaves no literal hex behind', async ({ page }) => {
-  await page.getByRole('button', { name: /one colour/ }).click();
-  const counts = await page.evaluate(() => ({
-    hex: document.querySelectorAll('.hov-card svg [fill^="#"], .hov-card svg [stroke^="#"]').length,
-    currentColor: document.querySelectorAll('.hov-card svg [fill="currentColor"]').length,
-  }));
-  expect(counts.hex).toBe(0);
-  expect(counts.currentColor).toBeGreaterThan(0);
+test('doodles sit beside each other on a wide screen', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await open(page, '#doodles');
+  const perRow = await page.evaluate(() => {
+    const grids = [...document.querySelectorAll('#sec-doodles *')]
+      .filter((e) => getComputedStyle(e).display === 'grid' && e.children.length > 4);
+    return grids.map((g) => {
+      const tops = new Set([...g.children].map((k) => Math.round(k.getBoundingClientRect().top)));
+      return g.children.length / tops.size;
+    });
+  });
+  expect(perRow.length).toBeGreaterThan(0);
+  for (const n of perRow) expect(n).toBeGreaterThanOrEqual(2);
 });
 
-test('recolouring a token follows it across the whole set', async ({ page }) => {
-  await page.locator('.hov-card button[title="Customize and export"]').first().click();
-  const dialog = page.getByRole('dialog');
-  await expect(dialog).toBeVisible();
-
-  await dialog.locator('input[type=color]').first().evaluate((el) => {
-    el.value = '#00ff00';
-    el.dispatchEvent(new Event('input', { bubbles: true }));
-  });
-
-  // The point of shared tokens: one edit reaches every icon that paints with it,
-  // not just the one in the dialog.
-  await expect
-    .poll(() => page.evaluate(() => document.querySelectorAll('svg [fill="#00ff00"]').length))
-    .toBeGreaterThan(1);
-
-  await page.keyboard.press('Escape');
-  await expect(dialog).toHaveCount(0);
+test('a doodle is one grid cell, not a stack of six', async ({ page }) => {
+  await open(page, '#doodles');
+  // The laptop figure once closed after the six that follow it, nesting them in one cell.
+  await expect(page.locator('#sec-doodles figure figure')).toHaveCount(0);
 });
 
-test('a palette value that is not a colour is refused', async ({ page }) => {
-  await page.locator('.hov-card button[title="Customize and export"]').first().click();
-  const swatch = page.getByRole('dialog').locator('input[type=color]').first();
-
-  await swatch.evaluate((el) => {
-    el.value = '#00ff00';
-    el.dispatchEvent(new Event('input', { bubbles: true }));
-  });
-  await expect
-    .poll(() => page.evaluate(() => document.querySelectorAll('svg [fill="#00ff00"]').length))
-    .toBeGreaterThan(1);
-
-  // A colour input normalises anything invalid to #000000 before a handler ever sees
-  // it, so the type is dropped to text to put a hostile string on the wire at all.
-  // These values are substituted into the SVG source the page renders and exports.
-  await swatch.evaluate((el) => {
-    el.type = 'text';
-    el.value = '" onload="window.__pwned = 1';
-    el.dispatchEvent(new Event('input', { bubbles: true }));
-  });
-  await page.waitForTimeout(150);
-
-  expect(await page.evaluate(() => window.__pwned ?? null)).toBeNull();
-  expect(await page.evaluate(() => document.body.innerHTML.includes('onload="window.__pwned'))).toBe(false);
-  // The refused write must not clobber the good one either.
-  expect(await page.evaluate(() => document.querySelectorAll('svg [fill="#00ff00"]').length)).toBeGreaterThan(1);
+test('the page declares itself to a crawler and a screen reader', async ({ page }) => {
+  await open(page);
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /coffee/i);
+  await expect(page.locator('meta[property="og:title"]')).toHaveCount(1);
+  await expect(page.locator('meta[property="og:description"]')).toHaveCount(1);
 });
 
-test('the theme toggle survives a reload', async ({ page }) => {
-  await page.getByRole('button', { name: 'Dark' }).click();
-  await expect(page.locator('[data-theme="dark"]').first()).toBeVisible();
-  await page.reload();
-  await expect(page.locator('[data-theme="dark"]').first()).toBeVisible();
+test('the starter offers only the stacks the package ships', async ({ page }) => {
+  await open(page, '#create');
+  const body = await page.locator('#sec-create').innerText();
+  expect(body).not.toMatch(/\bVue\b/);
+  expect(body).not.toMatch(/\bBlazor\b/);
 });
 
 test('the page loads with no console errors', async ({ page }) => {
   const errors = [];
-  // giscus is a third party we do not control, and it logs loudly until the GitHub App
-  // is installed on the repo. Everything else still fails the test.
-  const ours = (t) => !/giscus/i.test(t);
-  page.on('console', (m) => m.type() === 'error' && ours(m.text()) && errors.push(m.text()));
-  page.on('pageerror', (e) => ours(String(e)) && errors.push(String(e)));
-  await page.goto('/docs/');
-  await expect(page.locator('.hov-card')).toHaveCount(ICON_COUNT);
+  page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
+  page.on('pageerror', (e) => errors.push(String(e)));
+  await open(page);
+  for (const key of ['doodles', 'ui', 'palettes']) {
+    await page.evaluate((k) => { window.location.hash = k; }, key);
+    await expect(page.locator('#' + PANELS[key])).toHaveCount(1);
+  }
   expect(errors).toEqual([]);
 });
 
-test('the star count and the social links are present', async ({ page }) => {
-  // The star button must degrade to a plain link rather than break the header, so the
-  // link is asserted unconditionally and the count only when the API answered.
-  const gh = page.locator('header a[href="https://github.com/BaryoDev/Kapehan"]');
-  await expect(gh).toBeVisible();
-  await expect(gh).toContainText('7');
-  await expect(page.locator('a[href="https://www.facebook.com/baryodev"]')).toBeVisible();
-  await expect(page.locator('a[href="https://baryodev.medium.com/"]')).toBeVisible();
-});
+test('the theme toggle survives a reload', async ({ page }) => {
+  await open(page);
+  const toggle = page.getByRole('button', { name: /^(Dark|Light)$/ }).first();
+  const before = (await toggle.innerText()).trim();
+  await toggle.click();
+  await expect(toggle).not.toHaveText(before);
+  const after = (await toggle.innerText()).trim();
 
-test('a failing star API leaves the header intact', async ({ page }) => {
-  await page.route('https://api.github.com/**', (r) => r.fulfill({ status: 403, body: '{}' }));
-  await page.addInitScript(() => { try { localStorage.removeItem('kapehan.stars'); } catch (e) {} });
-  await page.goto('/docs/');
-  await expect(page.locator('.hov-card')).toHaveCount(ICON_COUNT);
-  const gh = page.locator('header a[href="https://github.com/BaryoDev/Kapehan"]');
-  await expect(gh).toBeVisible();
-  await expect(gh).toHaveText(/GitHub/);
-  // No count, no broken star glyph, just the link.
-  await expect(gh).not.toHaveText(/\u2605/);
-});
-
-/**
- * Accessibility and robustness. The page had zero media queries, zero focus styling,
- * a link colour failing AA, and an empty #app that rendered nothing without JS.
- */
-test.describe('responsive', () => {
-  for (const [label, width, height] of [['phone', 390, 844], ['tablet', 768, 1024], ['desktop', 1280, 900]]) {
-    test(`no horizontal overflow at ${width}px (${label})`, async ({ page }) => {
-      await page.setViewportSize({ width, height });
-      await page.goto('/docs/');
-      await expect(page.locator('.hov-card')).toHaveCount(ICON_COUNT);
-      const m = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, inner: window.innerWidth }));
-      expect(m.scroll, `document is ${m.scroll}px wide in a ${m.inner}px window`).toBe(m.inner);
-    });
-  }
-
-  test('the h1 shrinks on a phone instead of staying 68px', async ({ page }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/docs/');
-    const px = await page.locator('h1').evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
-    expect(px).toBeGreaterThanOrEqual(36);
-    expect(px).toBeLessThan(50);
-  });
-
-  test('the accent swatches step out of the nav on a phone', async ({ page }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/docs/');
-    await expect(page.locator('.accent-swatches')).toBeHidden();
-    await page.setViewportSize({ width: 1280, height: 900 });
-    await expect(page.locator('.accent-swatches')).toBeVisible();
-  });
-});
-
-test('the search box has an accessible name, not just a placeholder', async ({ page }) => {
-  await page.goto('/docs/');
-  await expect(page.getByRole('textbox', { name: /search icons/i })).toBeVisible();
-});
-
-test('keyboard focus draws a visible ring', async ({ page }) => {
-  await page.goto('/docs/');
-  await expect(page.locator('.hov-card')).toHaveCount(ICON_COUNT);
-  const tile = page.locator('.hov-card button[title="Customize and export"]').first();
-  await tile.focus();
-  const ring = await tile.evaluate((el) => {
-    const cs = getComputedStyle(el);
-    return { width: cs.outlineWidth, style: cs.outlineStyle, offset: cs.outlineOffset };
-  });
-  expect(ring.style).not.toBe('none');
-  expect(parseFloat(ring.width)).toBeGreaterThanOrEqual(2);
-});
-
-test('the social card and the CDN hash are declared', async ({ page }) => {
-  await page.goto('/docs/');
-  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', 'https://baryodev.github.io/Kapehan/og.png');
-  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image');
-  // An SRI hash that does not match would block Vue and leave the noscript page, so
-  // the fact that the app mounts at all is the real assertion here.
-  await expect(page.locator('script[src*="vue.global.prod.js"]')).toHaveAttribute('integrity', /^sha384-/);
-});
-
-/**
- * The export paths. Nothing covered these before, and they are the whole point of the
- * page: a visitor comes to take an icon away.
- */
-test.describe('downloads', () => {
-  test('an icon exports as SVG with the current recolouring baked in', async ({ page }) => {
-    await page.locator('.hov-card button[title="Customize and export"]').first().click();
-    const dialog = page.getByRole('dialog');
-    await dialog.locator('input[type=color]').first().evaluate((el) => {
-      el.value = '#00ff00';
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-    });
-
-    const [download] = await Promise.all([
-      page.waitForEvent('download'),
-      dialog.getByRole('button', { name: 'Download SVG' }).click(),
-    ]);
-    expect(download.suggestedFilename()).toMatch(/\.svg$/);
-
-    const stream = await download.createReadStream();
-    const body = await new Promise((res) => {
-      let d = '';
-      stream.on('data', (c) => (d += c));
-      stream.on('end', () => res(d));
-    });
-    expect(body).toContain('<svg');
-    expect(body).toContain('#00ff00');
-  });
-
-  test('an icon exports as PNG at the chosen size', async ({ page }) => {
-    await page.locator('.hov-card button[title="Customize and export"]').first().click();
-    const dialog = page.getByRole('dialog');
-    await dialog.getByRole('button', { name: '256px' }).click();
-
-    const [download] = await Promise.all([
-      page.waitForEvent('download'),
-      dialog.getByRole('button', { name: 'Download PNG' }).click(),
-    ]);
-    expect(download.suggestedFilename()).toMatch(/-256\.png$/);
-  });
-
-  test('both sprite sheets download and carry every icon', async ({ page }) => {
-    for (const [label, name] of [['Colour sprite', 'kapehan-sprite.svg'], ['Mono sprite', 'kapehan-sprite-mono.svg']]) {
-      const [download] = await Promise.all([
-        page.waitForEvent('download'),
-        page.getByRole('button', { name: label }).click(),
-      ]);
-      expect(download.suggestedFilename()).toBe(name);
-
-      const stream = await download.createReadStream();
-      const body = await new Promise((res) => {
-        let d = '';
-        stream.on('data', (c) => (d += c));
-        stream.on('end', () => res(d));
-      });
-      expect((body.match(/<symbol /g) || []).length).toBe(ICON_COUNT);
-      expect(body).toContain('id="kape-barako"');
-    }
-  });
-
-  test('the SVG and JSX copy buttons report back', async ({ page, context }) => {
-    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
-    const card = page.locator('.hov-card').first();
-    await card.getByRole('button', { name: 'SVG' }).click();
-    await expect(card.getByRole('button', { name: /copied/ })).toBeVisible();
-  });
+  await page.reload();
+  await expect(tablist(page)).toBeVisible({ timeout: 20000 });
+  await expect(page.getByRole('button', { name: /^(Dark|Light)$/ }).first()).toHaveText(after);
 });

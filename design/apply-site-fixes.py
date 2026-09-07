@@ -365,6 +365,36 @@ sub(
     "html lang, description, og tags, reduced-motion, focus-visible, touch targets",
 )
 
+# The export still said thirty-seven, five icons behind, in the one place it states a count.
+sub(
+    "Thirty-seven drinks, brewers and beans",
+    "Forty-two drinks, brewers and beans",
+    "the set section states the real icon count",
+)
+
+# Strip the parked stacks out of the shipped component data.
+#
+# FW_OPTS no longer offers Vue or Blazor, so these 60 fields are inert: nothing renders them.
+# They are still bytes a reader can open and copy, and the rule is that publishing a field a
+# consumer can read is what makes it a promise. The npm manifest is built the same way, in
+# scripts/generators/components.mjs, which strips exactly these two keys.
+#
+# Matched as JS string literals, escape-aware, so a \" inside a snippet does not end the match.
+import re as _re
+for _key in ('vue', 'blazor'):
+    _pat = _re.compile(r'\n      ' + _key + r': "(?:[^"\\]|\\.)*",?')
+    _n = len(_pat.findall(t))
+    assert _n == 30, 'expected 30 %s fields in SHIP, found %d' % (_key, _n)
+    t = _pat.sub('', t)
+    applied.append('SHIP drops its 30 %s snippets, which nothing renders' % _key)
+
+# And the CLI preview branch that names the parked .NET package.
+sub(
+    "(st.fw === 'blazor' ? ' and Kapehan.Components' : st.fw === 'react' ? ' and co",
+    "(st.fw === 'react' ? ' and co",
+    "cli preview drops its Blazor branch",
+)
+
 # ------------------------------------------- the doodles sub-canvas (manifest)
 # The Cafe moments grid rendered 2 up for the first five doodles and then one per row from
 # "Cashier" on. The grid was never at fault: the laptop <figure> is closed at the very end
@@ -430,12 +460,52 @@ applied.append("laptop figure closes before cashier, so all 12 cafe doodles sit 
 encoded = json.dumps(t).replace("<\\/", "<\\u002F").replace("</", "<\\u002F")
 assert "</" not in encoded, "payload still contains a raw </ which would close the script tag"
 lines[TPL_LINE] = encoded
-open(OUT, "w", encoding="utf-8").write("\n".join(lines))
+# --------------------------------------------------------- the no-JS fallback
+# The page is a React bundle that compiles its own JSX in the browser, so with JS off, a
+# blocked CDN or a failed compile there is nothing at all. The runtime's own fallback is one
+# sentence saying JavaScript is required, and that is what a crawler would index.
+#
+# This patches the OUTER wrapper, not the template. The template is inert text inside a
+# <script> tag until the runtime parses it, so a <noscript> placed there never renders with
+# JS off. Worse, the runtime parses the template with DOMParser, which has scripting
+# disabled and therefore treats <noscript> contents as real elements: a <style> in there
+# became a live stylesheet and its display:none hid the whole page.
+OUTER_NOSCRIPT = """<noscript>
+    <style>#__bundler_loading, #__bundler_thumbnail { display: none !important; }</style>
+    <div style="position:fixed;inset:0;overflow:auto;background:#FBF6EE;color:#241A13;z-index:10001">
+      <main style="max-width:44rem;margin:0 auto;padding:12vh 6vw;font:16px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+        <h1 style="font-size:2.2rem;line-height:1.1;margin:0 0 .6em">Kapehan: free coffee icons</h1>
+        <p style="margin:0 0 1em">Icons, doodles, drink palettes and UI parts that all follow one hand. Plain CSS, in HTML or React. MIT, free for tees, stickers, apps, anything.</p>
+        <p style="margin:0 0 1em"><code style="background:#F0E6D8;padding:.2em .5em;border-radius:4px">npm i kapehan</code></p>
+        <p style="margin:0 0 1em">Browsing the set needs JavaScript. Everything is on GitHub either way.</p>
+        <p style="margin:0"><a href="https://github.com/BaryoDev/Kapehan" style="color:#A94227">github.com/BaryoDev/Kapehan</a></p>
+      </main>
+    </div>
+  </noscript>"""
+
+_old_ns = (
+    '<noscript>\n    <style>#__bundler_loading { display: none; }</style>\n'
+    '    <div style="position:fixed;bottom:12px;left:12px;font:13px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;'
+    'color:#999;background:rgba(255,255,255,0.9);padding:6px 12px;border-radius:6px;'
+    'box-shadow:0 1px 4px rgba(0,0,0,0.08);z-index:10000;">\n'
+    '      This page requires JavaScript to display.\n    </div>\n  </noscript>'
+)
+_joined = "\n".join(lines)
+assert _joined.count(_old_ns) == 1, "the wrapper's own noscript block was not found verbatim"
+_joined = _joined.replace(_old_ns, OUTER_NOSCRIPT, 1)
+applied.append("a no-JS visitor gets the pitch, the install and the link")
+
+open(OUT, "w", encoding="utf-8").write(_joined)
+lines = _joined.split("\n")
 
 # Prove the file we just wrote decodes back to exactly the template we built. The first
 # attempt at this shipped a payload that closed its own script tag and the page died on
 # load, which looked nothing like an encoding bug from the outside.
-check = open(OUT, encoding="utf-8").read().split("\n")[TPL_LINE]
+#
+# The line is found again rather than reused: the no-JS fallback above is taller than the
+# block it replaces, so TPL_LINE no longer points at the payload once it lands.
+_written = open(OUT, encoding="utf-8").read().split("\n")
+check = next(l for l in _written if l.startswith('"<!DOCTYPE html>'))
 assert json.loads(check) == t, "round trip failed: the written payload does not decode to the patched template"
 
 print("template %d -> %d bytes" % (orig_len, len(t)))

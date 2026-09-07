@@ -114,10 +114,12 @@ for (const [where, text] of [['README.md', codeOnly(readme)], ['docs/index.html'
   }
 }
 
-// The version shown to a visitor and the version they would install must agree.
+// The version shown to a visitor and the version they would install must agree. Matched only
+// where it is element text, because a bare /v\d+\.\d+/ over the whole page also matches SVG
+// path data: the GitHub logo contains "v3.17c0", which read as a version and failed the gate.
 const shownWant = 'v' + pkg.version.split('.').slice(0, 2).join('.');
-for (const v of new Set(site.match(/v\d+\.\d+/g) ?? [])) {
-  if (v !== shownWant) fail.push(`docs/index.html shows ${v} but package.json is ${pkg.version}`);
+for (const m of site.matchAll(/>\s*(v\d+\.\d+)\s*</g)) {
+  if (m[1] !== shownWant) fail.push(`docs/index.html shows ${m[1]} but package.json is ${pkg.version}`);
 }
 
 // Every icon the docs name must be a real name or alias, or the snippet renders nothing.
@@ -205,13 +207,30 @@ for (const m of readme.matchAll(/`npm i kapehan` gives you (\d+\.\d+\.\d+) today
 const OFFERS = [
   [/\bVue\b\s*(?:or|,|and)\s*Blazor|\bBlazor\b\s*(?:or|,|and)\s*Vue/i, 'offers Vue or Blazor as a stack'],
   [/kapehan\/vue|kapehan\/blazor/i, 'promises a parked subpath'],
-  [/\.razor\b/i, 'references a .razor file'],
-  [/Kapehan\.Components/i, 'references the parked Blazor package'],
 ];
 for (const [where, text] of [['README.md', readme], ['docs/index.html', site]]) {
   for (const [re, why] of OFFERS) {
     if (re.test(text)) fail.push(`${where} ${why}, which is parked`);
   }
+}
+
+// The site bundles the whole design canvas, so it carries the Vue and Blazor starter
+// branches as unreachable code. What decides whether a visitor can reach them is the stack
+// picker, so that is what is asserted, the same way it is for the canvas itself. Banning
+// ".razor" outright would fail on a branch nothing can run, and the useful signal is not
+// whether the string exists but whether the page offers to hand someone a .razor project.
+const siteFw = site.match(/static FW_OPTS = \{([^}]*)\}/);
+if (siteFw) {
+  const offered = [...siteFw[1].matchAll(/(\w+)\s*:/g)].map((m) => m[1]).sort();
+  if (offered.join(',') !== 'html,react') {
+    fail.push(`docs/index.html offers stacks [${offered.join(', ')}]; only html and react ship`);
+  }
+}
+// And no parked snippet may be shipped as readable component data, which is the same rule
+// the npm manifest follows: a field a consumer can read is a promise.
+for (const parked of ['vue', 'blazor']) {
+  const n = (site.match(new RegExp(`\\\\n      ${parked}: "`, 'g')) ?? []).length;
+  if (n) fail.push(`docs/index.html ships ${n} ${parked} component snippets, which are parked`);
 }
 // The README has no Vue or Blazor runtime of its own, so there the bare word is an offer.
 for (const parked of ['Vue', 'Blazor']) {
