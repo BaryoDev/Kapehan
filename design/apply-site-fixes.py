@@ -395,6 +395,73 @@ sub(
     "cli preview drops its Blazor branch",
 )
 
+# ------------------------------------------------------- the primary CTA's contrast
+# "Brew yours" was #FBF6EE on the raw accent: 4.08:1, under the 4.5 AA floor, in BOTH
+# themes. The hero is dark either way, so this was never a dark-mode-only bug.
+#
+# No single text colour fixes it, because the accent is one of six the visitor picks and
+# three of them fail against light AND dark text at full strength:
+#
+#   barako #E5901A  paper 2.34  ink 6.77     roast  #8C5A32  paper 5.39  ink 2.94
+#   clay   #C2593A  paper 4.08  ink 3.88     pandan #6E8B5E  paper 3.54  ink 4.48
+#   ube    #8E6BA8  paper 4.05  ink 3.91     melon  #DE7286  paper 2.85  ink 5.57
+#
+# So the button background is darkened just enough that the off-white text clears AA, which
+# keeps the light-on-colour look every accent was designed for. Roast needs nothing; clay
+# and ube need 6-7%; barako, the default, needs the most at 31%.
+sub(
+    "  rgba(hex, a) {",
+    """  /** WCAG relative luminance of a hex. */
+  static lum(hex) {
+    const h = hex.replace('#', '');
+    const n = parseInt(h.length === 3 ? h.replace(/./g, (c) => c + c) : h, 16);
+    const f = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((v) => {
+      v /= 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * f[0] + 0.7152 * f[1] + 0.0722 * f[2];
+  }
+
+  static contrast(a, b) {
+    const x = Component.lum(a), y = Component.lum(b);
+    return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+  }
+
+  static shade(hex, f) {
+    const h = hex.replace('#', '');
+    const n = parseInt(h.length === 3 ? h.replace(/./g, (c) => c + c) : h, 16);
+    return '#' + [(n >> 16) & 255, (n >> 8) & 255, n & 255]
+      .map((v) => Math.round(v * f).toString(16).padStart(2, '0')).join('');
+  }
+
+  /**
+   * The accent, darkened only as far as it takes for #FBF6EE text on it to clear WCAG AA.
+   * Returns the accent untouched when it already passes, so roast and the darker palettes
+   * look exactly as drawn.
+   */
+  static onPaper(hex) {
+    const PAPER = '#FBF6EE';
+    let f = 1;
+    while (f > 0.3 && Component.contrast(PAPER, Component.shade(hex, f)) < 4.5) f -= 0.01;
+    return Component.shade(hex, f);
+  }
+
+  rgba(hex, a) {""",
+    "an accent-aware background that keeps the CTA text above AA",
+)
+
+sub(
+    "      tabs, tabIcons: tab === 'icons'",
+    "      ctaBg: Component.onPaper(accent),\n      tabs, tabIcons: tab === 'icons'",
+    "ctaBg reaches the template",
+)
+
+sub(
+    'sc-camel-on-click="{{ goBrew }}" style="background:{{ accent }};color:#FBF6EE;',
+    'sc-camel-on-click="{{ goBrew }}" style="background:{{ ctaBg }};color:#FBF6EE;',
+    "the CTA uses the AA-safe background",
+)
+
 # ------------------------------------------- the doodles sub-canvas (manifest)
 # The Cafe moments grid rendered 2 up for the first five doodles and then one per row from
 # "Cashier" on. The grid was never at fault: the laptop <figure> is closed at the very end

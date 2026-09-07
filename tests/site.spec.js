@@ -194,6 +194,47 @@ test('the starter offers only the stacks the package ships', async ({ page }) =>
   expect(body).not.toMatch(/\bBlazor\b/);
 });
 
+test('the primary call to action clears AA on every accent, in both themes', async ({ page }) => {
+  await open(page);
+  // It was #FBF6EE on the raw accent at 4.08:1, in both themes. No single text colour fixes
+  // that: the visitor picks one of six accents and three of them fail against light AND dark
+  // text at full strength, so the button background is darkened only as far as it takes.
+  const results = await page.evaluate(async () => {
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    const lum = (c) => {
+      const m = c.match(/[\d.]+/g).map(Number);
+      const [r, g, b] = m.slice(0, 3).map((v) => {
+        v /= 255;
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    const ratio = (a, b) => {
+      const x = lum(a), y = lum(b);
+      return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+    };
+    const cta = () => [...document.querySelectorAll('button')].find((b) => /Brew yours/.test(b.textContent || ''));
+    const swatches = [...document.querySelectorAll('button[aria-label^="Accent"]')];
+    const toggle = [...document.querySelectorAll('button')].find((b) => /^(Dark|Light)$/.test(b.textContent.trim()));
+
+    const out = [];
+    for (const theme of ['light', 'dark']) {
+      for (const sw of swatches) {
+        sw.click();
+        await sleep(250);
+        const cs = getComputedStyle(cta());
+        out.push({ theme, accent: sw.getAttribute('aria-label'), ratio: ratio(cs.color, cs.backgroundColor) });
+      }
+      if (theme === 'light') { toggle.click(); await sleep(500); }
+    }
+    return out;
+  });
+
+  expect(results.length).toBe(12); // six accents, two themes
+  const failures = results.filter((r) => r.ratio < 4.5);
+  expect(failures, JSON.stringify(failures)).toEqual([]);
+});
+
 test('the page loads with no console errors', async ({ page }) => {
   const errors = [];
   page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
