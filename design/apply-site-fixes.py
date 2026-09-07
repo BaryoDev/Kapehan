@@ -436,6 +436,24 @@ doodles = doodles.replace(
     1,
 )
 
+# The doodles are drawn "cropped tight", so about half of them fill their 640x400 frame
+# edge to edge. The card behind them has a radius and a bottom shadow but no border, so on
+# those the frame disappears completely and the drawing reads as cut off at the card edge,
+# while the centred ones sit in a clean white card. Same card, two different looks.
+#
+# An inset ring rather than a border: it follows the existing border-radius, paints over
+# artwork that reaches the edge, and adds nothing to the box, so every card keeps its exact
+# 504x319 geometry and the SVG is not resized.
+_CARD = 'background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)'
+_CARD_RINGED = (
+    'background:#FFFDF9;border-radius:6px;overflow:hidden;'
+    'box-shadow:inset 0 0 0 1px var(--line,#EFE4D3),0 1px 0 var(--line,#EFE4D3)'
+)
+_n_cards = doodles.count(_CARD)
+assert _n_cards == 24, "expected 24 doodle cards, found %d" % _n_cards
+doodles = doodles.replace(_CARD, _CARD_RINGED)
+applied.append("every doodle card keeps a visible frame, even where the drawing bleeds")
+
 # Prove the nesting is gone: every figure in the file must now close before the next opens.
 order = [m.group(0) for m in re.finditer(r"<figure\b|</figure>", doodles)]
 depth = 0

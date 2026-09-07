@@ -160,6 +160,19 @@ test('doodles sit beside each other on a wide screen', async ({ page }) => {
   for (const n of perRow) expect(n).toBeGreaterThanOrEqual(2);
 });
 
+test('every doodle card keeps a frame, including the ones drawn to the edge', async ({ page }) => {
+  await open(page, '#doodles');
+  // About half the doodles are drawn "cropped tight" and fill their frame edge to edge. The
+  // card has a radius but no border, so on those the frame vanished and the drawing read as
+  // cut off, while the centred ones sat in a clean white card. An inset ring fixes it
+  // without changing the box, so this checks the ring rather than a border.
+  const missing = await page.evaluate(() =>
+    [...document.querySelectorAll('#sec-doodles figure > div')]
+      .filter((card) => !getComputedStyle(card).boxShadow.includes('inset'))
+      .length);
+  expect(missing).toBe(0);
+});
+
 test('a doodle is one grid cell, not a stack of six', async ({ page }) => {
   await open(page, '#doodles');
   // The laptop figure once closed after the six that follow it, nesting them in one cell.
