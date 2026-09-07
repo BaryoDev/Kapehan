@@ -117,9 +117,11 @@ test('the tablist is wired for a screen reader', async ({ page }) => {
 
 test('switching tabs does not throw the reader back above the hero', async ({ page }) => {
   await open(page);
-  await page.mouse.wheel(0, 2500);
-  const before = await page.evaluate(() => window.scrollY);
-  expect(before).toBeGreaterThan(0);
+  // scrollTo, not mouse.wheel. The wheel event depends on the page being ready to receive
+  // it and silently did nothing about one run in ten, which failed the test on its own
+  // setup rather than on what it measures.
+  await page.evaluate(() => window.scrollTo(0, 2500));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
 
   await tab(page, 'Palettes').click();
   // Lands at the top of the new panel, just under the sticky nav, not at the document top.
