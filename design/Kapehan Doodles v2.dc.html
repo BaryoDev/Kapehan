@@ -37,16 +37,17 @@
 </style>
 </helmet>
 
-<div style="min-height:{{ minH }};background:var(--bg,#FBF6EE);color:var(--ink,#241A13);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;--acc:{{ acc }};--hatch-op:{{ hatchOp }};--anim:{{ anim }};--bg:{{ pageBg }};--card:{{ cardBg }};--line:{{ lineCol }};--ink:{{ inkCol }};--muted:{{ mutedCol }}">
+<div style="min-height:{{ minH }};background:var(--bg,#FBF6EE);color:var(--ink,#241A13);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;--acc:{{ acc }};--hatch-op:{{ hatchOp }};--anim:{{ anim }};--bg:{{ pageBg }};--card:{{ cardBg }};--line:{{ lineCol }};--ink:{{ inkCol }};--muted:{{ mutedCol }};--paper:{{ paperCol }}">
   <div style="max-width:1180px;margin:0 auto;padding:{{ pad }}">
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><defs><filter id="k-ink" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="1" seed="11" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter></defs></svg>
 
     <sc-if value="{{ showHead }}" hint-placeholder-val="{{ true }}">
     <header style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:48px;align-items:end;padding-bottom:40px;border-bottom:1px solid var(--line,#EFE4D3)">
       <div>
-        <div style="font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted,#7A6A5C);margin-bottom:22px">Kapehan · Doodles · second pass</div>
+        <div style="font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted,#7A6A5C);margin-bottom:22px">Kapehan · Doodles</div>
         <h1 style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:clamp(40px,6.4vw,72px);line-height:.98;letter-spacing:-.02em;text-wrap:balance">Drawn like somebody <em style="font-style:italic;color:var(--acc,#C2593A)">sat there.</em></h1>
       </div>
-      <p style="margin:0;font-size:16px;line-height:1.65;color:var(--muted,#7A6A5C);max-width:44ch;text-wrap:pretty">Wobbly contours, fills that miss their lines a little, hatching only where the shadow falls. Twelve café moments, twelve things a screen has to say. Below them, how they sit inside a real page and a real phone.</p>
+      <p style="margin:0;font-size:16px;line-height:1.65;color:var(--muted,#7A6A5C);max-width:44ch;text-wrap:pretty">Wobbly ink, fills that miss their lines, hatching only where the shade falls. Twelve café scenes and twelve screen states, shown in a real page and a real phone.</p>
     </header>
     </sc-if>
 
@@ -145,25 +146,27 @@
     <section style="padding-top:{{ galTop }}">
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:28px">
         <h2 style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:clamp(28px,3.6vw,40px);letter-spacing:-.015em">Café moments</h2>
-        <span style="font-size:13px;color:var(--muted,#7A6A5C)">640 × 400 · cropped tight, drawn off-centre · 12 scenes</span>
+        <span style="font-size:13px;color:var(--muted,#7A6A5C)">640 × 400 · 12 scenes</span>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:36px 28px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:40px 24px">
 
         <figure data-doodle="pour-over" data-screen-label="Pour-over" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Close crop of a gooseneck kettle pouring into a pour-over cone on a glass carafe">
               <defs><pattern id="hd1" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-pour">
+                <path d="M-40 386c240-9 470-9 720 0V440H-40z" fill="#EFE4D3"></path>
                 <g stroke="none">
                   <path d="M262 322c22-6 100-6 128 2l-6 44c-4 20-30 26-58 26s-54-6-58-26z" style="fill:var(--acc,#C2593A)"></path>
                   <path d="M216 150c70-10 150-8 224 0l-54 84c-40 4-78 4-118 0z" fill="#F1E8DA"></path>
                   <path d="M474 98c46-14 96-10 128 4l8 62c-42 16-98 16-132 2z" fill="#F1E8DA"></path>
                   <path d="M474 98c46-14 96-10 128 4l8 62c-42 16-98 16-132 2z" fill="url(#hd1)"></path>
+                  <path d="M476 128c-48 6-102 30-136 62l16 28c32-28 78-50 126-62z" fill="#F1E8DA"></path>
                   <path d="M118 340c-8-16 8-30 22-28 16 2 22 20 12 32-10 10-28 8-34-4z" fill="#3F2A1D"></path>
                   <path d="M160 358c-4-14 12-24 24-20 14 4 16 20 6 30s-26 4-30-10z" fill="#3F2A1D"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M244 224c50-6 110-4 156 2"></path>
                   <path d="M246 232l12 128c2 22 26 32 62 32 34 0 58-10 62-30l10-130"></path>
                   <path d="M400 250c40 6 42 52 6 62"></path>
@@ -174,6 +177,7 @@
                   <path d="M472 104l10 60c40 14 92 12 130-4"></path>
                   <path d="M474 130c-46 4-100 26-134 60"></path>
                   <path d="M482 156c-48 12-94 34-126 62"></path>
+                  <path d="M340 190c6 8 12 18 16 28" stroke-width="3.5"></path>
                   <path d="M492 94c12-30 66-38 92-14"></path>
                   <path d="M540 80l4-16M530 62c8-4 18-4 26 0"></path>
                   <path d="M526 70c-4-22 20-36 40-26 12 6 16 20 8 30"></path>
@@ -197,17 +201,17 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Pour-over</span> <span style="color:var(--muted,#7A6A5C)">hand cropped at the wrist, kettle leaves the frame</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Pour-over</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">hand cropped at the wrist, kettle leaves the frame</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="barista" data-screen-label="Barista" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="A barista leaning over an espresso machine, seen from the side, cropped at the counter">
               <defs><pattern id="hd2" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-barista">
@@ -222,7 +226,7 @@
                   <path d="M356 146c68-8 134-6 202 0l-2 46c-70 6-134 6-204 2z" fill="#FFFDF9"></path>
                   <path d="M0 316c220-10 430-10 640 0v84H0z" fill="#E2D3BC"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M110 138c8-40 62-50 92-24 16 14 14 42-6 56-30 20-72 8-84-14"></path>
                   <path d="M120 122c22-14 56-14 80 2"></path>
                   <path d="M156 176c-10 8-14 16-14 26"></path>
@@ -244,7 +248,7 @@
                   <path d="M0 318c220-10 430-10 640 0"></path>
                   <path d="M0 326h640" stroke-width="2" opacity=".3"></path>
                 </g>
-                <path d="M436 274v16M470 274v16" style="stroke:var(--acc,#C2593A);animation:k-drip 1.5s linear infinite;animation-play-state:var(--anim,running)" stroke-width="4" stroke-linecap="round"></path>
+                <path d="M436 274v16M470 274v16" style="stroke:var(--acc,#C2593A);animation:k-pulse 1.5s ease-in-out infinite;animation-play-state:var(--anim,running)" stroke-width="4" stroke-linecap="round"></path>
                 <circle cx="388" cy="168" r="8" style="fill:var(--acc,#C2593A);animation:k-blink 1.7s steps(1,end) infinite;animation-play-state:var(--anim,running)"></circle>
                 <circle cx="416" cy="168" r="8" fill="#BE7008"></circle>
                 <path d="M512 284c-10-12 8-18-2-30" stroke="#C9B9A6" stroke-width="3.5" stroke-linecap="round" fill="none" style="animation:k-steam 3.1s ease-out infinite;animation-play-state:var(--anim,running)"></path>
@@ -256,17 +260,17 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Barista</span> <span style="color:var(--muted,#7A6A5C)">leaning in, weight on the counter, shot pulling</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Barista</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">leaning in, weight on the counter, shot pulling</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="latte-sip" data-screen-label="Latte sip" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Close-up of someone with shoulders raised, lifting a wide latte cup with both hands">
               <defs><pattern id="hd3" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-latte">
@@ -276,7 +280,7 @@
                   <path d="M262 220c-70 10-130 50-160 110l-10 74 456-4-6-70c-30-60-100-100-170-110z" fill="url(#hd3)"></path>
                   <path d="M262 224c40 24 90 24 130-2l-10 40c-36 20-76 20-112 0z" style="fill:var(--acc,#C2593A)"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M230 128c6-64 74-102 136-82 46 14 76 56 68 106"></path>
                   <path d="M236 96c50-32 130-26 190 18"></path>
                   <path d="M228 150c-6 40 14 76 46 92"></path>
@@ -292,7 +296,7 @@
                   <path d="M296 282c22-10 50-8 66 6-10 12-30 16-48 10-8-4-14-10-18-16z" fill="#FFFDF9" stroke="none"></path>
                   <path d="M234 296c-22-8-48 2-54 22-6 22 12 40 40 38l12-2 10-56z" fill="#FFFDF9" stroke="none"></path>
                   <path d="M440 300c22-10 48-2 56 18 6 22-12 40-44 36l-6-2-12-50z" fill="#FFFDF9" stroke="none"></path>
-                  <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                  <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M228 248c74-10 148-10 222 0"></path>
                     <path d="M232 254l10 40c14 40 46 62 96 62s80-22 94-62l12-42"></path>
                     <path d="M446 266c36 6 36 48 2 58"></path>
@@ -314,17 +318,17 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Latte sip</span> <span style="color:var(--muted,#7A6A5C)">shoulders up, both hands, face behind the rim</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Latte sip</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">shoulders up, both hands, face behind the rim</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="coffee-donut" data-screen-label="Coffee and donut" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Top-down view of a round table with a cup of coffee, a bitten donut on a plate and a folded napkin">
               <defs><pattern id="hd4" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-donut">
@@ -338,7 +342,7 @@
                   <path d="M448 130c50-4 92 34 92 82 0 46-40 84-90 84-48 0-88-36-86-84 0-46 38-80 84-82zM452 180c-20 0-32 16-32 34 0 20 14 34 32 34s32-14 32-34c0-18-14-34-32-34z" style="fill:var(--acc,#C2593A)" fill-rule="evenodd"></path>
                   <circle cx="524" cy="154" r="27" fill="#FFFDF9"></circle>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M40 60c180-70 400-64 560 30"></path>
                   <path d="M598 92c50 120 34 240-38 316M44 62C-10 190 8 300 90 388"></path>
                   <path d="M144 192c0-42 30-72 70-72 38 0 68 30 68 70 0 40-30 70-70 70-38 0-68-30-68-68z"></path>
@@ -369,17 +373,17 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Coffee + donut</span> <span style="color:var(--muted,#7A6A5C)">seen from above, one bite gone</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Coffee + donut</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">seen from above, one bite gone</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="friends" data-screen-label="Friends" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Two friends leaning towards each other over a small table, hands resting around their cups">
               <defs><pattern id="hd5" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-friends">
@@ -394,7 +398,7 @@
                   <path d="M240 238c14-2 30-2 44 0l-4 26c-10 12-28 12-38 0z" fill="#FFFDF9"></path>
                   <path d="M362 240c14-2 30-2 44 0l-4 26c-10 12-28 12-38 0z" fill="#FFFDF9"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M104 128c4-44 62-58 92-30 16 16 14 46-6 60-30 22-76 6-86-20"></path>
                   <path d="M110 114c22-14 56-14 80 4"></path>
                   <path d="M138 170c-6 12-6 20-2 30"></path>
@@ -431,17 +435,17 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Friends</span> <span style="color:var(--muted,#7A6A5C)">both leaning in, hands around their cups</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Friends</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">both leaning in, hands around their cups</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="laptop" data-screen-label="Laptop" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Someone seen from behind at a laptop with a bean logo on the lid, one hand clicking beside the keyboard, a mug and a plant on the table">
               <defs><pattern id="hd6" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-laptop">
@@ -456,7 +460,7 @@
                   <path d="M572 236c14-2 26-2 36 2l-6 52h-28z" fill="#E2D3BC"></path>
                   <path d="M590 236c-6-26-22-34-36-32 4 20 16 28 36 32zM590 236c4-28 22-38 38-34-6 22-18 30-38 34z" fill="#8FA07A"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M182 118c0-50 62-72 100-46 30 20 36 60 14 86-34 40-96 24-114-16"></path>
                   <path d="M188 106c30-18 70-16 100 8"></path>
                   <path d="M254 48c16-8 32 0 34 14 2 14-10 24-24 22-12-2-20-12-18-24"></path>
@@ -494,12 +498,22 @@
                 </g>
               </g>
             </svg>
-    
-        <figure data-doodle="cashier" data-screen-label="Cashier" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
-            <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="A cashier behind a counter turning a card terminal towards you, a receipt curling out of the till and a cup waiting on the counter">
+          </div>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Laptop</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">bean on the lid, one hand clicking</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
+            </div>
+          </figcaption>
+        </figure>
+
+<figure data-doodle="cashier" data-screen-label="Cashier" style="margin:0">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
+            <svg viewBox="49 60 544 340" width="100%" role="img" aria-label="A cashier behind a counter turning a card terminal towards you, a receipt curling out of the till and a cup waiting on the counter">
               <defs><pattern id="hd7" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-cashier">
+                <path d="M-40 376c240-9 470-9 720 0V440H-40z" fill="#EFE4D3"></path>
                 <g stroke="none">
                   <path d="M96 288c150-10 300-10 452 2l-4 42c-150 10-296 10-444 0z" fill="#F1E8DA"></path>
                   <path d="M96 288c150-10 300-10 452 2l-4 42c-150 10-296 10-444 0z" fill="url(#hd7)"></path>
@@ -508,7 +522,7 @@
                   <path d="M246 206c34-8 74-6 104 4l-6 70c-32 8-66 8-96 0z" fill="#3F2A1D"></path>
                   <path d="M256 218c26-6 58-4 82 2l-4 48c-24 6-52 6-74 0z" fill="#FFFDF9"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M92 288c152-12 306-12 458 2"></path>
                   <path d="M96 292l-2 40c150 12 298 12 448 0l2-38"></path>
                   <path d="M366 160c22-30 84-32 108-2 14 18 16 60 10 126"></path>
@@ -526,7 +540,7 @@
                 <g stroke="none">
                   <path d="M118 234c29.4 -12.48 54.6 -9.600000000000001 84 3.84l-10.08 74.88c-2 17.28 -16.8 23.04 -31.92 23.04s-30.24 -5.76 -33.6 -23.04z" style="fill:var(--acc,#C2593A)"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M114 232c31.5 -13.440000000000001 58.8 -11.52 92 4.800000000000001"></path>
                   <path d="M118 238l8.4 72.96000000000001c2 19.200000000000003 16.8 24.96 33.6 24.96 16.8 0 31.92 -5.76 33.6 -24.96l8.4 -74.88"></path>
                   <path d="M204 257.04c25.2 5.76 25.2 38.400000000000006 2 44.160000000000004" stroke-width="3.6"></path>
@@ -544,20 +558,21 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Cashier</span> <span style="color:var(--muted,#7A6A5C)">terminal turned towards you, receipt still printing</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Cashier</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">terminal turned towards you, receipt still printing</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="reading-alone" data-screen-label="Reading alone" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
-            <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Someone sunk into an armchair in profile with an open book, a cup steaming on the side table beside them">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
+            <svg viewBox="123 90 496 310" width="100%" role="img" aria-label="Someone sunk into an armchair in profile with an open book, a cup steaming on the side table beside them">
               <defs><pattern id="hd8" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-reading">
+                <path d="M-40 378c240-9 470-9 720 0V440H-40z" fill="#EFE4D3"></path>
                 <g stroke="none">
                   <path d="M148 158c34-10 60 2 64 30 4 34 4 76 0 108-24 8-46 8-66 0-2-46 0-100 2-138z" fill="#F1E8DA"></path>
                   <path d="M148 158c34-10 60 2 64 30 4 34 4 76 0 108-24 8-46 8-66 0-2-46 0-100 2-138z" fill="url(#hd8)"></path>
@@ -568,7 +583,7 @@
                   <path d="M292 220l50 30v36l-50-28z" fill="#FFFDF9"></path>
                   <path d="M394 226l-52 24v36l52-26z" fill="#FFFDF9"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M146 158c36-12 62 2 66 32 4 34 4 76 0 108"></path>
                   <path d="M146 160c-2 44-4 96-2 136"></path>
                   <path d="M200 266c76-16 154-14 220 6"></path>
@@ -590,7 +605,7 @@
                 <g stroke="none">
                   <path d="M494 208c26.599999999999998 -10.66 49.400000000000006 -8.200000000000001 76 3.2800000000000002l-9.12 63.96c-2 14.76 -15.200000000000001 19.68 -28.88 19.68s-27.36 -4.92 -30.400000000000002 -19.68z" style="fill:var(--acc,#C2593A)"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M490 206c28.5 -11.48 53.2 -9.84 84 4.1000000000000005"></path>
                   <path d="M494 212l7.6000000000000005 62.32c2 16.400000000000002 15.200000000000001 21.32 30.400000000000002 21.32 15.200000000000001 0 28.88 -4.92 30.400000000000002 -21.32l7.6000000000000005 -63.96"></path>
                   <path d="M572 227.68c22.8 4.92 22.8 32.800000000000004 2 37.72" stroke-width="3.6"></path>
@@ -608,20 +623,21 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Reading alone</span> <span style="color:var(--muted,#7A6A5C)">sunk in the chair, cup within reach</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Reading alone</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">sunk in the chair, cup within reach</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="latte-art" data-screen-label="Latte art pour" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
-            <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Overhead close crop of a pitcher pouring a rosetta into a wide cup, the milk stream still connected">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
+            <svg viewBox="57 50 560 350" width="100%" role="img" aria-label="Overhead close crop of a pitcher pouring a rosetta into a wide cup, the milk stream still connected">
               <defs><pattern id="hd9" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-latte-art">
+                <path d="M-40 384c240-9 470-9 720 0V440H-40z" fill="#EFE4D3"></path>
                 <g stroke="none">
                   <circle cx="240" cy="216" r="140" fill="#F1E8DA"></circle>
                   <circle cx="240" cy="216" r="140" fill="url(#hd9)"></circle>
@@ -638,7 +654,7 @@
                   </g>
                   <path d="M234 142h12l-2 168h-8z" fill="#FFFDF9"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="240" cy="216" r="140"></circle>
                   <circle cx="240" cy="216" r="116" stroke-width="3.4" opacity=".5"></circle>
                   <circle cx="240" cy="216" r="102"></circle>
@@ -649,7 +665,7 @@
                     <path d="M452 78c40-12 88-8 112 8l-16 106c-4 22-28 32-52 32s-44-10-46-32z" fill="url(#hd9)"></path>
                     <path d="M452 80c-24 6-40 18-48 34 20-6 38-14 52-24z" fill="#F1E8DA"></path>
                   </g>
-                  <g fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                  <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M448 78c42-14 92-10 118 8"></path>
                     <path d="M452 84l14 104c2 24 26 34 50 34s46-12 50-34l14-106"></path>
                     <path d="M566 106c30 8 34 54 4 72" stroke-width="4"></path>
@@ -665,27 +681,28 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Latte art pour</span> <span style="color:var(--muted,#7A6A5C)">the stream is still connected</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Latte art pour</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">the stream is still connected</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="closing-up" data-screen-label="Closing up" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Chairs turned upside down on a table, a broom leaning against it and a hanging sign flipped to closed">
               <defs><pattern id="hd10" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-closing">
+                <path d="M-40 380c240-9 470-9 720 0V440H-40z" fill="#EFE4D3"></path>
                 <g stroke="none">
                   <path d="M186 274c88-12 180-12 268 2l-4 24c-88 12-176 12-264 0z" fill="#F1E8DA"></path>
                   <path d="M186 274c88-12 180-12 268 2l-4 24c-88 12-176 12-264 0z" fill="url(#hd10)"></path>
                   <path d="M104 330c22-6 46-4 66 6l-8 40c-20 6-42 6-62-2z" fill="#F1E8DA"></path>
                   <path d="M104 330c22-6 46-4 66 6l-8 40c-20 6-42 6-62-2z" fill="url(#hd10)"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M182 274c90-14 184-14 272 2"></path>
                   <path d="M186 280l-2 20c88 14 180 14 268 0l2-22"></path>
                   <path d="M206 302c-4 26-6 50-6 74M434 302c4 26 6 50 6 74" stroke-width="3.8"></path>
@@ -706,7 +723,7 @@
                   <path d="M40 380c186-8 384-8 562 2" stroke-width="3.5"></path>
                 </g>
                 <g style="animation:k-nod 5.6s ease-in-out infinite;animation-play-state:var(--anim,running)">
-                  <g fill="none" stroke="#241A13" stroke-width="3.4" stroke-linecap="round">
+                  <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="3.4" stroke-linecap="round">
                     <path d="M470 22l-4 34M502 22l4 34"></path>
                   </g>
                   <path d="M428 56c44-8 92-6 132 4l4 62c-44 10-96 10-140-2z" fill="#F1E8DA" stroke="#241A13" stroke-width="4.5" stroke-linejoin="round"></path>
@@ -721,20 +738,21 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Closing up</span> <span style="color:var(--muted,#7A6A5C)">chairs on the table, sign already turned</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Closing up</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">chairs on the table, sign already turned</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="beans-roasting" data-screen-label="Beans roasting" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="A drum roaster in profile with beans tumbling behind the glass door and heat rising off the chimney">
               <defs><pattern id="hd11" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-roasting">
+                <path d="M-40 378c240-9 470-9 720 0V440H-40z" fill="#EFE4D3"></path>
                 <g stroke="none">
                   <path d="M338 56c34-6 74-4 106 4l-8 96c-32 8-70 8-102-2z" fill="#F1E8DA"></path>
                   <path d="M164 148c96-16 200-14 292 4l-6 148c-96 16-192 16-282 0z" fill="#F1E8DA"></path>
@@ -742,7 +760,7 @@
                   <circle cx="272" cy="226" r="72" fill="#3F2A1D"></circle>
                   <circle cx="272" cy="226" r="58" style="fill:var(--acc,#C2593A)"></circle>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M334 54c36-8 78-6 112 6"></path>
                   <path d="M338 60l-4 96M442 62l-6 94"></path>
                   <path d="M354 100c26 6 56 6 82 0" stroke-width="3" opacity=".45"></path>
@@ -777,17 +795,17 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Beans roasting</span> <span style="color:var(--muted,#7A6A5C)">the drum turns, the chimney breathes</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Beans roasting</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">the drum turns, the chimney breathes</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="cup-pandesal" data-screen-label="Cup and pandesal" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 640 400" width="100%" role="img" aria-label="Seen from above: a cup of coffee, a plate of pandesal and one roll being dunked, crumbs on the table">
               <defs><pattern id="hd12" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-pandesal">
@@ -802,7 +820,7 @@
                   <ellipse cx="486" cy="246" rx="52" ry="36" transform="rotate(10 486 246)" fill="#F1E8DA"></ellipse>
                   <ellipse cx="448" cy="302" rx="52" ry="36" transform="rotate(-4 448 302)" fill="#F1E8DA"></ellipse>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="200" cy="222" r="112"></circle>
                   <circle cx="200" cy="222" r="92" stroke-width="3.4" opacity=".5"></circle>
                   <circle cx="200" cy="222" r="78"></circle>
@@ -833,24 +851,15 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Cup + pandesal</span> <span style="color:var(--muted,#7A6A5C)">one roll on its way into the coffee</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Cup + pandesal</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">one roll on its way into the coffee</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
-      </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Laptop</span> <span style="color:var(--muted,#7A6A5C)">bean on the lid, one hand clicking</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
-            </div>
-          </figcaption>
-        </figure>
 
       </div>
     </section>
@@ -858,13 +867,13 @@
     <section style="padding-top:88px">
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:28px">
         <h2 style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:clamp(28px,3.6vw,40px);letter-spacing:-.015em">Things a screen has to say</h2>
-        <span style="font-size:13px;color:var(--muted,#7A6A5C)">400 × 400 · one object, one idea · web and app states</span>
+        <span style="font-size:13px;color:var(--muted,#7A6A5C)">400 × 400 · one object, one idea</span>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:36px 28px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:40px 24px">
 
         <figure data-doodle="loading" data-screen-label="Loading" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A cup of coffee seen from above, the crema swirling slowly">
               <defs><pattern id="hs1" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-loading">
@@ -874,7 +883,7 @@
                   <circle cx="204" cy="204" r="98" fill="#FFFDF9"></circle>
                   <circle cx="206" cy="206" r="82" style="fill:var(--acc,#C2593A)"></circle>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M60 200c0-78 62-140 140-140 80 0 142 62 140 140 0 80-62 140-140 140-80 0-142-64-140-140"></path>
                   <path d="M108 202c0-52 42-94 94-94 52 0 96 42 94 94 0 52-42 94-94 94-54 0-96-44-94-94z"></path>
                   <path d="M336 168c40 6 46 60 8 74"></path>
@@ -892,17 +901,17 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Loading</span> <span style="color:var(--muted,#7A6A5C)">the crema is the spinner</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Loading</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">the crema is the spinner</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="not-found" data-screen-label="404" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A cup knocked on its side, coffee spreading out, 404 written in the spill">
               <defs><pattern id="hs2" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-404">
@@ -912,7 +921,7 @@
                   <path d="M104 106c48-12 92-4 122 16l-20 96c-10 26-46 34-82 24-30-8-46-30-40-56z" fill="url(#hs2)"></path>
                 </g>
                 <g style="animation:k-wob 4.4s ease-in-out infinite;animation-play-state:var(--anim,running)">
-                  <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                  <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M98 108c50-16 100-8 130 14"></path>
                     <path d="M100 114l-24 82c-6 30 20 54 56 58 34 4 66-14 74-40l26-90"></path>
                     <path d="M222 130c30 4 34 46 2 54" stroke-width="4.5"></path>
@@ -922,14 +931,14 @@
                     <path d="M96 176l12-12M92 196l14-14M94 216l14-14M104 232l12-12"></path>
                   </g>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M50 282c-14-36 40-56 92-42 32 8 46-20 98-18 54 4 92 32 110 58"></path>
                   <path d="M350 282c10 22-6 40-36 42-72 6-190 6-234-4"></path>
                 </g>
                 <g fill="none" stroke="#FBF6EE" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M128 262l-2 36M136 264l-22 24h30"></path>
+                  <path d="M138 258l-2 42M136 260l-26 30h38"></path>
                   <path d="M180 270c-2-14 24-14 26 0l-2 20c-2 14-24 14-26 0z"></path>
-                  <path d="M262 262l-2 36M270 264l-22 24h30"></path>
+                  <path d="M272 258l-2 42M270 260l-26 30h38"></path>
                 </g>
                 <circle cx="340" cy="238" r="5" style="fill:var(--acc,#C2593A)"></circle>
                 <circle cx="40" cy="250" r="4" style="fill:var(--acc,#C2593A)"></circle>
@@ -937,17 +946,17 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">404</span> <span style="color:var(--muted,#7A6A5C)">hand-lettered in the spill, no typeface</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">404</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">hand-lettered in the spill, no typeface</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="empty" data-screen-label="Empty" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A coffee ring stain on a napkin where a cup used to be, a spoon left beside it">
               <defs><pattern id="hs3" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-empty">
@@ -956,20 +965,20 @@
                   <path d="M68 84c86-14 174-12 262 6l-6 224c-88 12-176 10-262-4z" fill="url(#hs3)"></path>
                   <path d="M118 196c-4-40 34-72 76-70 40 2 74 34 72 74-2 40-36 70-76 68-40-2-72-32-72-72zM134 198c0 30 28 54 58 54 32 0 58-24 58-56 0-30-28-54-58-54-32 0-58 24-58 56z" style="fill:var(--acc,#C2593A)" fill-rule="evenodd" opacity=".55"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M62 82c86-16 178-14 268 4"></path>
                   <path d="M64 88l4 222M330 90l-6 218"></path>
                   <path d="M70 312c86 12 176 10 260-4"></path>
                   <path d="M196 108l6 194" stroke-width="2.5" opacity=".3"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".7">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".7">
                   <path d="M124 214c-8-40 24-76 66-76 40 0 72 32 70 72 0 20-8 36-20 48"></path>
                   <path d="M146 262c-8-8-14-18-16-30"></path>
                 </g>
                 <g style="animation:k-bob 5.2s ease-in-out infinite;animation-play-state:var(--anim,running)">
                   <path d="M262 258c12-12 30-10 38 2 6 10 2 24-10 30-12 4-26-2-30-14z" fill="#FFFDF9" stroke="none"></path>
                   <path d="M262 258c12-12 30-10 38 2 6 10 2 24-10 30-12 4-26-2-30-14z" fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round"></path>
-                  <path d="M296 262c22-22 44-44 66-66" stroke="#241A13" stroke-width="5" stroke-linecap="round"></path>
+                  <path d="M296 262c22-22 44-44 66-66" stroke="#241A13" stroke-width="4.2" stroke-linecap="round"></path>
                 </g>
                 <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
                   <path d="M80 270l12-12M84 290l14-14M96 300l12-12"></path>
@@ -981,17 +990,17 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Empty</span> <span style="color:var(--muted,#7A6A5C)">the ring where the cup was</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Empty</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">the ring where the cup was</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="error" data-screen-label="Error" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A mug with a jagged crack down its side, coffee leaking out of the crack into a small puddle">
               <defs><pattern id="hs4" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-error">
@@ -1001,7 +1010,7 @@
                   <path d="M124 166c48-4 96-2 144 4l-6 122c-4 24-30 34-70 34s-64-10-68-34z" style="fill:var(--acc,#C2593A)"></path>
                   <path d="M262 342c-30-10 20-30 50-16 14 6 8 22-8 22-14 2-30 0-42-6z" style="fill:var(--acc,#C2593A)"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M108 100c60-14 116-10 168 4"></path>
                   <path d="M112 106l6 178c2 28 30 42 72 42s70-14 72-42l8-176"></path>
                   <path d="M272 138c40 8 40 68 0 78"></path>
@@ -1022,17 +1031,17 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Error</span> <span style="color:var(--muted,#7A6A5C)">cracked but standing, still leaking</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Error</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">cracked but standing, still leaking</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="success" data-screen-label="Success" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A takeaway cup with a name scrawled on the sleeve and a receipt tucked under the lid, marked with a check">
               <defs><pattern id="hs5" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-success">
@@ -1043,7 +1052,7 @@
                   <path d="M116 108c56-14 118-12 170 2l2 22c-58 8-116 8-174 0z" fill="#F1E8DA"></path>
                   <path d="M232 62c28-6 56-4 80 4l-10 100c-26 8-54 8-80 2z" fill="#FFFDF9"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M112 106c58-14 120-12 176 2"></path>
                   <path d="M114 110l4 20c56 8 114 8 172-2l4-20"></path>
                   <path d="M126 132l20 202c2 20 22 30 54 30s50-10 54-30l20-206"></path>
@@ -1066,17 +1075,17 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Success</span> <span style="color:var(--muted,#7A6A5C)">receipt under the lid, name scrawled on the sleeve</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Success</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">receipt under the lid, name scrawled on the sleeve</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="offline" data-screen-label="Offline" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A cup gone cold: the steam above it is shaped like wifi arcs, and the top arc is faded out">
               <defs><pattern id="hs6" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-offline">
@@ -1085,7 +1094,7 @@
                   <path d="M104 208c60-10 130-8 194 4l-12 108c-4 22-30 32-84 32s-78-10-82-32z" fill="url(#hs6)"></path>
                   <path d="M118 236c58-6 118-6 174 2l-4 34c-56 6-112 6-166 0z" style="fill:var(--acc,#C2593A)" opacity=".5"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M98 206c66-12 136-10 204 2"></path>
                   <path d="M102 212l10 104c4 24 32 36 86 36s84-12 88-36l12-104"></path>
                   <path d="M302 232c34 8 36 60 0 70"></path>
@@ -1098,7 +1107,7 @@
                   <path d="M122 116c44-40 112-40 156 0" stroke-dasharray="10 12" opacity=".4"></path>
                 </g>
                 <path d="M198 196c0-2 4-2 4 0s-4 2-4 0" stroke="#C9B9A6" stroke-width="5" stroke-linecap="round" fill="none"></path>
-                <path d="M258 88l30 30" stroke="#241A13" stroke-width="5" stroke-linecap="round"></path>
+                <path d="M258 88l30 30" stroke="#241A13" stroke-width="4.2" stroke-linecap="round"></path>
                 <path d="M258 88l30 30" style="stroke:var(--acc,#C2593A)" stroke-width="2" stroke-linecap="round"></path>
                 <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
                   <path d="M116 280l12-12M120 300l14-14M128 318l14-14M142 332l12-12"></path>
@@ -1106,18 +1115,18 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Offline</span> <span style="color:var(--muted,#7A6A5C)">the steam is the signal, and it has gone cold</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Offline</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">the steam is the signal, and it has gone cold</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
 
         <figure data-doodle="no-results" data-screen-label="No results" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A hand grinder with its crank on top and an empty catch jar, meaning the search found nothing">
               <defs><pattern id="hs7" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-no-results">
@@ -1126,7 +1135,7 @@
                   <path d="M126 168c50-8 100-6 148 4l-14 128c-4 22-32 34-64 34s-58-12-62-34z" fill="url(#hs7)"></path>
                   <path d="M140 226c44-6 90-4 132 4l-4 34c-42 6-86 6-124 0z" fill="#FFFDF9"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M120 166c54-12 106-10 158 4"></path>
                   <path d="M124 172l12 126c4 24 34 36 66 36s60-12 64-36l14-124"></path>
                   <path d="M138 226c46-8 92-6 136 4M136 262c44 6 90 6 134 0" stroke-width="3.5" opacity=".5"></path>
@@ -1146,54 +1155,58 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">No results</span> <span style="color:var(--muted,#7A6A5C)">crank all you like, the jar stays empty</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">No results</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">crank all you like, the jar stays empty</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="empty-cart" data-screen-label="Empty cart" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="An empty paper takeaway tray with a divider down the middle and two empty cup holes">
               <defs><pattern id="hs8" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-empty-cart">
                 <g stroke="none">
-                  <path d="M76 168c84-14 172-12 250 6l-18 130c-4 22-26 32-108 32s-104-10-108-32z" fill="#F1E8DA"></path>
-                  <path d="M76 168c84-14 172-12 250 6l-18 130c-4 22-26 32-108 32s-104-10-108-32z" fill="url(#hs8)"></path>
-                  <ellipse cx="140" cy="186" rx="38" ry="17" fill="#E2D3BC"></ellipse>
-                  <ellipse cx="256" cy="216" rx="38" ry="17" fill="#E2D3BC"></ellipse>
+                  <path d="M106 160c62-6 126-6 190 0l42 74c-92 8-184 8-276 0z" fill="#F1E8DA"></path>
+                  <path d="M62 234c92 8 184 8 276 0l-14 70c-82 10-166 10-248 0z" fill="#F1E8DA"></path>
+                  <path d="M62 234c92 8 184 8 276 0l-14 70c-82 10-166 10-248 0z" fill="url(#hs8)"></path>
+                  <ellipse cx="156" cy="180" rx="30" ry="9" fill="#E2D3BC"></ellipse>
+                  <ellipse cx="246" cy="180" rx="30" ry="9" fill="#E2D3BC"></ellipse>
+                  <ellipse cx="142" cy="212" rx="34" ry="11" fill="#E2D3BC"></ellipse>
+                  <ellipse cx="260" cy="212" rx="34" ry="11" fill="#E2D3BC"></ellipse>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M70 166c86-16 178-14 262 6"></path>
-                  <path d="M76 174l16 126c4 24 30 34 108 34s102-10 106-34l18-124"></path>
-                  <path d="M102 186c0-11 17-19 38-19s38 8 38 19-17 19-38 19-38-8-38-19z"></path>
-                  <path d="M218 216c0-11 17-19 38-19s38 8 38 19-17 19-38 19-38-8-38-19z"></path>
-                  <path d="M196 176c6 44 4 90-4 132" stroke-width="4" opacity=".5"></path>
-
-                  <path d="M40 372c112-8 224-8 320 0" stroke-width="3.5"></path>
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M104 158c64-8 130-8 194 2l42 76"></path>
+                  <path d="M104 160l-44 74c94 10 188 10 280 0"></path>
+                  <path d="M60 236l16 70c82 10 166 10 248 0l16-70"></path>
+                  <path d="M126 180c0-6 13-10 30-10s30 4 30 10-13 9-30 9-30-3-30-9zM216 180c0-6 13-10 30-10s30 4 30 10-13 9-30 9-30-3-30-9z"></path>
+                  <path d="M108 212c0-7 15-12 34-12s34 5 34 12-15 11-34 11-34-4-34-11zM226 212c0-7 15-12 34-12s34 5 34 12-15 11-34 11-34-4-34-11z"></path>
+                  <path d="M201 164l-1 64M98 196c68 4 138 4 206 0" stroke-width="3" opacity=".4"></path>
+                  <path d="M40 372c112-8 224-8 320 0" stroke-width="3"></path>
                 </g>
+                <path d="M88 334c74 8 150 8 224 0" stroke="#A08F7D" stroke-width="3" stroke-linecap="round" fill="none" style="opacity:var(--hatch-op,.5)"></path>
                 <g style="animation:k-bob 5s ease-in-out infinite;animation-play-state:var(--anim,running)">
-                  <path d="M330 108c-12-14 8-20-2-36" stroke="#C9B9A6" stroke-width="4" stroke-linecap="round" fill="none"></path>
-                  <circle cx="292" cy="96" r="6" fill="#E2D3BC"></circle>
+                  <circle cx="318" cy="120" r="5" fill="#E2D3BC"></circle>
+                  <circle cx="300" cy="104" r="3.5" fill="#E2D3BC"></circle>
                 </g>
-                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M92 296l12-12M98 316l14-14M112 330l12-12"></path></g>
+                <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M84 292l12-12M98 298l12-12M112 302l12-12"></path></g>
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Empty cart</span> <span style="color:var(--muted,#7A6A5C)">the tray came back empty</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Empty cart</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">four holes, no cups</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="email-sent" data-screen-label="Email sent" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A folded note stamped with a coffee bean sitting in an open envelope, meaning the email is on its way">
               <defs><pattern id="hs9" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-email-sent">
@@ -1202,7 +1215,7 @@
                   <path d="M50 196c98-16 202-14 300 6l-8 128c-96 14-192 12-284-4z" fill="url(#hs9)"></path>
                   <path d="M132 96c46-8 94-6 140 4l-8 116c-44 8-90 8-136 0z" fill="#FFFDF9"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M130 94c48-10 98-8 144 4"></path>
                   <path d="M134 100l-4 118c46 8 94 8 138 0l6-116"></path>
                   <path d="M150 132c34-6 70-4 102 4M148 162c34 6 70 6 104 0M150 192c26 4 54 4 80 2" stroke-width="4" opacity=".5"></path>
@@ -1220,17 +1233,17 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Email sent</span> <span style="color:var(--muted,#7A6A5C)">a note, stamped with a bean</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Email sent</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">a note, stamped with a bean</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="maintenance" data-screen-label="Maintenance" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A brewer with its lid off and a wrench resting across it">
               <defs><pattern id="hs10" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-maintenance">
@@ -1239,7 +1252,7 @@
                   <path d="M116 156c56-10 112-8 164 4l-12 140c-4 22-30 34-70 34s-66-12-70-34z" fill="url(#hs10)"></path>
                   <path d="M130 230c46-6 96-4 138 4l-6 62c-44 6-88 6-128 0z" style="fill:var(--acc,#C2593A)"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M110 154c60-12 118-10 176 4"></path>
                   <path d="M114 160l12 138c4 24 32 36 72 36s66-12 70-36l14-136"></path>
                   <path d="M128 230c48-8 98-6 142 4" stroke-width="3.5" opacity=".5"></path>
@@ -1247,25 +1260,28 @@
                   <path d="M40 372c110-8 220-8 320 0" stroke-width="3.5"></path>
                 </g>
                 <g style="animation:k-wob 5s ease-in-out infinite;animation-play-state:var(--anim,running);transform-origin:200px 250px">
-                  <path d="M120 296c-12-4-16-18-8-27 7-8 19-8 26 1l106-74c8-6 20-3 25 6 5 10 0 21-11 23l-124 26z" fill="#FFFDF9" stroke="#241A13" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"></path>
-                  <circle cx="127" cy="285" r="6" fill="#241A13"></circle>
-                  <path d="M245 210c6-3 12 0 14 6" stroke="#241A13" stroke-width="4" fill="none" stroke-linecap="round"></path>
+                  <path d="M126 290L250 220" stroke="#241A13" stroke-width="20" stroke-linecap="round" fill="none"></path>
+                  <path d="M126 290L250 220" stroke="#FFFDF9" stroke-width="10" stroke-linecap="round" fill="none"></path>
+                  <circle cx="264" cy="212" r="22" fill="#FFFDF9" stroke="#241A13" stroke-width="4.2"></circle>
+                  <path d="M268 210l26-14" stroke="#FFFDF9" stroke-width="15" stroke-linecap="butt" fill="none"></path>
+                  <path d="M276 199l14-8M282 218l16-8" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" fill="none"></path>
+                  <circle cx="130" cy="288" r="4.5" fill="none" stroke="#241A13" stroke-width="3.5"></circle>
                 </g>
                 <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M126 300l12-12M132 320l14-14M146 334l12-12"></path></g>
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Maintenance</span> <span style="color:var(--muted,#7A6A5C)">lid off, wrench across</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Maintenance</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">lid off, wrench across</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="sign-in" data-screen-label="Sign in" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A loyalty card with one stamp filled and a ripple around it, meaning sign in to keep collecting">
               <defs><pattern id="hs11" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-sign-in">
@@ -1274,7 +1290,7 @@
                   <path d="M50 128c100-16 204-14 302 6l-10 156c-98 14-196 12-292-4z" fill="url(#hs11)"></path>
                   <path d="M64 148c88-12 180-10 272 6l-4 34c-90 10-182 8-268-4z" fill="#F1E8DA"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M44 126c104-18 212-16 314 6"></path>
                   <path d="M50 134l-6 156c96 16 198 18 296 2l8-154"></path>
                   <path d="M62 148c90-14 184-12 276 6M60 188c88 12 182 12 272 0" stroke-width="3.5" opacity=".55"></path>
@@ -1291,22 +1307,22 @@
                   <circle cx="96" cy="240" r="30" fill="none" stroke="#C9B9A6" stroke-width="4"></circle>
                   <circle cx="96" cy="240" r="42" fill="none" stroke="#C9B9A6" stroke-width="3" opacity=".5"></circle>
                 </g>
-                <path d="M300 316c-18 12-40 14-60 6" stroke="#C9B9A6" stroke-width="4" fill="none" stroke-linecap="round"></path>
+                <path d="M70 310c86 8 176 8 262 0" stroke="#C9B9A6" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"></path>
                 <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)"><path d="M64 262l12-12M70 282l14-14M84 296l12-12"></path></g>
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Sign in</span> <span style="color:var(--muted,#7A6A5C)">one stamp in, keep collecting</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Sign in</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">one stamp in, keep collecting</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
 
         <figure data-doodle="notifications" data-screen-label="Notifications off" style="margin:0">
-          <div style="background:#FFFDF9;border-radius:6px;overflow:hidden;box-shadow:0 1px 0 var(--line,#EFE4D3)">
+          <div style="background:var(--paper,#FFFDF9);border-radius:12px;overflow:hidden;border:1px solid var(--k-line,var(--line,#EFE4D3))">
             <svg viewBox="0 0 400 400" width="100%" role="img" aria-label="A service bell with a bean handle and a slash through it">
               <defs><pattern id="hs12" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
               <g id="dd-notifications">
@@ -1315,12 +1331,12 @@
                   <path d="M76 274c0-58 56-100 124-100s124 42 124 100z" fill="url(#hs12)"></path>
                   <path d="M100 262c8-42 48-70 100-70s92 28 100 70z" fill="#FFFDF9"></path>
                 </g>
-                <g fill="none" stroke="#241A13" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M74 276c-2-60 56-104 126-104s128 44 126 104"></path>
                   <path d="M56 278c94-10 190-10 288 0" stroke-width="6"></path>
                   <path d="M98 262c10-42 50-70 102-70s92 28 102 70" stroke-width="3.5" opacity=".5"></path>
                   <path d="M200 172v-16"></path>
-                  <path d="M156 302c8 14 24 22 44 22s36-8 44-22" stroke-width="4" opacity=".45"></path>
+                  <path d="M86 296c76 8 152 8 228 0" stroke-width="3" opacity=".3"></path>
                 </g>
                 <ellipse cx="200" cy="146" rx="15" ry="19" fill="#3F2A1D"></ellipse>
                 <path d="M193 132c8 8 9 22 3 30" stroke="#F1E8DA" stroke-width="3" fill="none" stroke-linecap="round"></path>
@@ -1330,11 +1346,11 @@
               </g>
             </svg>
           </div>
-          <figcaption style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 2px 0">
-            <div style="font-size:14px"><span style="font-weight:600">Notifications off</span> <span style="color:var(--muted,#7A6A5C)">the bell is covered</span></div>
-            <div style="display:flex;gap:14px;font-size:13px;font-weight:600">
-              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="{color:'#241A13'}">Copy</button>
-              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="{color:'#C2593A'}">Download</button>
+          <figcaption style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 2px 0">
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:14px;font-weight:600;line-height:1.3">Notifications off</span><span style="font-size:13px;line-height:1.4;color:var(--muted,#7A6A5C);text-wrap:pretty">the bell, struck through</span></div>
+            <div style="display:flex;gap:14px;font-size:13px;font-weight:600;flex:0 0 auto;padding-top:2px">
+              <button type="button" onClick="{{ copySvg }}" style="all:unset;cursor:pointer;color:var(--muted,#7A6A5C);border-bottom:1px solid var(--line,#EFE4D3)" style-hover="color:#241A13" style-focus="outline:2px solid #C2593A;outline-offset:3px">Copy</button>
+              <button type="button" onClick="{{ downloadSvg }}" style="all:unset;cursor:pointer;color:var(--ink,#241A13);border-bottom:1px solid var(--ink,#241A13)" style-hover="color:#C2593A;border-bottom-color:#C2593A" style-focus="outline:2px solid #C2593A;outline-offset:3px">Download</button>
             </div>
           </figcaption>
         </figure>
@@ -1345,8 +1361,8 @@
     <sc-if value="{{ showHead }}" hint-placeholder-val="{{ true }}">
     <section style="margin-top:88px;padding-top:32px;border-top:1px solid var(--line,#EFE4D3);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:32px">
       <div>
-        <h3 style="margin:0 0 8px;font-family:Newsreader,Georgia,serif;font-weight:500;font-size:20px">What changed from the first pass</h3>
-        <p style="margin:0;font-size:14px;line-height:1.6;color:var(--muted,#7A6A5C)">No perfect circles, and no cup traced twelve times. Contours wobble, fills sit a few pixels off their lines, hatching is a handful of strokes in the shade. Every scene is cropped like a photo.</p>
+        <h3 style="margin:0 0 8px;font-family:Newsreader,Georgia,serif;font-weight:500;font-size:20px">How they’re drawn</h3>
+        <p style="margin:0;font-size:14px;line-height:1.6;color:var(--muted,#7A6A5C)">No perfect circles, no cup traced twelve times. Ink wobbles, fills sit a few pixels off, hatching is a handful of strokes in the shade. Every scene is cropped like a photo.</p>
       </div>
       <div>
         <h3 style="margin:0 0 8px;font-family:Newsreader,Georgia,serif;font-weight:500;font-size:20px">Placement rules</h3>
@@ -1376,11 +1392,12 @@ class Component extends DCLogic {
       acc: p.accent ?? '#C2593A',
       hatchOp: (p.hatch ?? true) ? '.5' : '0',
       anim: (p.motion ?? true) ? 'running' : 'paused',
-      pageBg: dark ? '#17100B' : '#FBF6EE',
+      pageBg: emb ? 'transparent' : (dark ? '#17100B' : '#FBF6EE'),
       cardBg: dark ? '#231911' : '#FFFDF9',
       lineCol: dark ? '#3A2B1F' : '#EFE4D3',
       inkCol: dark ? '#FBF6EE' : '#241A13',
       mutedCol: dark ? '#C9B9A6' : '#7A6A5C',
+      paperCol: dark ? '#FFFDF9' : (emb ? 'transparent' : '#FFFDF9'),
       copySvg: (e) => this.grab(e, false),
       downloadSvg: (e) => this.grab(e, true)
     };
@@ -1390,6 +1407,8 @@ class Component extends DCLogic {
     const svg = card.querySelector('svg').cloneNode(true);
     svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     svg.removeAttribute('width');
+    const ink = document.getElementById('k-ink');
+    if (ink) { const d = document.createElementNS('http://www.w3.org/2000/svg', 'defs'); d.appendChild(ink.cloneNode(true)); svg.insertBefore(d, svg.firstChild); }
     const acc = this.props.accent ?? '#C2593A';
     const hop = (this.props.hatch ?? true) ? '.5' : '0';
     let s = new XMLSerializer().serializeToString(svg);
