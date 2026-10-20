@@ -9,14 +9,15 @@
       svg.kape-doodle-no-results *{transition-duration:.01ms !important;}
     }
   </style>
+  <defs><filter id="k-ink" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="1" seed="11" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter></defs>
   <defs><pattern id="hs7" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
   <g id="dd-no-results">
     <g stroke="none">
       <path d="M126 168c50-8 100-6 148 4l-14 128c-4 22-32 34-64 34s-58-12-62-34z" fill="#F1E8DA"></path>
       <path d="M126 168c50-8 100-6 148 4l-14 128c-4 22-32 34-64 34s-58-12-62-34z" fill="url(#hs7)"></path>
-      <path d="M140 226c44-6 90-4 132 4l-4 34c-42 6-86 6-124 0z" style="fill:var(--card,#FFFDF9)"></path>
+      <path d="M140 226c44-6 90-4 132 4l-4 34c-42 6-86 6-124 0z" fill="#FFFDF9"></path>
     </g>
-    <g fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+    <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M120 166c54-12 106-10 158 4"></path>
       <path d="M124 172l12 126c4 24 34 36 66 36s60-12 64-36l14-124"></path>
       <path d="M138 226c46-8 92-6 136 4M136 262c44 6 90 6 134 0" stroke-width="3.5" opacity=".5"></path>

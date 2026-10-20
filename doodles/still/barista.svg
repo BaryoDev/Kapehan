@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" class="kape-doodle-barista" aria-label="A barista leaning over an espresso machine, seen from the side, cropped at the counter">
   <title>Barista</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><filter id="k-ink" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="1" seed="11" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter></defs>
   <defs><pattern id="hd2" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
   <g id="dd-barista">
     <g stroke="none">
@@ -11,10 +12,10 @@
       <path d="M226 212c42 4 76 28 96 60l-18 22c-26-22-56-40-86-46z" fill="#F1E8DA"></path>
       <path d="M338 128c74-10 160-8 236 2l-6 178-222 6z" fill="#F1E8DA"></path>
       <path d="M338 128c74-10 160-8 236 2l-6 178-222 6z" fill="url(#hd2)"></path>
-      <path d="M356 146c68-8 134-6 202 0l-2 46c-70 6-134 6-204 2z" style="fill:var(--card,#FFFDF9)"></path>
+      <path d="M356 146c68-8 134-6 202 0l-2 46c-70 6-134 6-204 2z" fill="#FFFDF9"></path>
       <path d="M0 316c220-10 430-10 640 0v84H0z" fill="#E2D3BC"></path>
     </g>
-    <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+    <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
       <path d="M110 138c8-40 62-50 92-24 16 14 14 42-6 56-30 20-72 8-84-14"></path>
       <path d="M120 122c22-14 56-14 80 2"></path>
       <path d="M156 176c-10 8-14 16-14 26"></path>

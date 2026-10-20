@@ -12,11 +12,15 @@
  *    and the @keyframes live in the page's <style>, which a standalone .svg does not get.
  *    So the animated track has to carry its own <style>, built from the canvas's, holding
  *    only the keyframes that doodle actually uses.
- * 2. Colour is half tokenised already. The canvas writes the accent as
- *    `style="fill:var(--acc,#C2593A)"` because a presentation attribute cannot hold a var().
- *    Everything else is a bare `fill="#241A13"`. Tokenising those means moving the
- *    attribute into the style attribute, which is done here for the hexes the canvas
- *    itself names, and only those. See COLOURS.
+ * 2. Colour ships exactly as the canvas draws it. The drawings theme three things
+ *    themselves, `var(--acc,...)`, `var(--hatch-op,...)` and `var(--anim,...)`, and every
+ *    other colour is a bare hex the canvas renders unchanged in light and dark alike. That
+ *    is the design: in dark theme the canvas keeps #FFFDF9 paper behind each drawing rather
+ *    than retinting it. This generator used to map bare hexes onto page tokens (--ink,
+ *    --card, --bg) by matching them against the canvas's theme table, so on a dark host the
+ *    contours went cream and the whites went brown, a drawing the canvas never shows. It
+ *    also broke the build whenever two page tokens shared a light value. check() now fails
+ *    if an emitted drawing carries a var() its source drawing does not.
  *
  * A third thing shapes the <style> both tracks carry. An SVG <style> is not scoped. Open
  * doodles/loading.svg on its own and that does not matter, but the idiom README.md teaches
@@ -222,89 +226,6 @@ const parseStyle = (text) =>
     });
 
 const serializeStyle = (decls) => decls.map(([k, v]) => `${k}:${v}`).join(';');
-
-// ---------------------------------------------------------------------------
-// Colour
-// ---------------------------------------------------------------------------
-
-/**
- * hex -> variable name, harvested two ways from the canvas, never written down here.
- *
- * 1. The `var(--name,#hex)` fallbacks the drawings already carry.
- * 2. The canvas's own theme table. Its root element declares `--card:{{ cardBg }}`, and its
- *    renderVals() gives cardBg as `dark ? '#231911' : '#FFFDF9'`. Following that link names
- *    the light-theme hex of every token the canvas themes, which is the one baked into the
- *    drawings, and it is how #FFFDF9 is known to be the surface rather than a guess.
- *
- * If the canvas names a colour neither way, this does not invent a name for it. #F1E8DA
- * (the cream body), #A08F7D (the hatching), #C9B9A6 (the steam) and #3F2A1D (the dark
- * roast) stay literal, because deciding which palette token each of them is would be new
- * design data living in a generator instead of in the canvas.
- */
-function colourVars(src) {
-  const map = new Map();
-  const add = (hex, varName, why) => {
-    const key = hex.toUpperCase();
-    if (map.has(key) && map.get(key) !== varName) {
-      throw new Error(`${SOURCE}: ${key} is named both ${map.get(key)} and ${varName} (${why})`);
-    }
-    map.set(key, varName);
-  };
-
-  for (const m of src.matchAll(/var\(\s*(--[a-z-]+)\s*,\s*(#[0-9A-Fa-f]{3,8})\s*\)/g)) {
-    add(m[2], m[1], 'var() fallback');
-  }
-
-  // --card:{{ cardBg }} on the root, so cardBg is the name of the --card value.
-  const byKey = new Map(
-    [...src.matchAll(/(--[a-z-]+)\s*:\s*\{\{\s*([A-Za-z_$][\w$]*)\s*\}\}/g)].map((m) => [m[2], m[1]]),
-  );
-  // cardBg: dark ? '#231911' : '#FFFDF9'   and   acc: p.accent ?? '#C2593A'
-  // The light branch is the one the drawings bake in, so it is the one taken as the fallback.
-  const themed = /([A-Za-z_$][\w$]*)\s*:\s*(?:dark\s*\?\s*'#[0-9A-Fa-f]{3,8}'\s*:\s*)?(?:[^,\n']*\?\?\s*)?'(#[0-9A-Fa-f]{3,8})'/g;
-  for (const m of src.matchAll(themed)) {
-    const varName = byKey.get(m[1]);
-    if (varName) add(m[2], varName, `renderVals ${m[1]}`);
-  }
-
-  if (!map.size) throw new Error(`${SOURCE}: no colour tokens found, the theme table has moved`);
-  return map;
-}
-
-/**
- * Moves `fill="#241A13"` to `style="fill:var(--ink,#241A13)"`.
- *
- * A presentation attribute cannot hold a var(), so this is the only way to tokenise one.
- * It is a promotion in the cascade: an inline style beats a presentation attribute. That is
- * safe here because a child's own attribute still beats an inherited value from its parent,
- * so `<g stroke="#241A13"><path stroke="#F1E8DA">` keeps painting the path cream. What it
- * would not be safe to do is promote a property the element already declares in its style,
- * so that case is left alone.
- */
-function tokeniseColours(svg, vars) {
-  let moved = 0;
-  const out = rewriteTags(svg, (tag, attrs) => {
-    const style = parseStyle(attrs.find(([k]) => k === 'style')?.[1] ?? '');
-    const declared = new Set(style.map(([k]) => k));
-    const kept = [];
-    const added = [];
-
-    for (const [k, v] of attrs) {
-      if (k === 'style') continue;
-      const name = (k === 'fill' || k === 'stroke' || k === 'stop-color') && vars.get(v.toUpperCase());
-      if (name && !declared.has(k)) { added.push([k, `var(${name},${v})`]); moved++; }
-      else kept.push([k, v]);
-    }
-    if (!added.length) return attrs;
-
-    const merged = serializeStyle([...added, ...style]);
-    const at = kept.findIndex(([k]) => k === 'style');
-    if (at === -1) kept.push(['style', merged]);
-    else kept[at] = ['style', merged];
-    return kept;
-  });
-  return { svg: out, moved };
-}
 
 // ---------------------------------------------------------------------------
 // Motion
@@ -580,6 +501,63 @@ function splitSvgRoot(raw, where = SOURCE) {
   return { open: raw.slice(0, end + 1), inner: raw.slice(end + 1, close) };
 }
 
+/** Every custom property a piece of markup reads with var(). */
+const cssVarNames = (markup) => new Set([...markup.matchAll(/var\(\s*(--[-\w]+)/g)].map((m) => m[1]));
+
+/** Every `url(#id)` and `href="#id"` in a piece of markup, by id. */
+const LOCAL_REF = /url\(\s*['"]?#([-\w.:]+)['"]?\s*\)|\bhref\s*=\s*["']#([-\w.:]+)["']/g;
+const referencedIds = (markup) => new Set([...markup.matchAll(LOCAL_REF)].map((m) => m[1] ?? m[2]));
+const definedIds = (markup) => new Set([...markup.matchAll(/\bid\s*=\s*["']([^"']+)["']/g)].map((m) => m[1]));
+
+/**
+ * Elements the canvas defines once for the whole page, by id, with their markup.
+ *
+ * The hand-ink filter sits in a hidden <svg> at the top of the page, before every figure,
+ * and each ink group points at it with filter="url(#k-ink)". Cut a drawing out of the page
+ * and that reference dangles: some renderers ignore the filter, some drop the element, and
+ * the ink layer is what goes either way. Anything defined inside a doodle figure is that
+ * drawing's own and is not offered to the others.
+ */
+function pageDefinitions(src) {
+  const figures = [];
+  const opens = /<figure\b/g;
+  let m;
+  while ((m = opens.exec(src))) {
+    const tagEnd = findTagEnd(src, m.index);
+    if (/\bdata-doodle\s*=/.test(src.slice(m.index, tagEnd))) figures.push([m.index, skipElement(src, 'figure', tagEnd + 1)]);
+    opens.lastIndex = tagEnd + 1;
+  }
+  const inFigure = (at) => figures.some(([a, b]) => at >= a && at < b);
+
+  const defs = new Map();
+  const DEF = /<(filter|pattern|linearGradient|radialGradient|clipPath|mask|symbol|marker)\b/g;
+  while ((m = DEF.exec(src))) {
+    if (inFigure(m.index)) continue;
+    const tagEnd = findTagEnd(src, m.index);
+    const id = new Map(parseAttrs(src.slice(m.index + m[0].length, tagEnd))).get('id');
+    if (!id) continue;
+    if (defs.has(id)) throw new Error(`${SOURCE}: #${id} is defined twice outside the doodles`);
+    const self = /\/>$/.test(src.slice(m.index, tagEnd + 1));
+    defs.set(id, src.slice(m.index, self ? tagEnd + 1 : skipElement(src, m[1], tagEnd + 1)));
+  }
+  return defs;
+}
+
+/** Copies in each page-level definition the drawing points at, so the file stands alone. */
+function carryDefinitions(inner, pageDefs, doodleName, where) {
+  const own = definedIds(inner);
+  const carried = [];
+  for (const id of referencedIds(inner)) {
+    if (own.has(id)) continue;
+    const def = pageDefs.get(id);
+    if (!def) throw new Error(`${name}: ${where}: ${doodleName} points at #${id}, which the canvas never defines`);
+    carried.push(def);
+  }
+  if (!carried.length) return inner;
+  const indent = /\n( *)\S/.exec(inner)?.[1] ?? '';
+  return `\n${indent}<defs>${carried.join('')}</defs>${inner}`;
+}
+
 /**
  * Every `<figure data-doodle="...">` in the canvas, with its inline SVG.
  *
@@ -600,8 +578,8 @@ export async function doodles() {
  * canvas contains an entity, so deleting the call changed no output the gates looked at.
  */
 function extractDoodles(src, where = SOURCE) {
-  const vars = colourVars(src);
   const { names: keyframeNames } = motionCss(src);
+  const pageDefs = pageDefinitions(src);
   const out = [];
 
   // Walked with findTagEnd + parseAttrs rather than one `<figure[^>]*>` regex, for the same
@@ -633,8 +611,7 @@ function extractDoodles(src, where = SOURCE) {
     if (!viewBox) throw new Error(`${name}: ${where}: ${doodleName} has no viewBox`);
     if (!aria) throw new Error(`${name}: ${where}: ${doodleName} has no aria-label`);
 
-    const { svg: coloured, moved } = tokeniseColours(inner, vars);
-    const { svg: body, used, unresolved } = bindKeyframes(coloured, keyframeNames);
+    const { svg: body, used, unresolved } = bindKeyframes(carryDefinitions(inner, pageDefs, doodleName, where), keyframeNames);
 
     const [, , w, h] = viewBox.trim().split(/\s+/).map(Number);
     out.push({
@@ -648,7 +625,7 @@ function extractDoodles(src, where = SOURCE) {
       still: dedent(stripMotion(body)),
       keyframes: used,
       unresolved,
-      tokenised: moved,
+      sourceVars: cssVarNames(inner),
     });
   }
   return out;
@@ -689,11 +666,12 @@ function componentSource(data, css) {
  * (boolean, holds the drawing on its first frame).
  *
  * Theming, all inherited from the page, nothing to configure here:
- *   --acc         the accent the coffee is painted in
- *   --ink         the contour colour
- *   --bg          the knockout colour used for lettering and highlights
- *   --hatch-op    how strong the shading hatch reads, 0 to 1
- *   --anim        running | paused, a global pause switch
+ *   --acc                the accent the coffee is painted in
+ *   --hatch-op           how strong the shading hatch reads, 0 to 1
+ *   --anim               running | paused, a global pause switch
+ *   --kape-doodle-paper  what the drawing sits on, transparent by default
+ * Every other colour is drawn, not themed, so the drawings read the same in light and dark.
+ * On a dark page, set --kape-doodle-paper to #FFFDF9 to give them the paper the site does.
  * A reader with prefers-reduced-motion gets the still drawing whatever the page says.
  *
  * GENERATED by scripts/build.mjs from design/Kapehan Doodles v2.dc.html. Do not edit by hand.
@@ -793,6 +771,7 @@ function buildArtifacts(src, where = SOURCE) {
   const all = [...new Set(list.flatMap((d) => d.keyframes))].sort();
   const styleText = [
     renderMotionCss(css, all, css.keyframes, 'kape-doodle'),
+    `kape-doodle{background:var(--kape-doodle-paper,transparent)}`,
     `kape-doodle[still] [style*="animation"]{animation:none!important}`,
   ].join('\n');
 
@@ -831,6 +810,32 @@ export async function check(ctx) {
     if (/\{\{|\}\}/.test(d.body)) fail.push(`${d.name}: an unresolved {{ placeholder }} leaked out of the canvas`);
   }
 
+  // The drawings are themed only where the canvas themes them. A var() the source drawing
+  // does not carry is a colour the generator decided on, which is how dark hosts once got
+  // cream contours and brown whites the canvas never draws.
+  const files = ctx?.expected ?? (await artifacts());
+  for (const d of list) {
+    for (const path of [`doodles/${d.name}.svg`, `doodles/still/${d.name}.svg`]) {
+      const svg = files.get(path) ?? '';
+      const drawing = svg.slice(svg.indexOf('</desc>'));
+      const ownCss = /<style>[\s\S]*?<\/style>/.exec(drawing)?.[0] ?? '';
+      for (const v of cssVarNames(drawing.replace(ownCss, ''))) {
+        if (!d.sourceVars.has(v)) fail.push(`${path} reads ${v}, which the canvas drawing does not theme`);
+      }
+    }
+  }
+
+  // A file cut out of the canvas must not point at anything the canvas page held for it.
+  // The ink filter is defined once above every figure, so a drawing that points at #k-ink
+  // without carrying it loses its ink layer in some renderers and its wobble in the rest.
+  for (const [path, body] of files) {
+    if (!/^doodles\/(still\/)?[^/]+\.svg$/.test(path)) continue;
+    const own = definedIds(body);
+    for (const id of referencedIds(body)) {
+      if (!own.has(id)) fail.push(`${path} points at #${id}, which it does not define`);
+    }
+  }
+
   // An animation declaration naming nothing the canvas defines animates nothing. It used to
   // be invisible: the name was read positionally, so a shorthand written duration-first
   // yielded no keyframe, and every gate below iterated over that empty list.
@@ -844,7 +849,6 @@ export async function check(ctx) {
   // not come with it, so a keyframe referenced but not carried animates nothing, silently,
   // and only in the downloaded copy.
   const { keyframes } = motionCss(await readSource());
-  const files = ctx?.expected ?? (await artifacts());
   for (const d of list) {
     for (const k of d.keyframes) {
       if (!keyframes.has(k)) fail.push(`${d.name} animates with @keyframes ${k}, which the canvas does not define`);
@@ -995,6 +999,11 @@ export async function check(ctx) {
       if (!body.includes(want.aria)) fail.push(`${path} (fixture): aria-label is not the label the canvas means, once-escaped`);
       if (body.includes('&amp;amp;') || body.includes('&amp;#39;')) fail.push(`${path} (fixture): an entity in prose came out escaped twice`);
       fail.push(...styleMatchesRoot(body, `${path} (fixture)`));
+      if (!body.includes('viewBox="6 4 48 30" width="48" height="30"')) {
+        fail.push(`${path} (fixture): a cropped viewBox does not come through verbatim with its own width and height`);
+      }
+      if (!/<defs><filter id="k-ink">/.test(body)) fail.push(`${path} (fixture): the page-level #k-ink filter was not carried in`);
+      if (body.includes('var(--ink')) fail.push(`${path} (fixture): a drawn colour came out as a page token`);
     }
     // The element sets aria-label with setAttribute, which does not unescape, so an entity
     // that survives into DOODLES is read out loud as "ampersand a m p semicolon".
@@ -1054,8 +1063,9 @@ const FIXTURE_WHERE = 'a canvas written by check()';
  * A canvas holding one doodle, for the gates that need markup the real one does not contain.
  *
  * Small, but real input: a <style> with keyframes, the transform-box rule and the
- * reduced-motion block motionCss() requires, a var() fallback for colourVars() to harvest,
- * and one animated node. label and aria are substituted so a gate can put an entity in them.
+ * reduced-motion block motionCss() requires, one animated node, and a page-level filter the
+ * drawing points at from outside its figure. The viewBox has a non-zero origin, as the
+ * cropped scenes do. label and aria are substituted so a gate can put an entity in them.
  */
 function fixtureCanvas(label, aria) {
   return `<!doctype html><html><head><style>
@@ -1066,10 +1076,11 @@ function fixtureCanvas(label, aria) {
     * { transition-duration:.01ms !important; }
   }
 </style></head><body>
+  <svg width="0" height="0" aria-hidden="true"><defs><filter id="k-ink"><feTurbulence baseFrequency=".03"></feTurbulence></filter></defs></svg>
   <figure data-doodle="${FIXTURE_NAME}" data-screen-label="${label}" style="margin:0">
-    <svg viewBox="0 0 40 40" width="40" height="40" aria-label="${aria}">
+    <svg viewBox="6 4 48 30" width="40" height="40" aria-label="${aria}">
       <circle cx="20" cy="20" r="16" style="fill:var(--acc,#C2593A)"></circle>
-      <path d="M20 8v8" fill="#C2593A" style="animation:k-spin 6s linear infinite"></path>
+      <g filter="url(#k-ink)" fill="none" stroke="#241A13"><path d="M20 8v8" style="animation:k-spin 6s linear infinite"></path></g>
     </svg>
   </figure>
 </body></html>`;

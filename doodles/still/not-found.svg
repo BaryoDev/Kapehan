@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" class="kape-doodle-not-found" aria-label="A cup knocked on its side, coffee spreading out, 404 written in the spill">
   <title>404</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><filter id="k-ink" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="1" seed="11" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter></defs>
   <defs><pattern id="hs2" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
   <g id="dd-404">
     <g stroke="none">
@@ -9,7 +10,7 @@
       <path d="M104 106c48-12 92-4 122 16l-20 96c-10 26-46 34-82 24-30-8-46-30-40-56z" fill="url(#hs2)"></path>
     </g>
     <g>
-      <g fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+      <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M98 108c50-16 100-8 130 14"></path>
         <path d="M100 114l-24 82c-6 30 20 54 56 58 34 4 66-14 74-40l26-90"></path>
         <path d="M222 130c30 4 34 46 2 54" stroke-width="4.5"></path>
@@ -19,14 +20,14 @@
         <path d="M96 176l12-12M92 196l14-14M94 216l14-14M104 232l12-12"></path>
       </g>
     </g>
-    <g fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+    <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M50 282c-14-36 40-56 92-42 32 8 46-20 98-18 54 4 92 32 110 58"></path>
       <path d="M350 282c10 22-6 40-36 42-72 6-190 6-234-4"></path>
     </g>
-    <g fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--bg,#FBF6EE)">
-      <path d="M128 262l-2 36M136 264l-22 24h30"></path>
+    <g fill="none" stroke="#FBF6EE" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M138 258l-2 42M136 260l-26 30h38"></path>
       <path d="M180 270c-2-14 24-14 26 0l-2 20c-2 14-24 14-26 0z"></path>
-      <path d="M262 262l-2 36M270 264l-22 24h30"></path>
+      <path d="M272 258l-2 42M270 260l-26 30h38"></path>
     </g>
     <circle cx="340" cy="238" r="5" style="fill:var(--acc,#C2593A)"></circle>
     <circle cx="40" cy="250" r="4" style="fill:var(--acc,#C2593A)"></circle>
