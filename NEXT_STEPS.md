@@ -21,9 +21,10 @@ The canvas still carries `vue` and `blazor` markup for all 30 components, and th
 It is the source; publishing a field a consumer can read is what makes it a promise.
 
 `FW_OPTS` in the canvas is now `{ html, react }`, so the Brew tab cannot offer a stack the
-package does not ship. The hero no longer calls Kapehan a BarakoCMS starter, and the
-downloadable starter no longer asks for a `BARAKO_API_URL`; it ships sample data, because
-Kapehan has no backend and never talks to a CMS.
+package does not ship. The hero no longer calls Kapehan a CMS starter, and the canvas's
+downloadable starters ship sample data in place of a CMS fetch, because Kapehan has no
+backend and never talks to a CMS. The live site in `docs/` still has the old starters, which
+ask for a CMS URL, until it is re-exported from the canvas.
 
 ## What we are building next
 
@@ -213,7 +214,7 @@ This is priority 1.
 ## Non-goals
 
 - **No backend, and no CMS coupling.** Kapehan is a resource site. It does not ship a client
-  for BarakoCMS or anything else, and no component fetches data. If you want to render a menu,
+  for any CMS, and no component fetches data. If you want to render a menu,
   that is your app's job; Kapehan gives you the row component and the icon.
 - No component framework of our own. Plain CSS classes plus thin per-framework wrappers.
 - No design freedom beyond the five tokens, the edges switch and the type pairing. The point is
