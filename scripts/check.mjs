@@ -267,19 +267,19 @@ else {
   }
 }
 
-// And the branches a visitor CAN reach must not phone a CMS. The vue marker is searched
-// FROM the html branch: the string also appears in the stack-picker code 168k characters
-// earlier, and anchoring on its first occurrence gave a negative-length slice, so this
-// checked an empty string and passed on a starter that did fetch a Barako host.
-const startsAt = canvas.indexOf("st.fw === 'html'");
-const endsAt = canvas.indexOf("st.fw === 'vue'", startsAt);
+// And no starter may phone a CMS, parked ones included: un-parking Vue or Blazor must not
+// bring the coupling back with it. The whole function is scanned, from its declaration to
+// the next method, because slicing between two branch markers once anchored on the wrong
+// occurrence, checked an empty string, and passed on a starter that did fetch a Barako host.
+const startsAt = canvas.indexOf('async downloadStarter(');
+const endsAt = canvas.indexOf('\n  installFor(', startsAt);
 if (startsAt === -1 || endsAt === -1) {
-  fail.push('cannot find the starter branches in design/Kapehan.dc.html, so they cannot be checked');
-} else if (/barako[-_]?(?:host|api)|BARAKO_API/i.test(canvas.slice(startsAt, endsAt))) {
-  // The endpoint, not the word. "barako" on its own is the coffee: the React starter's own
-  // sample data ships { id: 'barako', name: 'Barako' }, and matching the bare word failed
-  // the build on the drink this whole project is named after.
-  fail.push('the html or react starter in design/Kapehan.dc.html still references a Barako CMS host');
+  fail.push('cannot find downloadStarter in design/Kapehan.dc.html, so the starters cannot be checked');
+} else if (/barako[-_:]?(?:host|api)|BARAKO_API|AddHttpClient\("barako"/i.test(canvas.slice(startsAt, endsAt))) {
+  // The endpoint, not the word. "barako" on its own is the coffee: the starters' sample data
+  // ships { id: 'barako', name: 'Barako' }, and matching the bare word failed the build on
+  // the drink this whole project is named after.
+  fail.push('a starter in design/Kapehan.dc.html still references a Barako CMS host');
 }
 
 const manifestSrc = await readFile(join(root, 'kapehan-components.js'), 'utf8');

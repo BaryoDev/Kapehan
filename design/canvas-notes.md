@@ -92,7 +92,6 @@ type Block = {
   cat: string;       // Storefront | Account | Back of house
   surface: string;   // web | ios
   uses: string[];    // SHIP keys this screen is assembled from
-  api: string;       // the Barako route it maps to
   html: string;
 };
 ```
@@ -232,4 +231,4 @@ snippets are what the site hands users, so whatever you pick should match them.
 From `NEXT_STEPS.md`, untouched by this round: the npm publish, the CLI itself, real
 Vue/Blazor component files in the repo (the snippets are authored, but nothing writes them
 to `src/` yet), doodles as standalone files and a custom element, Tailwind and Bootstrap
-variants, GitHub Pages deploy, and the BarakoCMS typed client.
+variants, and GitHub Pages deploy.
