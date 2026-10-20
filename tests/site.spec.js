@@ -3,9 +3,11 @@ import { icons } from '../kapehan-icons.js';
 import { components } from '../scripts/components.mjs';
 
 /**
- * The published site in docs/: the seven-tab browser for icons, doodles, palettes,
- * components, blocks, placement and the starter. It is the shop window for the package, so
- * a tab that does not switch or a panel that pushes the page sideways is a shipping bug.
+ * The published site in docs/: an export of the older, tabbed canvas, with tabs for icons,
+ * doodles, palettes, components, blocks, placement and the starter. The canvas in design/ is
+ * now one page with a sticky nav; these tests follow docs/, not the canvas. The site is the
+ * shop window for the package, so a tab that does not switch or a panel that pushes the page
+ * sideways is a shipping bug.
  *
  * The page is a React bundle that compiles its own JSX in the browser, so nothing exists
  * until that finishes. Every test waits on the tablist rather than on a timeout.

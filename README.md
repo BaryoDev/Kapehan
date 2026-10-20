@@ -288,7 +288,8 @@ Kapehan is a UI resource site: palettes, icons, components and doodles, browsabl
 It has no backend and ships no client for any CMS. [NEXT_STEPS.md](NEXT_STEPS.md) is the
 roadmap. The icons, the doodles, the palettes, the component CSS and the React components
 are all real and on `master`. npm still serves 0.2.0, so some of that reaches you only when
-0.3.0 is published. The seven-tab site is in progress.
+0.3.0 is published. The live site is an export of an older, tabbed canvas; the canvas is now
+one page with a sticky section nav and has not been re-exported yet.
 
 ## Contributing an icon
 

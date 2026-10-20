@@ -15,6 +15,7 @@ import { join } from 'node:path';
 import { loadGenerators, allArtifacts, requiredPkg, root } from './registry.mjs';
 import { icons } from '../kapehan-icons.js';
 import { components } from './components.mjs';
+import { WORDS } from './count-words.mjs';
 
 const fail = [];
 const generators = await loadGenerators();
@@ -93,6 +94,7 @@ try {
 //    install anyone can run, and treating it as one made this gate fail on its own docs.
 const readme = await readFile(join(root, 'README.md'), 'utf8');
 const site = await readFile(join(root, 'docs/index.html'), 'utf8');
+const og = await readFile(join(root, 'scripts/og.mjs'), 'utf8');
 const codeOnly = (text) =>
   [
     ...(text.match(/```[\s\S]*?```/g) ?? []),
@@ -133,10 +135,6 @@ for (const n of named) if (!known.has(n)) fail.push(`the docs show <kape-icon na
 //    37 icons in seven places, including four meta tags, for as long as there have been 42.
 //    A number typed by hand beside a number that is derived will drift; these assert the
 //    typed ones still agree with the source.
-const WORDS = {
-  30: 'Thirty', 34: 'Thirty-four', 35: 'Thirty-five', 37: 'Thirty-seven',
-  42: 'Forty-two', 48: 'Forty-eight',
-};
 const stale = Object.entries(WORDS).filter(([n]) => Number(n) !== icons.length);
 
 // The count word must sit directly against the noun: "42 hand-drawn", "Forty-two drinks".
@@ -147,6 +145,7 @@ for (const [n, word] of stale) {
   const claim = new RegExp(`\\b(?:${n}|${word})[\\s-]+${COUNTED}`, 'i');
   if (claim.test(site)) fail.push(`docs/index.html still says ${n} icons somewhere; there are ${icons.length}`);
   if (claim.test(readme)) fail.push(`README.md still says ${n} icons somewhere; there are ${icons.length}`);
+  if (claim.test(og)) fail.push(`scripts/og.mjs still says ${n} icons somewhere; there are ${icons.length}`);
 }
 
 // The two component numbers the README states. Whether a family has a component and whether
