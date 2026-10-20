@@ -20,7 +20,7 @@ export interface Doodle {
   aria: string;
   /** The viewBox as written, e.g. "0 0 640 400". */
   viewBox: string;
-  /** Scenes are 640x400, states are 400x400. */
+  /** The viewBox's own width and height. Scenes may be cropped, so read these, not a fixed size. */
   width: number;
   height: number;
   /** The inner SVG markup, without the <svg> wrapper. */

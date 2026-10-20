@@ -12,6 +12,7 @@ import { writeFile } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { icons, wrap } from '../kapehan-icons.js';
+import { countWord } from './count-words.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -51,7 +52,7 @@ const html = `<!doctype html>
   <div class="left">
     <div class="eyebrow">Filipino for coffee house</div>
     <h1>Kapehan</h1>
-    <div class="sub">Thirty-seven hand-drawn coffee icons.</div>
+    <div class="sub">${countWord(icons.length)} hand-drawn coffee icons.</div>
     <div class="meta">MIT &middot; <b>npm i kapehan</b></div>
   </div>
   <div class="grid">${SHOWN.map(tile).join('')}</div>

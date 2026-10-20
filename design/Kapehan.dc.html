@@ -53,9 +53,9 @@
 
     <div style="max-width:1120px;margin:0 auto;padding:72px 0 84px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:56px;align-items:center">
       <div>
-        <p style="margin:0 0 18px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:{{ accent }}">Free coffee icons, doodles and parts</p>
+        <p style="margin:0 0 18px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:{{ accent }}">A UI resource for coffee shops</p>
         <h1 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(40px,6vw,68px);line-height:1.02;letter-spacing:-.025em;text-wrap:balance">Brew a front end<br />in a <span style="color:{{ accent }}">roaster's</span> palette.</h1>
-        <p style="margin:24px 0 0;max-width:46ch;font-size:17px;line-height:1.6;color:{{ heroMuted }};text-wrap:pretty">Icons, doodles, drink palettes, primitives and whole screens that all follow one hand, so you can pick a palette and an edge and have a front end that looks designed without hiring a designer. Ships as plain CSS, in HTML or React. Kapehan is Filipino for coffee house. I just love coffee, that’s all.</p>
+        <p style="margin:24px 0 0;max-width:46ch;font-size:17px;line-height:1.6;color:{{ heroMuted }};text-wrap:pretty">Icons, doodles, palettes, primitives and whole screens, all drawn by one hand. Pick a palette and an edge, take what you need, paste it into whatever you’re building. Plain CSS, in HTML or React. No backend, no lock-in. Kapehan is Filipino for coffee house. I just love coffee, that’s all.</p>
         <div style="display:flex;gap:12px;margin-top:32px;flex-wrap:wrap">
           <button type="button" onClick="{{ goBrew }}" style="background:{{ accent }};color:#FBF6EE;border:0;border-radius:10px;padding:14px 22px;font:inherit;font-weight:600;font-size:15px;cursor:pointer" style-hover="opacity:.9">Brew yours</button>
           <span style="display:flex;align-items:center;gap:10px;background:{{ heroTile }};border:1px solid {{ heroLine }};border-radius:10px;padding:14px 18px;font-family:'JetBrains Mono',monospace;font-size:13px;color:{{ heroFg }}">npm i kapehan</span>
@@ -86,15 +86,15 @@
   </nav>
 
   <sc-if value="{{ tabIcons }}" hint-placeholder-val="{{ true }}">
-  <section style="max-width:1120px;margin:0 auto;padding:84px 32px 0">
+  <section id="sec-icons" style="scroll-margin-top:62px;max-width:1120px;margin:0 auto;padding:84px 32px 0">
     <p style="margin:0 0 10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:{{ accent }}">How the set is built</p>
-    <h2 style="margin:0 0 12px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;letter-spacing:-.02em">One grid, one palette, two tracks</h2>
-    <p style="margin:0 0 40px;max-width:62ch;font-size:16.5px;line-height:1.65;color:var(--k-muted);text-wrap:pretty">Thirty-seven drinks, brewers and beans drawn to the same three rules, so a row of them reads as a family instead of a pile.</p>
+    <h2 style="margin:0 0 12px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;letter-spacing:-.02em">Three rules, forty-two drawings</h2>
+    <p style="margin:0 0 40px;max-width:62ch;font-size:16.5px;line-height:1.65;color:var(--k-muted);text-wrap:pretty">Drinks, brewers, beans and desserts drawn to the same rules, so a row of them reads as a family.</p>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px">
       <div style="background:var(--k-card);border:1px solid var(--k-line);border-radius:16px;padding:26px">
-        <h3 style="margin:0 0 10px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:19px">One palette, not ten</h3>
-        <p style="margin:0 0 20px;font-size:14.5px;line-height:1.6;color:var(--k-muted)">Vessels pick from four ceramics. Liquid always runs ink → crema, foam is always milk. Below: five hues that would break the rule, and the ramp every icon draws from instead.</p>
+        <h3 style="margin:0 0 10px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:19px">One palette</h3>
+        <p style="margin:0 0 20px;font-size:14.5px;line-height:1.6;color:var(--k-muted)">Vessels pick from four ceramics. Liquid runs ink to crema, foam is always milk. Every icon draws from one roasted ramp, never a stray hue.</p>
         <p style="margin:0 0 8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--k-muted2)">off-palette · 5 unrelated hues</p>
         <div style="display:flex;gap:6px;margin-bottom:18px">
           <span style="width:34px;height:20px;border-radius:5px;background:#E37A5C"></span>
@@ -118,7 +118,7 @@
 
       <div style="background:var(--k-card);border:1px solid var(--k-line);border-radius:16px;padding:26px">
         <h3 style="margin:0 0 10px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:19px">One baseline</h3>
-        <p style="margin:0 0 20px;font-size:14.5px;line-height:1.6;color:var(--k-muted)">Everything rests on y=42 with matched optical padding, so a row of icons sits level instead of bobbing. Saucer lips, glass feet and pot bases all land on the same line.</p>
+        <p style="margin:0 0 20px;font-size:14.5px;line-height:1.6;color:var(--k-muted)">Saucer lips, glass feet and pot bases all land on y=42, so a row sits level instead of bobbing.</p>
         <div style="position:relative;height:96px;background:var(--k-bg);border-radius:11px;overflow:hidden">
           <span style="position:absolute;left:0;right:0;bottom:22px;height:1px;background:{{ accent }}"></span>
           <span style="position:absolute;right:10px;bottom:26px;font-family:'JetBrains Mono',monospace;font-size:10px;color:{{ accent }}">y=42</span>
@@ -131,8 +131,8 @@
       </div>
 
       <div style="background:var(--k-deep);color:#FBF6EE;border:1px solid var(--k-deep);border-radius:16px;padding:26px">
-        <h3 style="margin:0 0 10px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:19px">A real one-colour track</h3>
-        <p style="margin:0 0 20px;font-size:14.5px;line-height:1.6;color:rgba(251,246,238,.68)">Every icon also builds to a solid one-colour pictogram: same geometry, highlight layers dropped, every fill flattened to <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:{{ accent }}">currentColor</span>. It inherits your text colour and size, so it sits next to Lucide or Feather without a style break.</p>
+        <h3 style="margin:0 0 10px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:19px">A one-colour track</h3>
+        <p style="margin:0 0 20px;font-size:14.5px;line-height:1.6;color:rgba(251,246,238,.68)">Same geometry, highlights dropped, every fill flattened to <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:{{ accent }}">currentColor</span>. It takes your text colour and size, and sits next to Lucide or Feather without a style break.</p>
         <div style="display:flex;gap:14px;align-items:flex-end">
           <div style="display:grid;place-items:center;flex:1;aspect-ratio:1.5;border-radius:11px;background:rgba(251,246,238,.06);color:{{ accent }}">{{ monoDemoA }}</div>
           <div style="display:grid;place-items:center;flex:1;aspect-ratio:1.5;border-radius:11px;background:#FBF6EE;color:#241A13">{{ monoDemoB }}</div>
@@ -205,7 +205,7 @@
     </sc-if>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:14px;padding:24px 0 0;color:{{ monoColor }}">
-      <sc-for list="{{ filtered }}" as="ic" hint-placeholder-count="37">
+      <sc-for list="{{ filtered }}" as="ic" hint-placeholder-count="42">
         <div style="background:var(--k-card);border:1px solid var(--k-line);border-radius:14px;padding:16px 14px 12px;display:flex;flex-direction:column;gap:10px;align-items:center;transition:border-color .15s,box-shadow .15s" style-hover="border-color:{{ accent }};box-shadow:0 6px 20px -12px rgba(36,26,19,.4)">
           <button type="button" onClick="{{ ic.onOpen }}" title="Customize and export" style="height:74px;width:100%;display:grid;place-items:center;color:inherit;border:0;background:none;padding:0;cursor:pointer">{{ ic.el }}</button>
           <div style="text-align:center;width:100%">
@@ -381,16 +381,16 @@
   </sc-if>
 
   <sc-if value="{{ tabDoodles }}" hint-placeholder-val="{{ false }}">
-  <section style="max-width:1120px;margin:0 auto;padding:84px 32px 0">
+  <section id="sec-doodles" style="scroll-margin-top:62px;max-width:1120px;margin:0 auto;padding:84px 32px 0">
     <p style="margin:0 0 10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:{{ accent }}">Doodles · {{ countDoodles }} states</p>
     <h2 style="margin:0 0 12px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;letter-spacing:-.02em">Bigger drawings for the empty parts of a site</h2>
-    <p style="margin:0 0 48px;max-width:62ch;font-size:16.5px;line-height:1.65;color:var(--k-muted);text-wrap:pretty">Same palette as the icons, different job. Icons label things. Doodles keep a page company while it loads, comes up empty, or breaks. Hatched by hand, cropped like photos, faceless so anyone can be the one holding the cup. Every one animates and every one can be stilled.</p>
+    <p style="margin:0 0 48px;max-width:62ch;font-size:16.5px;line-height:1.65;color:var(--k-muted);text-wrap:pretty">Icons label things. Doodles keep a page company while it loads, comes up empty, or breaks. Same palette, hatched by hand, cropped like photos, faceless so anyone can be the one holding the cup. All of them move; all of them can be stilled.</p>
     <dc-import name="Kapehan Doodles v2" part="doodles" accent="{{ accent }}" theme="{{ theme }}" hint-size="100%,4400px"></dc-import>
   </section>
   </sc-if>
 
   <sc-if value="{{ tabPlace }}" hint-placeholder-val="{{ false }}">
-  <section style="max-width:1120px;margin:0 auto;padding:84px 32px 0">
+  <section id="sec-place" style="scroll-margin-top:62px;max-width:1120px;margin:0 auto;padding:84px 32px 0">
     <p style="margin:0 0 10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:{{ accent }}">Placement</p>
     <h2 style="margin:0 0 12px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;letter-spacing:-.02em">The sentence does the work. The drawing keeps it company.</h2>
     <p style="margin:0 0 44px;max-width:62ch;font-size:16.5px;line-height:1.65;color:var(--k-muted);text-wrap:pretty">{{ countPlacement }} rules for putting Kapehan in a product. Where a drawing goes, how big it gets, and when to leave it out.</p>
@@ -410,7 +410,7 @@
   </sc-if>
 
   <sc-if value="{{ tabUi }}" hint-placeholder-val="{{ false }}">
-  <section style="max-width:1120px;margin:0 auto;padding:84px 32px 0">
+  <section id="sec-ui" style="scroll-margin-top:62px;max-width:1120px;margin:0 auto;padding:84px 32px 0">
     <p style="margin:0 0 10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:{{ accent }}">Components · web and mobile</p>
     <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:0 0 12px">
       <h2 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;letter-spacing:-.02em">Parts for a coffee shop's app</h2>
@@ -680,7 +680,7 @@
           <button type="button" onClick="{{ jumpShip }}" style="background:none;border:1px solid var(--k-line2);border-radius:6px;padding:4px 9px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--k-muted);cursor:pointer" style-hover="color:var(--k-ink);border-color:var(--k-ink)">Code</button>
         </div>
         <div style="background:{{ ui.paper }};border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:12px;color:{{ ui.ink }}">
-          <div style="display:flex;align-items:center;gap:12px;background:{{ ui.surface }};border-left:3px solid {{ ui.accent }};border-radius:{{ ui.rx }};padding:10px 14px;font-size:13px"><span style="flex:1">Kalayaan branch closes at 6 pm today for a private event.</span><span style="font-weight:600;color:{{ ui.muted }}">Dismiss</span></div>
+          <div style="display:flex;align-items:center;gap:12px;background:{{ ui.surface }};border:1px solid {{ ui.line }};border-radius:{{ ui.rs }};padding:10px 14px;font-size:13px"><span style="flex:0 0 auto;width:8px;height:8px;border-radius:999px;background:{{ ui.accent }}"></span><span style="flex:1">Kalayaan branch closes at 6 pm today for a private event.</span><span style="font-weight:600;color:{{ ui.muted }}">Dismiss</span></div>
           <div style="background:{{ ui.surface }};border:1px solid {{ ui.line }};border-radius:{{ ui.r }};padding:20px;display:flex;flex-direction:column;gap:8px">
             <p style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.01em">Void order #2381?</p>
             <p style="margin:0;font-size:13.5px;line-height:1.5;color:{{ ui.muted }}">The customer paid ₱265 by card. The refund takes 3 to 5 days to show on their statement.</p>
@@ -828,7 +828,7 @@
     </div>
 
     <h3 id="c-ship" style="margin:0 0 8px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;letter-spacing:-.02em;scroll-margin-top:84px">Ship it</h3>
-    <p style="margin:0 0 16px;max-width:62ch;font-size:15.5px;line-height:1.65;color:var(--k-muted);text-wrap:pretty">Barako is done on the server; this is what goes in front of it. Every snippet below is shaped around menu data (name, note, price, icon) as it comes from the API, and written for the stack you picked in Brew. Change it here too.</p>
+    <p style="margin:0 0 16px;max-width:62ch;font-size:15.5px;line-height:1.65;color:var(--k-muted);text-wrap:pretty">Every snippet below is shaped around plain menu data (name, note, price, icon) and written for the stack you picked in Brew. Change the stack here too.</p>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px">
       <sc-for list="{{ cssOpts }}" as="o" hint-placeholder-count="3">
         <button type="button" onClick="{{ o.onPick }}" style="font:inherit;font-size:13px;font-weight:500;padding:6px 12px;border-radius:999px;border:1px solid var(--k-line2);background:{{ o.bg }};color:{{ o.fg }};cursor:pointer">{{ o.label }}</button>
@@ -850,7 +850,7 @@
         </div>
         <div>
           <p style="margin:0 0 8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:{{ accent }}">3 · Pick a drink</p>
-          <p style="margin:0;font-size:14px;line-height:1.65;color:rgba(251,246,238,.72)">Paste the globals from Brew under the import. The stylesheet ships with Barako; everything below repaints when you swap it. Add <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px">data-edges="square"</code> on <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px">&lt;html&gt;</code> for square corners.</p>
+          <p style="margin:0;font-size:14px;line-height:1.65;color:rgba(251,246,238,.72)">Paste the globals from Brew under the import. The stylesheet defaults to the Barako palette; everything below repaints when you swap it. Add <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px">data-edges="square"</code> on <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px">&lt;html&gt;</code> for square corners.</p>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
           <a href="kapehan.css" download="kapehan.css" style="display:inline-flex;align-items:center;gap:8px;background:{{ accent }};color:#241A13;border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:600">Download kapehan.css</a>
@@ -920,14 +920,14 @@
   </sc-if>
 
   <sc-if value="{{ tabCreate }}" hint-placeholder-val="{{ false }}">
-  <section style="max-width:1120px;margin:0 auto;padding:84px 32px 0">
+  <section id="sec-create" style="scroll-margin-top:62px;max-width:1120px;margin:0 auto;padding:84px 32px 0">
     <p style="margin:0 0 10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:{{ accent }}">Brew · your front end</p>
     <h2 style="margin:0 0 12px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;letter-spacing:-.02em">Pick a drink, pick an edge, pick your stack</h2>
     <p style="margin:0 0 28px;max-width:62ch;font-size:16.5px;line-height:1.65;color:var(--k-muted);text-wrap:pretty">Five choices set the whole front end. Everything on this site repaints as you pick, and every snippet in Components, Blocks and Ship it is written for the stack you choose here.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px;margin-bottom:40px">
       <div style="display:flex;gap:14px;align-items:flex-start;padding:16px 18px;background:var(--k-card);border:1px solid var(--k-line);border-radius:14px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:{{ accent }};padding-top:2px">01</span><div><p style="margin:0 0 4px;font-weight:700;font-size:15px">Brew</p><p style="margin:0;font-size:13.5px;line-height:1.55;color:var(--k-muted)">Palette, edges, type, icons, stack. This page.</p></div></div>
       <div style="display:flex;gap:14px;align-items:flex-start;padding:16px 18px;background:var(--k-card);border:1px solid var(--k-line);border-radius:14px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:{{ accent }};padding-top:2px">02</span><div><p style="margin:0 0 4px;font-weight:700;font-size:15px">Compose</p><p style="margin:0;font-size:13.5px;line-height:1.55;color:var(--k-muted)">Start from a Block, swap in Components, drop Icons and Doodles where the rules say.</p></div></div>
-      <div style="display:flex;gap:14px;align-items:flex-start;padding:16px 18px;background:var(--k-card);border:1px solid var(--k-line);border-radius:14px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:{{ accent }};padding-top:2px">03</span><div><p style="margin:0 0 4px;font-weight:700;font-size:15px">Ship</p><p style="margin:0;font-size:13.5px;line-height:1.55;color:var(--k-muted)">Copy the code for your framework. Replace the sample rows with a fetch from the Barako API.</p></div></div>
+      <div style="display:flex;gap:14px;align-items:flex-start;padding:16px 18px;background:var(--k-card);border:1px solid var(--k-line);border-radius:14px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:{{ accent }};padding-top:2px">03</span><div><p style="margin:0 0 4px;font-weight:700;font-size:15px">Ship</p><p style="margin:0;font-size:13.5px;line-height:1.55;color:var(--k-muted)">Copy the code for your framework. Replace the sample rows with your own data.</p></div></div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:24px;align-items:start">
       <div style="min-width:0;display:flex;flex-direction:column;gap:22px">
@@ -1005,7 +1005,7 @@
   </sc-if>
 
   <sc-if value="{{ tabBlocks }}" hint-placeholder-val="{{ false }}">
-  <section style="max-width:1120px;margin:0 auto;padding:84px 32px 0">
+  <section id="sec-blocks" style="scroll-margin-top:62px;max-width:1120px;margin:0 auto;padding:84px 32px 0">
     <p style="margin:0 0 10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:{{ accent }}">Blocks · full screens</p>
     <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:0 0 12px">
       <h2 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;letter-spacing:-.02em">Screens you can start from</h2>
@@ -1141,7 +1141,7 @@
   </sc-if>
 
   <sc-if value="{{ tabPalettes }}" hint-placeholder-val="{{ false }}">
-  <section style="max-width:1120px;margin:0 auto;padding:84px 32px 0">
+  <section id="sec-palettes" style="scroll-margin-top:62px;max-width:1120px;margin:0 auto;padding:84px 32px 0">
     <p style="margin:0 0 10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:{{ accent }}">Palettes · 28 drinks and desserts</p>
     <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:0 0 12px">
       <h2 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;letter-spacing:-.02em">Every palette is something on the menu</h2>
@@ -1343,10 +1343,10 @@ class Component extends DCLogic {
   ];
 
   static BLOCKS = [
-    {"key":"menu","label":"Menu page","note":"Desktop menu with a live order summary down the side.","cat":"Storefront","surface":"web","uses":["chip","card","tabs","seg","button","row"],"api":"GET /api/menu","html":"<header class=\"kape-topbar\">\n  <a class=\"kape-topbar__brand\" href=\"/\"><kape-icon name=\"coffee-bean\" size=\"20\"></kape-icon> Tindahan</a>\n  <nav class=\"kape-tabs\" role=\"tablist\">\n    <button role=\"tab\" aria-selected=\"true\">Menu</button>\n    <button role=\"tab\">Beans</button>\n    <button role=\"tab\">Our shop</button>\n  </nav>\n  <a class=\"kape-btn kape-btn--ink\" href=\"/order\">Order · 3</a>\n</header>\n\n<main class=\"kape-menu\">\n  <div class=\"kape-menu__list\">\n    <div class=\"kape-chips\" role=\"group\" aria-label=\"Filter the menu\">\n      <button class=\"kape-chip\" aria-pressed=\"true\">All</button>\n      <button class=\"kape-chip\">Hot</button>\n      <button class=\"kape-chip\">Iced</button>\n      <button class=\"kape-chip\">Filipino</button>\n    </div>\n    <div class=\"kape-grid\">\n      <!-- one .kape-card per drink: GET /api/menu -->\n    </div>\n  </div>\n\n  <aside class=\"kape-card kape-summary\">\n    <p class=\"kape-card__title\">Your order</p>\n    <div class=\"kape-line\"><span>2 × Kapeng barako</span><span class=\"num\">₱130</span></div>\n    <div class=\"kape-line\"><span>1 × Ube latte</span><span class=\"num\">₱135</span></div>\n    <div class=\"kape-line kape-line--total\"><span>Total</span><span class=\"num\">₱265</span></div>\n    <div class=\"kape-seg\" role=\"group\" aria-label=\"Fulfilment\">\n      <button aria-pressed=\"true\">Pick up</button>\n      <button>Deliver</button>\n    </div>\n    <button class=\"kape-btn kape-btn--primary\">Pay ₱265</button>\n  </aside>\n</main>"},
-    {"key":"order","label":"Mobile ordering","note":"The same menu as a phone screen: search, filters, rows, tab bar.","cat":"Storefront","surface":"ios","uses":["input","chip","row","tag","stepper"],"api":"GET /api/menu","html":"<header class=\"kape-appbar\">\n  <h1>Menu</h1>\n  <a class=\"kape-appbar__cart\" href=\"/order\" aria-label=\"Order, 3 items\">\n    <kape-icon name=\"coffee-cup\" size=\"22\"></kape-icon>\n    <span class=\"kape-tag kape-tag--accent\">3</span>\n  </a>\n</header>\n\n<label class=\"kape-input\">\n  <kape-icon name=\"grinder\" size=\"18\"></kape-icon>\n  <input type=\"search\" placeholder=\"Search the menu\">\n</label>\n\n<div class=\"kape-chips\" role=\"group\" aria-label=\"Filter the menu\">\n  <button class=\"kape-chip\" aria-pressed=\"true\">All</button>\n  <button class=\"kape-chip\">Hot</button>\n  <button class=\"kape-chip\">Iced</button>\n</div>\n\n<main>\n  <!-- one .kape-row per drink: GET /api/menu -->\n</main>\n\n<nav class=\"kape-tabbar\">\n  <a aria-current=\"page\" href=\"/menu\"><kape-icon name=\"coffee-cup\" size=\"22\"></kape-icon> Menu</a>\n  <a href=\"/suki\"><kape-icon name=\"stamp-card\" size=\"22\"></kape-icon> Suki</a>\n  <a href=\"/orders\"><kape-icon name=\"drip-bag\" size=\"22\"></kape-icon> Orders</a>\n</nav>"},
-    {"key":"login","label":"Sign in","note":"One card, posts straight to the auth route. No client state.","cat":"Account","surface":"web","uses":["input","check","button","card"],"api":"POST /api/auth/login","html":"<main class=\"kape-login\">\n  <form class=\"kape-card\" method=\"post\" action=\"/api/auth/login\">\n    <h1><kape-icon name=\"coffee-cup\" size=\"20\"></kape-icon> Tindahan</h1>\n    <p class=\"kape-card__title\">Welcome back</p>\n    <p class=\"kape-card__sub\">Sign in to see your orders and Suki stamps.</p>\n    <label class=\"kape-field\">Email <span class=\"kape-input\"><input type=\"email\" name=\"email\" required></span></label>\n    <label class=\"kape-field\">Password <span class=\"kape-input\"><input type=\"password\" name=\"password\" required></span></label>\n    <label class=\"kape-check\"><input type=\"checkbox\" name=\"remember\" checked> Keep me signed in</label>\n    <button class=\"kape-btn kape-btn--primary\" type=\"submit\">Sign in</button>\n  </form>\n</main>"},
-    {"key":"dash","label":"Staff dashboard","note":"Sidebar shell, stat cards and the live order table.","cat":"Back of house","surface":"web","uses":["table","seg","tag","card","drawer"],"api":"GET /api/orders?status=live","html":"<div class=\"kape-shell\">\n  <nav class=\"kape-side\">\n    <a class=\"kape-side__brand\" href=\"/\"><kape-icon name=\"coffee-cup\" size=\"20\"></kape-icon> Tindahan</a>\n    <a aria-current=\"page\" href=\"/orders\"><kape-icon name=\"drip-bag\" size=\"20\"></kape-icon> Orders</a>\n    <a href=\"/menu\"><kape-icon name=\"coffee-cup\" size=\"20\"></kape-icon> Menu</a>\n    <a href=\"/suki\"><kape-icon name=\"stamp-card\" size=\"20\"></kape-icon> Suki</a>\n  </nav>\n  <main>\n    <header class=\"kape-page-head\"><h1>Orders</h1><div class=\"kape-seg\"><button aria-pressed=\"true\">Live</button><button>Done</button></div></header>\n    <section class=\"kape-stats\"><!-- one .kape-card per stat: Open, Avg wait, Today --></section>\n    <table class=\"kape-table\">\n      <thead><tr><th>Order</th><th>Items</th><th>Status</th><th class=\"num\">Total</th></tr></thead>\n      <tbody><!-- GET /api/orders?status=live --></tbody>\n    </table>\n  </main>\n</div>"},
+    {"key":"menu","label":"Menu page","note":"Desktop menu with a live order summary down the side.","cat":"Storefront","surface":"web","uses":["chip","card","tabs","seg","button","row"],"html":"<header class=\"kape-topbar\">\n  <a class=\"kape-topbar__brand\" href=\"/\"><kape-icon name=\"coffee-bean\" size=\"20\"></kape-icon> Tindahan</a>\n  <nav class=\"kape-tabs\" role=\"tablist\">\n    <button role=\"tab\" aria-selected=\"true\">Menu</button>\n    <button role=\"tab\">Beans</button>\n    <button role=\"tab\">Our shop</button>\n  </nav>\n  <a class=\"kape-btn kape-btn--ink\" href=\"/order\">Order · 3</a>\n</header>\n\n<main class=\"kape-menu\">\n  <div class=\"kape-menu__list\">\n    <div class=\"kape-chips\" role=\"group\" aria-label=\"Filter the menu\">\n      <button class=\"kape-chip\" aria-pressed=\"true\">All</button>\n      <button class=\"kape-chip\">Hot</button>\n      <button class=\"kape-chip\">Iced</button>\n      <button class=\"kape-chip\">Filipino</button>\n    </div>\n    <div class=\"kape-grid\">\n      <!-- one .kape-card per drink: GET /api/menu -->\n    </div>\n  </div>\n\n  <aside class=\"kape-card kape-summary\">\n    <p class=\"kape-card__title\">Your order</p>\n    <div class=\"kape-line\"><span>2 × Kapeng barako</span><span class=\"num\">₱130</span></div>\n    <div class=\"kape-line\"><span>1 × Ube latte</span><span class=\"num\">₱135</span></div>\n    <div class=\"kape-line kape-line--total\"><span>Total</span><span class=\"num\">₱265</span></div>\n    <div class=\"kape-seg\" role=\"group\" aria-label=\"Fulfilment\">\n      <button aria-pressed=\"true\">Pick up</button>\n      <button>Deliver</button>\n    </div>\n    <button class=\"kape-btn kape-btn--primary\">Pay ₱265</button>\n  </aside>\n</main>"},
+    {"key":"order","label":"Mobile ordering","note":"The same menu as a phone screen: search, filters, rows, tab bar.","cat":"Storefront","surface":"ios","uses":["input","chip","row","tag","stepper"],"html":"<header class=\"kape-appbar\">\n  <h1>Menu</h1>\n  <a class=\"kape-appbar__cart\" href=\"/order\" aria-label=\"Order, 3 items\">\n    <kape-icon name=\"coffee-cup\" size=\"22\"></kape-icon>\n    <span class=\"kape-tag kape-tag--accent\">3</span>\n  </a>\n</header>\n\n<label class=\"kape-input\">\n  <kape-icon name=\"grinder\" size=\"18\"></kape-icon>\n  <input type=\"search\" placeholder=\"Search the menu\">\n</label>\n\n<div class=\"kape-chips\" role=\"group\" aria-label=\"Filter the menu\">\n  <button class=\"kape-chip\" aria-pressed=\"true\">All</button>\n  <button class=\"kape-chip\">Hot</button>\n  <button class=\"kape-chip\">Iced</button>\n</div>\n\n<main>\n  <!-- one .kape-row per drink: GET /api/menu -->\n</main>\n\n<nav class=\"kape-tabbar\">\n  <a aria-current=\"page\" href=\"/menu\"><kape-icon name=\"coffee-cup\" size=\"22\"></kape-icon> Menu</a>\n  <a href=\"/suki\"><kape-icon name=\"stamp-card\" size=\"22\"></kape-icon> Suki</a>\n  <a href=\"/orders\"><kape-icon name=\"drip-bag\" size=\"22\"></kape-icon> Orders</a>\n</nav>"},
+    {"key":"login","label":"Sign in","note":"One card, posts straight to the auth route. No client state.","cat":"Account","surface":"web","uses":["input","check","button","card"],"html":"<main class=\"kape-login\">\n  <form class=\"kape-card\" method=\"post\" action=\"/api/auth/login\">\n    <h1><kape-icon name=\"coffee-cup\" size=\"20\"></kape-icon> Tindahan</h1>\n    <p class=\"kape-card__title\">Welcome back</p>\n    <p class=\"kape-card__sub\">Sign in to see your orders and Suki stamps.</p>\n    <label class=\"kape-field\">Email <span class=\"kape-input\"><input type=\"email\" name=\"email\" required></span></label>\n    <label class=\"kape-field\">Password <span class=\"kape-input\"><input type=\"password\" name=\"password\" required></span></label>\n    <label class=\"kape-check\"><input type=\"checkbox\" name=\"remember\" checked> Keep me signed in</label>\n    <button class=\"kape-btn kape-btn--primary\" type=\"submit\">Sign in</button>\n  </form>\n</main>"},
+    {"key":"dash","label":"Staff dashboard","note":"Sidebar shell, stat cards and the live order table.","cat":"Back of house","surface":"web","uses":["table","seg","tag","card","drawer"],"html":"<div class=\"kape-shell\">\n  <nav class=\"kape-side\">\n    <a class=\"kape-side__brand\" href=\"/\"><kape-icon name=\"coffee-cup\" size=\"20\"></kape-icon> Tindahan</a>\n    <a aria-current=\"page\" href=\"/orders\"><kape-icon name=\"drip-bag\" size=\"20\"></kape-icon> Orders</a>\n    <a href=\"/menu\"><kape-icon name=\"coffee-cup\" size=\"20\"></kape-icon> Menu</a>\n    <a href=\"/suki\"><kape-icon name=\"stamp-card\" size=\"20\"></kape-icon> Suki</a>\n  </nav>\n  <main>\n    <header class=\"kape-page-head\"><h1>Orders</h1><div class=\"kape-seg\"><button aria-pressed=\"true\">Live</button><button>Done</button></div></header>\n    <section class=\"kape-stats\"><!-- one .kape-card per stat: Open, Avg wait, Today --></section>\n    <table class=\"kape-table\">\n      <thead><tr><th>Order</th><th>Items</th><th>Status</th><th class=\"num\">Total</th></tr></thead>\n      <tbody><!-- GET /api/orders?status=live --></tbody>\n    </table>\n  </main>\n</div>"},
   ];
 
   static PLACEMENT = [
@@ -1697,7 +1697,8 @@ class Component extends DCLogic {
     { key: 'slate', name: 'Slate', icon: 'espresso-machine', note: 'cool grey, dashboards', paper: '#F6F7F8', surface: '#FFFFFF', ink: '#1D2429', accent: '#3F5B6B', pop: '#C2593A', onAccent: '#FFFFFF', title: 'Dashboard', sub: 'admin, reports', use: 'web' },
   ];
 
-  static TABS = [['create', 'Brew'], ['icons', 'Icons'], ['doodles', 'Doodles'], ['palettes', 'Palettes'], ['ui', 'Components'], ['blocks', 'Blocks'], ['place', 'Placement']];
+  static TABS = [['icons', 'Icons'], ['doodles', 'Doodles'], ['place', 'Placement'], ['ui', 'Components'], ['create', 'Brew'], ['blocks', 'Blocks'], ['palettes', 'Palettes']];
+  static SECTION_IDS = { icons: 'sec-icons', doodles: 'sec-doodles', place: 'sec-place', ui: 'sec-ui', create: 'sec-create', blocks: 'sec-blocks', palettes: 'sec-palettes' };
 
   static BREW_STEPS = ["palette", "edges", "font", "icons", "stack"];
 
@@ -1748,7 +1749,7 @@ class Component extends DCLogic {
       const zip = new window.JSZip();
       const root = 'kapehan-starter-' + st.fw + '/';
       const menuHtml = Component.SHIP.row.html;
-      const readme = '# Kapehan starter (' + st.label + ')\n\nPalette: ' + p.name + '. Brewed at the Kapehan site.\n\n1. Install: ' + this.installFor(st).cmd + '\n2. Run it. The menu page renders Kapehan rows from the sample drinks in the file.\n\nAll parts are MIT. Change the palette by editing ' + styleFile + '.\n';
+      const readme = '# Kapehan starter (' + st.label + ')\n\nPalette: ' + p.name + '. Brewed at the Kapehan site.\n\n1. Install: ' + this.installFor(st).cmd + '\n2. Run it. The menu page renders Kapehan rows from the sample data in it.\n\nAll parts are MIT. Change the palette by editing ' + styleFile + '.\n';
       zip.file(root + 'README.md', readme);
       zip.file(root + 'kapehan.json', snips.json.code);
       if (st.fw === 'html') {
@@ -1765,18 +1766,17 @@ class Component extends DCLogic {
         zip.file(root + 'vite.config.js', "import { defineConfig } from 'vite';\nimport vue from '@vitejs/plugin-vue';\n" + (st.css === 'tailwind' ? "import tailwindcss from '@tailwindcss/vite';\n" : '') + "\nexport default defineConfig({\n  plugins: [vue({ template: { compilerOptions: { isCustomElement: (t) => t === 'kape-icon' } } })" + (st.css === 'tailwind' ? ', tailwindcss()' : '') + "],\n});\n");
         zip.file(root + 'index.html', '<!doctype html>\n<html lang="en" data-palette="' + p.key + '" data-edges="' + (this.squareEdges() ? 'square' : 'rounded') + '">\n<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Tindahan</title></head>\n<body>\n  <div id="app"></div>\n  <scr' + 'ipt type="module" src="/kape-icon.js"></scr' + 'ipt>\n  <scr' + 'ipt type="module" src="/src/main.js"></scr' + 'ipt>\n</body>\n</html>\n');
         zip.file(root + 'src/main.js', "import { createApp } from 'vue';\nimport App from './App.vue';\nimport './kapehan.css';\nimport './" + styleFile + "';\n\ncreateApp(App).mount('#app');\n");
-        zip.file(root + 'src/App.vue', "<template>\n  <main class=\"kape-shell\">\n    <h1>Menu</h1>\n    <KapeRow v-for=\"d in items\" :key=\"d.id\" :item=\"d\" />\n  </main>\n</template>\n\n<scr" + "ipt setup>\nimport { ref, onMounted } from 'vue';\nimport KapeRow from './components/KapeRow.vue';\nconst items = ref([]);\nonMounted(async () => {\n  const res = await fetch(import.meta.env.VITE_BARAKO_API_URL + '/menu');\n  items.value = res.ok ? await res.json() : [];\n});\n</scr" + "ipt>\n");
+        zip.file(root + 'src/App.vue', "<template>\n  <main class=\"kape-shell\">\n    <h1>Menu</h1>\n    <KapeRow v-for=\"d in items\" :key=\"d.id\" :item=\"d\" />\n  </main>\n</template>\n\n<scr" + "ipt setup>\nimport KapeRow from './components/KapeRow.vue';\nconst items = [\n  { id: 'barako', name: 'Barako', price: 120 },\n  { id: 'latte', name: 'Latte', price: 150 },\n  { id: 'ube-latte', name: 'Ube latte', price: 165 },\n];\n</scr" + "ipt>\n");
         zip.file(root + 'src/components/KapeRow.vue', Component.SHIP.row.vue);
-        zip.file(root + '.env.example', 'VITE_BARAKO_API_URL=https://your-barako-host/api\n');
         zip.file(root + 'src/kapehan.css', css); zip.file(root + 'src/' + styleFile, styles); zip.file(root + 'public/kape-icon.js', iconJs);
       } else {
         zip.file(root + 'Tindahan.csproj', '<Project Sdk="Microsoft.NET.Sdk.Web">\n  <PropertyGroup>\n    <TargetFramework>net8.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n</Project>\n');
-        zip.file(root + 'Program.cs', 'var builder = WebApplication.CreateBuilder(args);\nbuilder.Services.AddRazorComponents().AddInteractiveServerComponents();\nbuilder.Services.AddHttpClient("barako", c => c.BaseAddress = new Uri(builder.Configuration["Barako:ApiUrl"]!));\n\nvar app = builder.Build();\napp.UseStaticFiles();\napp.UseAntiforgery();\napp.MapRazorComponents<Tindahan.Components.App>().AddInteractiveServerRenderMode();\napp.Run();\n');
-        zip.file(root + 'appsettings.json', JSON.stringify({ Barako: { ApiUrl: 'https://your-barako-host/api' }, Logging: { LogLevel: { Default: 'Information' } }, AllowedHosts: '*' }, null, 2));
+        zip.file(root + 'Program.cs', 'var builder = WebApplication.CreateBuilder(args);\nbuilder.Services.AddRazorComponents().AddInteractiveServerComponents();\n\nvar app = builder.Build();\napp.UseStaticFiles();\napp.UseAntiforgery();\napp.MapRazorComponents<Tindahan.Components.App>().AddInteractiveServerRenderMode();\napp.Run();\n');
+        zip.file(root + 'appsettings.json', JSON.stringify({ Logging: { LogLevel: { Default: 'Information' } }, AllowedHosts: '*' }, null, 2));
         zip.file(root + 'Components/App.razor', '<!DOCTYPE html>\n<html lang="en" data-palette="' + p.key + '" data-edges="' + (this.squareEdges() ? 'square' : 'rounded') + '">\n<head>\n    <meta charset="utf-8" />\n    <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n    <base href="/" />\n    <li' + 'nk rel="stylesheet" href="kapehan.css" />\n    <li' + 'nk rel="stylesheet" href="' + (st.css === 'bootstrap' ? 'kapehan.css' : styleFile) + '" />\n    <scr' + 'ipt type="module" src="kape-icon.js"></scr' + 'ipt>\n    <HeadOutlet />\n</head>\n<body>\n    <Routes />\n    <scr' + 'ipt src="_framework/blazor.web.js"></scr' + 'ipt>\n</body>\n</html>\n');
         zip.file(root + 'Components/Routes.razor', '<Router AppAssembly="typeof(Program).Assembly">\n    <Found Context="routeData">\n        <RouteView RouteData="routeData" />\n    </Found>\n</Router>\n');
         zip.file(root + 'Components/_Imports.razor', '@using Microsoft.AspNetCore.Components.Web\n@using Tindahan.Components\n@using Tindahan.Components.Kape\n');
-        zip.file(root + 'Components/Pages/Home.razor', '@page "/"\n@inject IHttpClientFactory Http\n\n<main class="kape-shell">\n    <h1>Menu</h1>\n    @foreach (var d in items)\n    {\n        <KapeRow Item="d" />\n    }\n</main>\n\n@code {\n    List<MenuItem> items = new();\n    protected override async Task OnInitializedAsync()\n    {\n        var client = Http.CreateClient("barako");\n        items = await client.GetFromJsonAsync<List<MenuItem>>("menu") ?? new();\n    }\n}\n');
+        zip.file(root + 'Components/Pages/Home.razor', '@page "/"\n\n<main class="kape-shell">\n    <h1>Menu</h1>\n    @foreach (var d in items)\n    {\n        <KapeRow Item="d" />\n    }\n</main>\n\n@code {\n    List<MenuItem> items =\n    [\n        new("barako", "Barako", "", 120m, "barako"),\n        new("latte", "Latte", "", 150m, "latte"),\n        new("ube-latte", "Ube latte", "", 165m, "ube-latte"),\n    ];\n}\n');
         zip.file(root + 'Components/Kape/KapeRow.razor', Component.SHIP.row.blazor);
         zip.file(root + 'Components/Kape/MenuItem.cs', 'namespace Tindahan.Components.Kape;\n\npublic record MenuItem(string Id, string Name, string Note, decimal Price, string Icon);\n');
         zip.file(root + 'wwwroot/kapehan.css', css); zip.file(root + 'wwwroot/' + styleFile, styles); zip.file(root + 'wwwroot/kape-icon.js', iconJs);
@@ -1861,6 +1861,22 @@ class Component extends DCLogic {
 
   squareEdges() { return this.state.edgesPick ?? !!this.props.squareEdges; }
 
+  jump(key) {
+    const el = document.getElementById(Component.SECTION_IDS[key]);
+    if (!el) return;
+    const y = el.getBoundingClientRect().top + window.pageYOffset - 58;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+
+  spy = () => {
+    let here = Component.TABS[0][0];
+    for (const [key] of Component.TABS) {
+      const el = document.getElementById(Component.SECTION_IDS[key]);
+      if (el && el.getBoundingClientRect().top <= 140) here = key;
+    }
+    if (here !== this.state.here) this.setState({ here });
+  };
+
   tab() {
     if (this.state.tab) return this.state.tab;
     try { const t = localStorage.getItem('kapehan.tab'); if (t) return t; } catch (e) {}
@@ -1881,13 +1897,15 @@ class Component extends DCLogic {
   ];
 
   componentDidMount() {
+    window.addEventListener('scroll', this.spy, { passive: true });
+    this.spy();
     window.addEventListener('keydown', this._onKey);
     import('./kapehan-icons.js').then((mod) => {
       this.setState({ mod, size: this.props.defaultSize ?? 48, mono: !!this.props.monoFirst });
     });
   }
 
-  componentWillUnmount() { clearTimeout(this._t); window.removeEventListener('keydown', this._onKey); }
+  componentWillUnmount() { clearTimeout(this._t); window.removeEventListener('keydown', this._onKey); window.removeEventListener('scroll', this.spy); }
 
   _onKey = (e) => { if (e.key === 'Escape' && this.state.open) this.setState({ open: null }); };
 
@@ -2061,14 +2079,14 @@ class Component extends DCLogic {
     });
 
     const monoOn = this.state.mono;
-    const tab = this.tab();
+    const tab = this.state.here || 'icons';
     const counts = this.tabCounts();
     const tabs = Component.TABS.map(([key, label]) => ({
       key, label, count: counts[key], on: tab === key,
       color: tab === key ? 'var(--k-ink)' : 'var(--k-muted)',
       underline: tab === key ? accent : 'transparent',
       navColor: tab === key ? (dark ? '#FBF6EE' : '#241A13') : (dark ? 'rgba(251,246,238,.7)' : 'rgba(36,26,19,.62)'),
-      onPick: () => { this.setState({ tab: key }); try { localStorage.setItem('kapehan.tab', key); } catch (e) {} const nav = document.querySelector('nav[aria-label="Sections"]'); if (nav) window.scrollTo({ top: nav.offsetTop, behavior: 'smooth' }); },
+      onPick: () => this.jump(key),
     }));
     const tryP = Component.PALETTES.find((p) => p.key === this.state.tryPick) || Component.PALETTES[2];
     const palettes = Component.PALETTES.map((p) => ({
@@ -2147,7 +2165,7 @@ class Component extends DCLogic {
       shipCopy: this.state.copied === 'ship' ? 'copied ✓' : 'copy',
       onCopyShip: () => this.copy(shipCode, Component.SHIP[shipKey].label + ' copied', 'ship'),
       shipPreview: m ? this.shipPreview(shipKey, uiT) : null,
-      tabs, tabIcons: tab === 'icons', tabDoodles: tab === 'doodles', tabPlace: tab === 'place', tabPalettes: tab === 'palettes', tabUi: tab === 'ui', tabBlocks: tab === 'blocks', tabCreate: tab === 'create',
+      tabs, tabIcons: true, tabDoodles: true, tabPlace: true, tabPalettes: true, tabUi: true, tabBlocks: true, tabCreate: true, _tab: tab === 'create',
       ui: uiT,
       uiNav: Component.UI_NAV.map(([group, items]) => ({ group, items: items.map(([label, href]) => ({ label, href })) })),
       jumpShip: (e) => { const card = e.currentTarget.closest('[data-ship]'); const key = card ? card.dataset.ship : 'button'; this.setState({ shipPick: key, shipLang: 'html' }); requestAnimationFrame(() => { const el = document.getElementById('c-ship'); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 84, behavior: 'smooth' }); }); },

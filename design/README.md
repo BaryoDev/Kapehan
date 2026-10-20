@@ -5,8 +5,8 @@ package ship is either generated from here or should be.
 
 | File | Holds |
 |---|---|
-| `Kapehan.dc.html` | The seven-tab site. `PALETTES` (28), `SHIP` (28 components), `UI_NAV`, `TABS`, `CSS_OPTS`, `FW_OPTS`, `ACCENTS`, and `downloadStarter`. |
-| `Kapehan Doodles v2.dc.html` | 18 doodles as inline SVG, keyed by `data-doodle`. |
+| `Kapehan.dc.html` | The site as one page, seven sections under a sticky nav. `PALETTES` (28), `SHIP` (30 components), `UI_NAV`, `TABS`, `CSS_OPTS`, `FW_OPTS`, `ACCENTS`, and `downloadStarter`. |
+| `Kapehan Doodles v2.dc.html` | 24 doodles as inline SVG, keyed by `data-doodle`. |
 | `support.js` | Vendored Claude Design runtime. Committed so the canvases open offline; not ours, do not edit. |
 
 Open either file in a browser to view it.

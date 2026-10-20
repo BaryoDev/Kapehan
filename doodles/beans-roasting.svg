@@ -10,8 +10,10 @@
       svg.kape-doodle-beans-roasting *{transition-duration:.01ms !important;}
     }
   </style>
+  <defs><filter id="k-ink" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="1" seed="11" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter></defs>
   <defs><pattern id="hd11" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#A08F7D" stroke-width="1.2" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
   <g id="dd-roasting">
+    <path d="M-40 378c240-9 470-9 720 0V440H-40z" fill="#EFE4D3"></path>
     <g stroke="none">
       <path d="M338 56c34-6 74-4 106 4l-8 96c-32 8-70 8-102-2z" fill="#F1E8DA"></path>
       <path d="M164 148c96-16 200-14 292 4l-6 148c-96 16-192 16-282 0z" fill="#F1E8DA"></path>
@@ -19,7 +21,7 @@
       <circle cx="272" cy="226" r="72" fill="#3F2A1D"></circle>
       <circle cx="272" cy="226" r="58" style="fill:var(--acc,#C2593A)"></circle>
     </g>
-    <g fill="none" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+    <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M334 54c36-8 78-6 112 6"></path>
       <path d="M338 60l-4 96M442 62l-6 94"></path>
       <path d="M354 100c26 6 56 6 82 0" stroke-width="3" opacity=".45"></path>
@@ -28,12 +30,12 @@
       <circle cx="272" cy="226" r="72"></circle>
       <circle cx="272" cy="226" r="58" stroke-width="3.4" opacity=".5"></circle>
       <path d="M378 202c26-6 54-4 78 2M378 240c26-6 54-4 78 2" stroke-width="3.4" opacity=".5"></path>
-      <circle cx="416" cy="280" r="12" stroke-width="4" style="fill:var(--card,#FFFDF9)"></circle>
+      <circle cx="416" cy="280" r="12" fill="#FFFDF9" stroke-width="4"></circle>
       <path d="M192 306l-8 62M430 306l8 62" stroke-width="5"></path>
       <path d="M40 378c186-8 384-8 562 2" stroke-width="3.5"></path>
     </g>
     <g style="animation:kape-k-spin 11s linear infinite;animation-play-state:var(--anim,running)">
-      <g fill="#3F2A1D" stroke-width="2.6" style="stroke:var(--ink,#241A13)">
+      <g fill="#3F2A1D" stroke="#241A13" stroke-width="2.6">
         <ellipse cx="272" cy="182" rx="15" ry="11" transform="rotate(-18 272 182)"></ellipse>
         <ellipse cx="308" cy="212" rx="15" ry="11" transform="rotate(24 308 212)"></ellipse>
         <ellipse cx="290" cy="260" rx="15" ry="11" transform="rotate(-8 290 260)"></ellipse>

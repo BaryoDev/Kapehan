@@ -1,14 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" class="kape-doodle-email-sent" aria-label="A folded note stamped with a coffee bean sitting in an open envelope, meaning the email is on its way">
   <title>Email sent</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><filter id="k-ink" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="1" seed="11" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter></defs>
   <defs><pattern id="hs9" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
   <g id="dd-email-sent">
     <g stroke="none">
       <path d="M50 196c98-16 202-14 300 6l-8 128c-96 14-192 12-284-4z" fill="#F1E8DA"></path>
       <path d="M50 196c98-16 202-14 300 6l-8 128c-96 14-192 12-284-4z" fill="url(#hs9)"></path>
-      <path d="M132 96c46-8 94-6 140 4l-8 116c-44 8-90 8-136 0z" style="fill:var(--card,#FFFDF9)"></path>
+      <path d="M132 96c46-8 94-6 140 4l-8 116c-44 8-90 8-136 0z" fill="#FFFDF9"></path>
     </g>
-    <g fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+    <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M130 94c48-10 98-8 144 4"></path>
       <path d="M134 100l-4 118c46 8 94 8 138 0l6-116"></path>
       <path d="M150 132c34-6 70-4 102 4M148 162c34 6 70 6 104 0M150 192c26 4 54 4 80 2" stroke-width="4" opacity=".5"></path>

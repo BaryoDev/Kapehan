@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" class="kape-doodle-error" aria-label="A mug with a jagged crack down its side, coffee leaking out of the crack into a small puddle">
   <title>Error</title>
   <desc>MIT (c) BaryoDev. Generated from the Kapehan design canvas, do not edit by hand.</desc>
+  <defs><filter id="k-ink" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="1" seed="11" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter></defs>
   <defs><pattern id="hs4" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#A08F7D" stroke-width="1.4" style="opacity:var(--hatch-op,.5)"></line></pattern></defs>
   <g id="dd-error">
     <g stroke="none">
@@ -9,7 +10,7 @@
       <path d="M124 166c48-4 96-2 144 4l-6 122c-4 24-30 34-70 34s-64-10-68-34z" style="fill:var(--acc,#C2593A)"></path>
       <path d="M262 342c-30-10 20-30 50-16 14 6 8 22-8 22-14 2-30 0-42-6z" style="fill:var(--acc,#C2593A)"></path>
     </g>
-    <g fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--ink,#241A13)">
+    <g filter="url(#k-ink)" fill="none" stroke="#241A13" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M108 100c60-14 116-10 168 4"></path>
       <path d="M112 106l6 178c2 28 30 42 72 42s70-14 72-42l8-176"></path>
       <path d="M272 138c40 8 40 68 0 78"></path>
@@ -19,13 +20,13 @@
     </g>
     <path d="M212 226c-4 20 4 48 22 68" stroke="#7A3A28" stroke-width="3.5" stroke-linecap="round" fill="none"></path>
     <ellipse cx="234" cy="300" rx="4" ry="6" style="fill:var(--acc,#C2593A)"></ellipse>
-    <path d="M258 342c-30-12 22-32 54-16 14 6 8 22-8 22" fill="none" stroke-width="4" stroke-linecap="round" style="stroke:var(--ink,#241A13)"></path>
+    <path d="M258 342c-30-12 22-32 54-16 14 6 8 22-8 22" fill="none" stroke="#241A13" stroke-width="4" stroke-linecap="round"></path>
     <g stroke="#A08F7D" stroke-width="2.2" stroke-linecap="round" style="opacity:var(--hatch-op,.5)">
       <path d="M124 240l12-12M126 260l14-14M130 280l14-14M138 298l12-12"></path>
       <path d="M124 122l10-10M128 140l12-12"></path>
     </g>
     <g>
-      <path d="M184 76l-6-26M214 72l8-24M156 88l-16-16" stroke-width="4" stroke-linecap="round" style="stroke:var(--ink,#241A13)"></path>
+      <path d="M184 76l-6-26M214 72l8-24M156 88l-16-16" stroke="#241A13" stroke-width="4" stroke-linecap="round"></path>
     </g>
   </g>
 </svg>
