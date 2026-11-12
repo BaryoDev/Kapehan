@@ -48,7 +48,10 @@ Inline mono, inherits text colour and size:
 Web component, no build step. Aliases work, so `cup-cold` finds `cold-brew`:
 
 ```html
-<script type="module" src="https://unpkg.com/kapehan/kape-icon.js"></script>
+<script type="module" crossorigin="anonymous"
+  src="https://unpkg.com/kapehan@0.2.0/kape-icon.js"
+  integrity="sha384-ONYdN0PJfIFYoZ9pg7/vGO2fteEgGrmv5A+/yzVkVBDRFimZt3o8MKdqHhvK8Xd8"></script>
+<!-- Pin the version and keep the integrity hash in step with it. An unpinned URL runs every future release on your page. -->
 
 <kape-icon name="barako" size="32"></kape-icon>
 <kape-icon name="cup-cold" mono></kape-icon>

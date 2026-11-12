@@ -1,0 +1,13 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>kape-doodle fixture</title>
+<body>
+  <!-- Hostile values sit in the markup, like the kape-icon fixture, so the HTML parser
+       hands them to the element the way a real page would. -->
+  <kape-doodle id="plain" name="barista" size="240"></kape-doodle>
+  <kape-doodle id="unknown" name="not-a-real-doodle"></kape-doodle>
+  <kape-doodle id="attr-break" name="barista" size='240" onload="window.__pwned = 1'></kape-doodle>
+  <kape-doodle id="tag-break" name="barista" size="&quot;&gt;&lt;img src=x onerror=window.__pwned2=1&gt;"></kape-doodle>
+  <kape-doodle id="junk-size" name="barista" size="not-a-number"></kape-doodle>
+  <script type="module" src="/kape-doodle.js"></script>
+</body>

@@ -10,15 +10,44 @@ on:
         required: true
         type: string
 
-# id-token: write is what npm exchanges for a registry credential. There is no
-# NPM_TOKEN: this package publishes through npm trusted publishing (OIDC).
+# The publish job alone gets id-token: write, which npm exchanges for a registry
+# credential. There is no NPM_TOKEN: this package publishes through npm trusted
+# publishing (OIDC).
 permissions:
   contents: read
-  id-token: write
 
 jobs:
-  publish:
+  # A manual run is only allowed from the default branch, so a feature branch
+  # cannot be published as latest. Releases run on their tag.
+  test:
+    if: github.event_name != 'workflow_dispatch' || github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check generated files are in sync
+        run: npm test
+
+      # The hostile size= tests live here, not in npm test, so a publish must run them.
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run browser tests
+        run: npm run test:browser
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
 
@@ -32,12 +61,14 @@ jobs:
       # Trusted publishing needs npm 11.5.1 or later, and Node 22.x still ships npm 10.
       - name: Use an npm that can do trusted publishing
         run: |
-          npm install -g npm@latest
+          npm install -g npm@11
           npm --version
 
       - name: Set version
         if: github.event_name == 'workflow_dispatch'
-        run: npm version "${{ inputs.version }}" --no-git-tag-version --allow-same-version
+        env:
+          VERSION: ${{ inputs.version }}
+        run: npm version "$VERSION" --no-git-tag-version --allow-same-version
 
       # A release tagged v0.3.0 that publishes 0.2.0 is the failure this catches.
       # npm accepts it, and the tag and the registry then disagree forever.
@@ -51,11 +82,8 @@ jobs:
             exit 1
           fi
 
-      # prepublishOnly runs this too, but failing here keeps a broken build
-      # out of the publish step rather than half way through it.
-      - name: Check generated files are in sync
-        run: npm test
-
+      # prepublishOnly runs the sync check again; the test job above already ran it
+      # with the browser tests.
       # Provenance is generated automatically under trusted publishing, so there is
       # no --provenance flag and no publishConfig.provenance.
       - name: Publish
